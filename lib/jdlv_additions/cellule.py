@@ -7,7 +7,6 @@ from lib.constantes import Etat
 class Cellule(QGraphicsRectItem):
     """
     Hérite de:
-        object
         QGraphicsRectItem
     Rôle:
         Représente une cellule

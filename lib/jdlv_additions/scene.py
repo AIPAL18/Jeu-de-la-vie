@@ -7,18 +7,17 @@ from lib.constantes import Etat, Direction
 from .cellule import Cellule
 
 
-class JDLV(QGraphicsScene):
+class Scene(QGraphicsScene):
     """
     Hérite de:
-        object
         QGraphicsScene
     Rôle:
-        Représente la scène du jeu de la vie (jdlv)
+        Représente la scène du jeu de la vie (Scene)
     """
     def __init__(self, parent: QObject = None) -> None:
         """
         Entrées:
-            self: JDLV
+            self: Scene
             parent: QObject (par défaut None)
         Sortie:
             None (ctor)
@@ -40,7 +39,7 @@ class JDLV(QGraphicsScene):
     def vide_scene(self) -> None:
         """
         Entrée:
-            self: JDLV
+            self: Scene
         Sortie:
             None (modification en place)
         Rôle:
@@ -58,7 +57,7 @@ class JDLV(QGraphicsScene):
     def set_plateau(self, height: int, width: int, etat: Etat) -> None:
         """
         Entrée:
-            self: JDLV
+            self: Scene
             height: int
             width: int
             etat: Etat
@@ -92,7 +91,7 @@ class JDLV(QGraphicsScene):
         """
         Surcharge de set_plateau
         Entrées:
-            self: JDLV
+            self: Scene
             matrice: list[list[Any]]
             vivant: Any
         Sortie:
@@ -132,11 +131,42 @@ class JDLV(QGraphicsScene):
                 # On ajoute la cellule à la scène
                 self.addItem(temp)
 
+    def get_plateau(self, vivant: Any, mort: Any) -> list[list[Any]]:
+        """
+        Entrées:
+            self: Scene
+            vivant: Any
+            mort: Any
+        Sortie:
+            list[list[Any]]  (consitué uniquement de vivant et mort)
+        Rôle:
+            Retourne le plateau de jeu avec des valeurs personnalisées de 
+            vivant et mort.
+        """
+        # Déclaration de la matrice vide plateau
+        plateau: list[list] = []
+        # Pour chaque ligne de matrice
+        for i in range(len(self.matrice)):
+            # Ajout d'une nouvelle ligne dans plateau
+            plateau.append([])
+            # Pour chaque élément de la ligne
+            for j in range(len(self.matrice[i])):
+                # Si l'élément (i;j) est d'état vivant
+                if self.matrice[i][j].get_etat() is Etat.Vivant:
+                    # On ajoute la valeur vivant au plateau
+                    plateau[i].append(vivant)
+                # Si l'élément (i;j) est d'état mort
+                else:
+                    # On ajoute la valeur mort au plateau
+                    plateau[i].append(mort)
+        
+        # On retourne le plateau
+        return plateau
 
     def est_voisin(self, i, j) -> bool:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: Scene
             i: int
             j: int
         Sortie:
@@ -154,11 +184,10 @@ class JDLV(QGraphicsScene):
             # Retourne False car l'élément inexistant est considéré mort
             return False
 
-
     def total_voisins(self, i: int, j: int) -> int:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: Scene
             i: int
             j: int
         Sortie:
@@ -186,7 +215,6 @@ class JDLV(QGraphicsScene):
         # retourne la somme des voisins
         return b + bd + bg + h + hd + hg + d + g
 
-
     @staticmethod
     def meurt(nb_voisins: int) -> bool:
         """
@@ -199,7 +227,6 @@ class JDLV(QGraphicsScene):
         """
         # Retourne True si nb_voisins est différent de 2 ou 3
         return nb_voisins < 2 or nb_voisins > 3
-    
 
     @staticmethod
     def nait(nb_voisins: int) -> bool:
@@ -214,11 +241,10 @@ class JDLV(QGraphicsScene):
         # Retourne True si nb_voisins est égal à 3
         return nb_voisins == 3
 
-
     def resultat(self, ord: int, absc: int) -> Etat:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: Scene
             ord: int (ordonnée)
             absc: int (abscisse)
         Sortie:
@@ -252,7 +278,7 @@ class JDLV(QGraphicsScene):
     def doit_agrandir_matrice(self) -> list[Direction]:
         """
         Entrée:
-            self: JeuDeLaVie
+            self: Scene
         Sortie:
             tuple[bool, Direction]
         Rôle:
@@ -333,7 +359,7 @@ class JDLV(QGraphicsScene):
     def extension(self, direction: str) -> None:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: Scene
             direction: Direction
         Sortie:
             None (modification en place)
@@ -440,7 +466,7 @@ class JDLV(QGraphicsScene):
     def tour(self) -> None:
         """
         Entrée:
-            self: JeuDeLaVie
+            self: Scene
         Sortie:
             None (modification en place)
         Rôle:

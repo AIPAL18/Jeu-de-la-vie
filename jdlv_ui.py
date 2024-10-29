@@ -11,7 +11,6 @@ from lib import *
 class JeuDeLaVieApp(QMainWindow):
     """
     Hérite de:
-        object
         QMainWindow
     Rôle:
         Représente l'application du jeu de la vie
@@ -33,6 +32,9 @@ class JeuDeLaVieApp(QMainWindow):
         # Déclaration de dimension qui représente la dimension du plateau
         # (w x h)
         self.dimension = QSize(20, 20)
+        # Déclaration d'un booléan est_fichier_ouvert
+        self.est_fichier_ouvert: bool = False
+        self.fichier: str = ""
         # Déclaration d'un attribut nb_cycle
         self.nb_cycle: int = 0
         # Déclaration d'un chronomètre
@@ -41,21 +43,6 @@ class JeuDeLaVieApp(QMainWindow):
         self.chrono.timeout.connect(self.execute_tour)
         # Chrono moins précis mais moins gourmant en ressources
         self.chrono.setTimerType(Qt.TimerType.CoarseTimer)
-
-        # Menu bar
-        self.menu = self.menuBar()
-        # Déclaration d'un attribut menu fichier
-        self.menu_fichier = self.menu.addMenu("&Fichier")
-        # Déclaration de importer_template
-        self.importer_template = QAction(self)
-        # Définition du texte de importer_template
-        self.importer_template.setText("Importer un template (.csv)")
-        # Définition d'un raccourci clavier
-        self.importer_template.setShortcut(QKeySequence.StandardKey.Open)
-        # Relie le signal à la méthode, importe
-        self.importer_template.triggered.connect(self.importe)
-        # Ajoute l'action au menu
-        self.menu_fichier.addAction(self.importer_template)
 
         # Fenêtre
 
@@ -78,10 +65,38 @@ class JeuDeLaVieApp(QMainWindow):
         # On associe le layout au widget car setCentralLayout n'existe pas
         self.central_widget.setLayout(self.affichage)
 
+        # Menu bar
+
+        # Déclaration d'un attribut menuBar
+        self.menu = self.menuBar()
+        # Déclaration d'un attribut menu fichier
+        self.menu_fichier = self.menu.addMenu("&Fichier")
+        # Déclaration de importer_template
+        self.importer_template = QAction(self)
+        # Définition du texte de importer_template
+        self.importer_template.setText("Importer un template (.csv)")
+        # Définition d'un raccourci clavier
+        self.importer_template.setShortcut(QKeySequence.StandardKey.Open)
+        # Relie le signal à la méthode importe
+        self.importer_template.triggered.connect(self.importe)
+        # Ajoute l'action au menu
+        self.menu_fichier.addAction(self.importer_template)
+
+        # Déclaration de enregistrer_template
+        self.enregistrer_template = QAction(self)
+        # Définition du texte de enregistrer_template
+        self.enregistrer_template.setText("Enregistrer le template")
+        # Définition d'un raccourci clavier
+        self.enregistrer_template.setShortcut(QKeySequence.StandardKey.Save)
+        # Relie le signal à la méthode enregistrer
+        self.enregistrer_template.triggered.connect(self.enregistrer)
+        # Ajoute l'action au menu
+        self.menu_fichier.addAction(self.enregistrer_template)
+
         # Scène - vue
 
         # On créer une scène du jeu de la vie
-        self.scene = JDLV(self)
+        self.scene = Scene(self)
         # On créer une vue
         self.vue = QGraphicsView(self)
         # On dit à la vue quelle scène afficher
@@ -220,17 +235,88 @@ class JeuDeLaVieApp(QMainWindow):
         self.affichage.addLayout(self.menu_layout)
 
         """
-        Charger des templates (csv)
         Augmenter le nombre de cellule (pour dessiner un truc plus gros)
         Intéragir avec les cellule (mode edition et simulation)
         """
 
         # Affiche la fenêtre
         self.show()
-    
-    def importe(self):
+
+    def enregistrer(self) -> None:
         """
+        Entrée:
+            self: JeuDeLaVieApp
+        Sortie:
+            None (modification en place)
+        Rôle:
+            Enregistre self.scene dans le format csv
+        """
+        # Si un fichier est "ouvert"
+        if self.est_fichier_ouvert:
+            
+            # On ouvre le fichier (s'il n'existe plus, il est recréé)
+            with open(self.fichier, 'w', encoding='utf-8') as f:
+                # Récupère le plateau avec 1 pour vivant et 0 pour mort
+                plateau: list[list[str]] = self.scene.get_plateau("1", "0")
+                # Pour chaque ligne
+                for i in range(len(plateau)):
+                    # Pour chaque élément
+                    for j in range(len(plateau[i])):
+                        # On écrit l'élément
+                        f.write(plateau[i][j])
+                        # Si l'élément n'est pas le dernier
+                        if j < len(plateau[i]) - 1:
+                            # on écrit une virgule
+                            f.write(",")
+                    # Ecriture d'un retour chariot
+                    f.write("\n")
+                # Fermeture du fichier
+                f.close()
+        # S'il n'y a pas de fichier ouvert
+        else:
+            # Appelle la méthode enregistrer_sous
+            self.enregistrer_sous()
+
+    def enregistrer_sous(self) -> None:
+        """
+        Entrée:
+            self: JeuDeLaVieApp
+        Sortie:
+            None (modification en place)
+        Rôle:
+            Enregistre sous self.scene dans le format csv
+        """
+        # Déclaration d'un nouveau QFileDialog
+        enregistrer_fichier = QFileDialog(self, caption="Enregistrer sous")
+        # Définition du type de fichier attendu
+        enregistrer_fichier.setNameFilter("Templates (*.csv)")
+        # Définition du filtre
+        enregistrer_fichier.setFilter(
+            QDir.Filter.Readable | QDir.Filter.Files | QDir.Filter.NoSymLinks)
+        # Définition du mode du fichier sur fichier existant
+        enregistrer_fichier.setFileMode(QFileDialog.FileMode.ExistingFile)
+        # Définition du suffix par défaut
+        enregistrer_fichier.setDefaultSuffix(".csv")
+        # Définition du mode
+        enregistrer_fichier.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         
+        # Si l'utilisateur sélectionne un fichier
+        if enregistrer_fichier.exec():
+            # On met à jour l'attribut est_fichier_ouvert
+            self.est_fichier_ouvert = True
+            # Mise à jour du nom du fichier
+            self.fichier = enregistrer_fichier.selectedFiles()[0]
+            # On enregistre le template
+            self.enregistrer()
+    
+    def importe(self) -> None:
+        """
+        Entrée:
+            self: JeuDeLaVieApp
+        Sortie:
+            None (modification en place)
+        Rôle:
+            Importe un template d'un fichier csv.
         """
         # Déclaration d'un nouveau QFileDialog
         obtenir_fichier = QFileDialog(self, caption="Importer un template")
@@ -243,6 +329,8 @@ class JeuDeLaVieApp(QMainWindow):
         obtenir_fichier.setFileMode(QFileDialog.FileMode.ExistingFile)
         # Définition du suffix par défaut
         obtenir_fichier.setDefaultSuffix(".csv")
+        # Définition du mode
+        obtenir_fichier.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         
         # Si l'utilisateur sélectionne un fichier
         if obtenir_fichier.exec():
@@ -280,6 +368,10 @@ class JeuDeLaVieApp(QMainWindow):
                 self.nb_cycle = 0
                 # Modifie le texe du label
                 self.affichage_cycle.setText("Cycle n°" + str(self.nb_cycle))
+                # On met à jour l'attribut est_fichier_ouvert
+                self.est_fichier_ouvert = True
+                # Mise à jour du nom du fichier
+                self.fichier = fichier
             # Si le tableau n'est pas valide
             else:
                 # Affichage du message d'erreur
@@ -360,7 +452,7 @@ class JeuDeLaVieApp(QMainWindow):
         # lui donne le focus
         self.periode_entree.clearFocus()
     
-    def zoom_in(self):
+    def zoom_in(self) -> None:
         """
         Entrées:
             self: JeuDeLaVieApp
@@ -372,7 +464,7 @@ class JeuDeLaVieApp(QMainWindow):
         # Augmente les grandeurs de 10%
         self.vue.scale(1.1, 1.1)
 
-    def zoom_out(self):
+    def zoom_out(self) -> None:
         """
         Entrées:
             self: JeuDeLaVieApp

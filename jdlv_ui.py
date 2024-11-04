@@ -93,6 +93,18 @@ class JeuDeLaVieApp(QMainWindow):
         # Ajoute l'action au menu
         self.menu_fichier.addAction(self.enregistrer_template)
 
+        # Déclaration de enregistrer_template_sous
+        self.enregistrer_template_sous = QAction(self)
+        # Définition du texte de enregistrer_template
+        self.enregistrer_template_sous.setText("Enregistrer le template")
+        # Définition d'un raccourci clavier
+        self.enregistrer_template_sous.setShortcut(
+            QKeySequence.StandardKey.SaveAs)
+        # Relie le signal à la méthode enregistrer
+        self.enregistrer_template_sous.triggered.connect(self.enregistrer_sous)
+        # Ajoute l'action au menu
+        self.menu_fichier.addAction(self.enregistrer_template_sous)
+
         # Scène - vue
 
         # On créer une scène du jeu de la vie

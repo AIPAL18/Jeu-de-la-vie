@@ -1,22 +1,52 @@
+# importe util depuis importlib
 from importlib import util
 
-# Si le module PySide6 n'est pas install
+# Si le module PySide6 n'est pas installé
 if not util.find_spec("PySide6"):
-    from subprocess import run, PIPE
-    from sys import stderr
-    print("Intallation de PySide6, cela peut prendre quelques minutes. " + 
-          "Merci de ne pas intérompre le processus.")
-    print(run("ping -n 10 8.8.8.8", check=True, stdout=PIPE).stdout.decode())
-    print(file=stderr)
+    # Questionne l'utilisateur sur sa volonté d'installer PySide6
+    reponse = input("Le module PySide6 n'est pas installé, souhaitez-vous " + 
+                    "l'installer automatiquement ? (o/n)")[0]
+    # Si la réponse est o (pour oui)
+    if reponse.lower() == "o":
+        # import run et PIPE du module subprocess
+        from subprocess import run, PIPE
+        # Affichage d'un message pour que l'utilisateur patiente
+        print("Intallation de PySide6, cela peut prendre quelques minutes. " + 
+            "Merci de ne pas intérompre le processus.")
+        # Installation de PySide6
+        proc = run("pip install PySide6", stdout=PIPE)
+        # Affiche le flux de sortie du terminal 
+        print(proc.stdout.decode())
+        # Si le code de sortie n'est pas 0
+        if proc.returncode:
+            # Affichage d'un message d'erreur
+            print("Une erreur est intervenue, merci de la corriger avant de " +
+                  "relancer le programme")
+            # Termine le processus avec proc.returncode en code de sortie
+            exit(proc.returncode)
+    # Si le message d'erreur est n (pour n) ou autre
+    else:
+        # Affiche un message à l'utilisateur
+        print("Le programme ne peut démarrer tant que PySide6 n'est pas " + 
+              "installé")
+        # Termine le processus avec 1 en code de sortie
+        exit(1)
 
+# Importe les classes utilisées depuis PySide6.QtWidgets
 from PySide6.QtWidgets import QMainWindow, QApplication, QGraphicsView, \
     QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QDoubleSpinBox, QLabel, \
     QGridLayout, QCheckBox, QFileDialog, QMessageBox
+# Importe les classes utilisées depuis PySide6.QtGui
 from PySide6.QtGui import QIcon, QAction, QKeySequence
+# Importe les classes utilisées depuis PySide6.QtCore
 from PySide6.QtCore import Qt, QSize, QTimer,  QDir
+# Importe reader depuis le module csv
 from csv import reader
+# Importe argv, version_info depuis le module sys
 from sys import argv, version_info
+# Importe toutes les fonctions du module lib
 from lib import *
+# Importe basename depuis le module os.path
 from os.path import basename
 
 
@@ -263,8 +293,9 @@ class JeuDeLaVieApp(QMainWindow):
         self.affichage.addLayout(self.menu_layout)
 
         """
-        Augmenter le nombre de cellule (pour dessiner un truc plus gros)
+        Stop la boucle automatiquement en cas de non changement
         Intéragir avec les cellule (mode edition et simulation)
+        Augmenter le nombre de cellule (pour dessiner un truc plus gros)
         """
 
         # Affiche la fenêtre

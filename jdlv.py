@@ -2,6 +2,8 @@ from time import sleep
 from os import system
 from typing import Any
 from lib import copie
+import sys
+from os.path import basename
 
 
 class JeuDeLaVie(object):
@@ -288,4 +290,4 @@ if __name__ == "__main__" and __package__ is None:
 
 
     # lance le jeu de la vie pour 50 cycle de 0.3 seconde
-    jeu.run(50, 0.3)
+    # jeu.run(50, 0.3)

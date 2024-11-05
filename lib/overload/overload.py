@@ -325,4 +325,3 @@ class Overload(object):
             # On lève une exception
             raise Exception("There is no overload for this method with this" + 
                             " signature: the signature is already taken.")
-        

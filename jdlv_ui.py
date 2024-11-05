@@ -1,11 +1,23 @@
+from importlib import util
+
+# Si le module PySide6 n'est pas install
+if not util.find_spec("PySide6"):
+    from subprocess import run, PIPE
+    from sys import stderr
+    print("Intallation de PySide6, cela peut prendre quelques minutes. " + 
+          "Merci de ne pas intérompre le processus.")
+    print(run("ping -n 10 8.8.8.8", check=True, stdout=PIPE).stdout.decode())
+    print(file=stderr)
+
 from PySide6.QtWidgets import QMainWindow, QApplication, QGraphicsView, \
     QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QDoubleSpinBox, QLabel, \
     QGridLayout, QCheckBox, QFileDialog, QMessageBox
 from PySide6.QtGui import QIcon, QAction, QKeySequence
 from PySide6.QtCore import Qt, QSize, QTimer,  QDir
 from csv import reader
-from sys import argv
+from sys import argv, version_info
 from lib import *
+from os.path import basename
 
 
 class JeuDeLaVieApp(QMainWindow):
@@ -31,6 +43,8 @@ class JeuDeLaVieApp(QMainWindow):
         
         # Déclaration de dimension qui représente la dimension du plateau
         # (w x h)
+        # Déclaration de chemin_absolu pour accéder aux ressources (svg, ...)
+        self.chemin_absolu = __file__[:-len(basename(__file__))]
         self.dimension = QSize(20, 20)
         # Déclaration d'un booléan est_fichier_ouvert
         self.est_fichier_ouvert: bool = False
@@ -139,7 +153,8 @@ class JeuDeLaVieApp(QMainWindow):
         # Déclaration d'un bouton play
         self.play = QPushButton(self)
         # Définition de l'icone de play
-        icone_play = QIcon("assets\\icones\\play-button.svg")
+        icone_play = QIcon(self.chemin_absolu + 
+                           "assets\\icones\\play-button.svg")
         # Attribution de l'icone au bouton
         self.play.setIcon(icone_play)
         # Relie le signal à la méthode run
@@ -153,7 +168,8 @@ class JeuDeLaVieApp(QMainWindow):
         # Déclaration d'un bouton pause
         self.pause = QPushButton(self)
         # Définition de l'icone de pause
-        icone_pause = QIcon("assets\\icones\\pause-button.svg")
+        icone_pause = QIcon(self.chemin_absolu + 
+                            "assets\\icones\\pause-button.svg")
         # Attribution de l'icone au bouton
         self.pause.setIcon(icone_pause)
         # Relie le signal à la méthode stop
@@ -489,8 +505,8 @@ class JeuDeLaVieApp(QMainWindow):
         self.vue.scale(0.9, 0.9)
 
 
-# Si le présent fichier est executé
-if __name__ == '__main__':
+# Si le présent fichier est executé avec python 3.10 ou plus
+if __name__ == '__main__' and version_info >= (3, 10):
     # On instantie QApplication en lui passe argv (héritage du c++)
     app = QApplication(argv)
     # On instantie JeuDeLaVieApp

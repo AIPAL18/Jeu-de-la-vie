@@ -5,3 +5,4 @@ test.ipynb
 tache.odt
 templates/*
 **/__pycache__
+/.idea

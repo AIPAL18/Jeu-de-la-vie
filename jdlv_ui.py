@@ -39,7 +39,7 @@ from PySide6.QtWidgets import QMainWindow, QApplication, QGraphicsView, \
 # Importe les classes utilisées depuis PySide6.QtGui
 from PySide6.QtGui import QIcon, QAction, QKeySequence
 # Importe les classes utilisées depuis PySide6.QtCore
-from PySide6.QtCore import Qt, QTimer,  QDir
+from PySide6.QtCore import Qt, QSize,  QDir
 # Importe reader depuis le module csv
 from csv import reader
 # Importe argv, version_info depuis le module sys
@@ -143,7 +143,7 @@ class JeuDeLaVieApp(QMainWindow):
         # Scène - vue
 
         # On créer une scène du jeu de la vie
-        self.scene = Scene(self)
+        self.scene = Scene(self, QSize(10, 10))
         # On créer une vue
         self.vue = QGraphicsView(self)
         # On dit à la vue quelle scène afficher
@@ -252,17 +252,17 @@ class JeuDeLaVieApp(QMainWindow):
         self.auto_grandissement_entree.setCheckState(Qt.CheckState.Checked)
         # Relie le signal à la fonction set_auto_grandissement
         self.auto_grandissement_entree.checkStateChanged.connect(
-            self.set_auto_stop)
+            self.set_auto_grandissement)
         # On ajoute la case à cocher au layout
         self.menu_layout.addWidget(self.auto_grandissement_entree)
 
         # Déclaration d'une case à cocher
         self.auto_stop_entree = QCheckBox(self)
         # Définition du texte de la case à cocher
-        self.auto_stop_entree.setText("Auto grandissement")
+        self.auto_stop_entree.setText("Auto stop")
         # On définit son état sur coché
         self.auto_stop_entree.setCheckState(Qt.CheckState.Checked)
-        # Relie le signal à la fonction set_auto_grandissement
+        # Relie le signal à la fonction set_auto_stop
         self.auto_stop_entree.checkStateChanged.connect(
             self.set_auto_stop)
         # On ajoute la case à cocher au layout
@@ -304,6 +304,13 @@ class JeuDeLaVieApp(QMainWindow):
         """
 
         # Initialisation de toutes les variables reliées aux champs d'entrées
+        
+        # Initialise auto_grandissement sur l'état de la case à cocher
+        self.scene.auto_grandissement = bool(
+            self.auto_grandissement_entree.checkState().value)
+        # Initialise auto_stop sur l'état de la case à cocher
+        self.scene.auto_stop = bool(self.auto_stop_entree.checkState().value)
+        # Initialise periode sur la valeur de periode_entree
         self.scene.periode = int(self.periode_entree.value() * 1000)
 
         # Affiche la fenêtre
@@ -447,7 +454,7 @@ class JeuDeLaVieApp(QMainWindow):
                     QMessageBox.StandardButton.Ok, 
                     QMessageBox.StandardButton.Ok)
     
-    def set_auto_stop(self, etat: Qt.CheckState) -> None:
+    def set_auto_grandissement(self, etat: Qt.CheckState) -> None:
         """
         Entrées:
             self: JeuDeLaVieApp
@@ -460,7 +467,7 @@ class JeuDeLaVieApp(QMainWindow):
         # | etat             | etat.value
         # | Unchecked        | 0
         # | Checked          | 2
-        # bool(0) -> False, bool(1) -> True
+        # bool(0) -> False, bool(2) -> True
         # Attribut une nouvelle valeur à auto_grandissement
         self.scene.auto_grandissement = bool(etat.value)
     
@@ -478,8 +485,8 @@ class JeuDeLaVieApp(QMainWindow):
         # | Unchecked        | 0
         # | Checked          | 2
         # bool(0) -> False, bool(1) -> True
-        # Attribut une nouvelle valeur à auto_grandissement
-        self.scene.auto_grandissement = bool(etat.value)
+        # Attribut une nouvelle valeur à auto_stop
+        self.scene.auto_stop = bool(etat.value)
     
     def set_periode(self, valeur: float) -> None:
         """
@@ -560,7 +567,7 @@ class JeuDeLaVieApp(QMainWindow):
 
 
 # Si le présent fichier est executé avec python 3.10 ou plus
-if __name__ == '__main__' and version_info >= (3, 10):
+if __name__ == "__main__" and version_info >= (3, 10):
     # On instantie QApplication en lui passe argv (héritage du c++)
     app = QApplication(argv)
     # On instantie JeuDeLaVieApp

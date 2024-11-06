@@ -4,6 +4,7 @@ from lib.plateau import construit
 from typing import Any
 from lib.overload import Overload, signature
 from lib.constantes import Etat, Direction
+from lib.plateau import copie
 from .cellule import Cellule
 
 
@@ -14,11 +15,15 @@ class Scene(QGraphicsScene):
     Rôle:
         Représente la scène du jeu de la vie (Scene)
     """
-    def __init__(self, parent: QObject = None) -> None:
+    def __init__(self, parent: QObject = None, taille: QSize = QSize(0, 0))\
+        -> None:
         """
         Entrées:
             self: Scene
-            parent: QObject (par défaut None)
+            parent: QObject
+                valeur par défaut: None
+            taille: QSize
+                valeur par défaut: QSize(0, 0)
         Sortie:
             None (ctor)
         Rôle:
@@ -29,13 +34,13 @@ class Scene(QGraphicsScene):
         
         # Déclaration de dimension qui représente la dimension du plateau
         # (w x h)
-        self.dimension = QSize(20, 20)
+        self.dimension: QSize = taille
         # Déclaration d'un attribut auto grandissement
-        self.auto_grandissement = True
+        self.auto_grandissement: bool = None
         # Déclaration d'un attribut auto stop
-        self.auto_stop = True
+        self.auto_stop: bool = None
         # Déclaration d'interval
-        self.periode = 0
+        self.periode: int = None
 
         # Déclaration d'un chronomètre
         self.chrono = QTimer(self)
@@ -100,6 +105,9 @@ class Scene(QGraphicsScene):
                 self.matrice[i].append(temp)
                 # On ajoute la cellule à la scène
                 self.addItem(temp)
+        
+        # Copie la matrice dans matrice_precedent
+        self.matrice_precedent = copie(self.matrice)
 
     @set_plateau.overload  # On surcharge la méthode set_plateau
     @signature("list", "object")  # On précise sa signature
@@ -146,6 +154,9 @@ class Scene(QGraphicsScene):
                 self.matrice[i].append(temp)
                 # On ajoute la cellule à la scène
                 self.addItem(temp)
+        
+        # Copie la matrice dans matrice_precedent
+        self.matrice_precedent = copie(self.matrice)
 
     def get_plateau(self, vivant: Any, mort: Any) -> list[list[Any]]:
         """
@@ -492,6 +503,11 @@ class Scene(QGraphicsScene):
         Rôle:
             Execute un tour du jeu.
         """
+        # Si l'auto stop est activé
+        if self.auto_stop:
+            # Copie la matrice dans matrice_precedent
+            self.matrice_precedent = copie(self.matrice)
+
         # On créer un tableau qui ne contient que les états.
         tableau_etat = construit(
             self.dimension.height(), self.dimension.width(), Etat.Mort)
@@ -529,7 +545,9 @@ class Scene(QGraphicsScene):
                     # Extension de la matrice vers la direction d
                     self.extension(d)
         
+        # Si l'auto stop est activé et que l'animation doit s'arrêter
         if self.auto_stop and self.arret_automatique():
+            # On stop l'animation
             self.parent().stop_anim()
     
     def execute_tour(self) -> None:

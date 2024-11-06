@@ -1,9 +1,13 @@
+# Importe sleep depuis time
 from time import sleep
+# Importe system depuis os
 from os import system
+# Importe Any depuis typing
 from typing import Any
+# Importe copie depuis lib
 from lib import copie
-import sys
-from os.path import basename
+# Importe argv, version_info depuis le module sys
+from sys import version_info
 
 
 class JeuDeLaVie(object):
@@ -70,9 +74,11 @@ class JeuDeLaVie(object):
         """
         # crée la variable temporaire tableau
         tableau = self.tableau
-        # affiche le tableau ligne par ligne
+        # Pour chaque ligne du tableau
         for ligne in tableau:
+            # Affiche la ligne
             print(ligne)
+        # Affiche une ligne vide
         print()
 
     def valeur_case(self, i, j):
@@ -88,9 +94,11 @@ class JeuDeLaVie(object):
         """
         # si les indices décrivent une valeur du tableau
         if 0 <= i < len(self.tableau) and 0 <= j < len(self.tableau[0]):
+            # On retourne la valeur de la case (i;j)
             return self.tableau[i][j]
-        # si l'indice i ou j est trop grand ou négatif on retourne 0
+        # si l'indice i ou j est trop grand ou négatif
         else:
+            # on retourne 0
             return 0
 
     def affiche_complexe(self):
@@ -103,6 +111,7 @@ class JeuDeLaVie(object):
             Afficher de manière complexe un tableau de 1 et de 0
             en les remplaçant par des substitue
         """
+        # On efface le terminal
         system("cls")
         # crée la variable temporaire tab
         tab = self.tableau
@@ -121,6 +130,7 @@ class JeuDeLaVie(object):
                     ligne_affiche.append(self.symbole_vivant)
             # On affiche la variable temporaire en enlevant les ""
             print(" ".join(ligne_affiche))
+        # On affiche une ligne vide
         print()
 
     def total_voisins(self, i: int, j: int) -> int:
@@ -134,22 +144,24 @@ class JeuDeLaVie(object):
         Rôle:
             Retourne le total de voisins de la cellule (i;j)
         """
-        # bas
+        # Récupère le voisin du bas
         b = self.valeur_case(i + 1, j)
-        # bas droite
+        # Récupère le voisin du bas droit
         bd = self.valeur_case(i + 1, j + 1)
-        # bas gauche
+        # Récupère le voisin du bas gauche
         bg = self.valeur_case(i + 1, j - 1)
-        # haut
+        # Récupère le voisin du haut
         h = self.valeur_case(i - 1, j)
-        # haut droite
+        # Récupère le voisin du haut droit
         hd = self.valeur_case(i - 1, j + 1)
-        # haut gauche
+        # Récupère le voisin du haut gauche
         hg = self.valeur_case(i - 1, j - 1)
-        # droite
+        # Récupère le voisin de droite
         d = self.valeur_case(i, j + 1)
-        # gauche
+        # Récupère le voisin de gauche
         g = self.valeur_case(i, j - 1)
+
+        # retourne la somme des voisins
         return b + bd + bg + h + hd + hg + d + g
 
     @staticmethod
@@ -162,6 +174,7 @@ class JeuDeLaVie(object):
         Rôle:
             Retourne True si la cellule meurt
         """
+        # Retourne True si le nombre de voisins est différent de 2 ou 3
         return nb_voisins < 2 or nb_voisins > 3
 
     @staticmethod
@@ -174,6 +187,7 @@ class JeuDeLaVie(object):
         Rôle:
             Retourne True si la cellule naît
         """
+        # Retourne True si le nombre de voisins est égal à 3
         return nb_voisins == 3
 
     def resultat(self, i: int, j: int) -> int:
@@ -195,7 +209,9 @@ class JeuDeLaVie(object):
             if self.meurt(nb_voisins):
                 # On met à jour la valeur dans le faux tableau
                 return 0
+            # Sinon
             else:
+                # On retourne la valeur de (i;j)
                 return 1
         # si la cellule == 0 (morte)
         else:
@@ -203,7 +219,9 @@ class JeuDeLaVie(object):
             if self.nait(nb_voisins):
                 # On met à jour la valeur dans le faux tableau
                 return 1
+            # Sinon
             else:
+                # On retourne la valeur de (i;j)
                 return 0
 
     def tour(self) -> None:
@@ -217,6 +235,7 @@ class JeuDeLaVie(object):
         """
         # On copie le tableau pour pouvoir geler le vrai pour faire les modifs
         self.tableau_precedent = copie(self.tableau)
+        # On déclare tableau comme une copie de l'attribut tableau (gèle)
         tableau = copie(self.tableau)
 
         # on itère dans les lignes
@@ -225,6 +244,7 @@ class JeuDeLaVie(object):
             for j in range(len(self.tableau[i])):
                 tableau[i][j] = self.resultat(i, j)
         
+        # On attribut le tableau gelé au vrai tableau
         self.tableau = tableau
 
     def arret_automatique(self) -> bool:
@@ -272,8 +292,8 @@ class JeuDeLaVie(object):
         self.affiche_complexe()
 
 
-if __name__ == "__main__" and __package__ is None:
-    __package__ = ""
+# Si le présent fichier est executé avec python 3.10 ou plus
+if __name__ == "__main__" and version_info >= (3, 10):
     # variable test
     jeu = JeuDeLaVie([
         [0,0,0,0,0,0,0,0,0,0],
@@ -288,6 +308,5 @@ if __name__ == "__main__" and __package__ is None:
         [0,0,0,0,0,0,0,0,0,0]
         ])
 
-
     # lance le jeu de la vie pour 50 cycle de 0.3 seconde
-    # jeu.run(50, 0.3)
+    jeu.run(50, 0.3)

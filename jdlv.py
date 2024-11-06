@@ -225,9 +225,9 @@ class JeuDeLaVie(object):
             for j in range(len(self.tableau[i])):
                 tableau[i][j] = self.resultat(i, j)
         
-        self.tableau = tableau   
+        self.tableau = tableau
 
-    def arret_automatique(self):
+    def arret_automatique(self) -> bool:
         """
         Entrée:
             self: JeuDeLaVie

@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QGraphicsScene
-from PySide6.QtCore import QObject
+from PySide6.QtCore import Qt, QObject, QSize, QTimer
 from lib.plateau import construit
 from typing import Any
 from lib.overload import Overload, signature
@@ -26,15 +26,31 @@ class Scene(QGraphicsScene):
         """
         # On initialise la classe mère
         QGraphicsScene.__init__(self, parent)
-
+        
+        # Déclaration de dimension qui représente la dimension du plateau
+        # (w x h)
+        self.dimension = QSize(20, 20)
         # Déclaration d'un attribut auto grandissement
         self.auto_grandissement = True
+        # Déclaration d'un attribut auto stop
+        self.auto_stop = True
+        # Déclaration d'interval
+        self.periode = 0
 
+        # Déclaration d'un chronomètre
+        self.chrono = QTimer(self)
+        # Relie le signal à execute_tour
+        self.chrono.timeout.connect(self.execute_tour)
+        # Chrono moins précis mais moins gourmant en ressources
+        self.chrono.setTimerType(Qt.TimerType.CoarseTimer)
+
+        # Déclaration d'une matrice à l'état n-1
+        self.matrice_precedent: list[list[Cellule]] = []
         # Déclaration d'une matrice vide
         self.matrice: list[list[Cellule]] = []
         # On construit le plateau de jeu d'après les attributs de la fenêtre
         self.set_plateau(
-            parent.dimension.height(), parent.dimension.width(), Etat.Mort)
+            self.dimension.height(), self.dimension.width(), Etat.Mort)
     
     def vide_scene(self) -> None:
         """
@@ -101,9 +117,9 @@ class Scene(QGraphicsScene):
             vaut vivant, son état sera Vivant, sinon Mort.
         """
         # Redéfinit la hateur du plateau
-        self.parent().dimension.setHeight(len(matrice))
+        self.dimension.setHeight(len(matrice))
         # Redéfinit la largeur du plateau
-        self.parent().dimension.setWidth(len(matrice[0]))
+        self.dimension.setWidth(len(matrice[0]))
         # Enlève toutes les cellules de la scène
         self.vide_scene()
         # Déclaration d'une matrice vide
@@ -294,7 +310,7 @@ class Scene(QGraphicsScene):
         # Déclaration de variable d'arrêt et initialisation à False
         stop = False
         # Pour chaque cellule de la première ligne
-        while not (i >= self.parent().dimension.width() or stop):
+        while not (i >= self.dimension.width() or stop):
             # Si la cellule est vivante
             if self.matrice[0][i].get_etat() is Etat.Vivant:
                 # On arrête la boucle
@@ -309,9 +325,9 @@ class Scene(QGraphicsScene):
         # Initialisation de stop à False
         stop = False
         # On cherche l'indice de la dernière ligne
-        derniere_ligne = self.parent().dimension.height() - 1
+        derniere_ligne = self.dimension.height() - 1
         # Pour chaque cellule de la dernière ligne
-        while not (i >= self.parent().dimension.width() or stop):
+        while not (i >= self.dimension.width() or stop):
             # Si la cellule est vivante
             if self.matrice[derniere_ligne][i].get_etat() is Etat.Vivant:
                 # On arrête la boucle
@@ -326,7 +342,7 @@ class Scene(QGraphicsScene):
         # Initialisation de stop à False
         stop = False
         # Pour chaque ligne
-        while not (i >= self.parent().dimension.height() or stop):
+        while not (i >= self.dimension.height() or stop):
             # Si la dernière cellule est vivante
             if self.matrice[i][0].get_etat() is Etat.Vivant:
                 # On arrête la boucle
@@ -341,9 +357,9 @@ class Scene(QGraphicsScene):
         # Initialisation de stop à False
         stop = False
         # On cherche l'indice de la dernière colonne
-        derniere_colonne = self.parent().dimension.width() - 1
+        derniere_colonne = self.dimension.width() - 1
         # Pour chaque ligne
-        while not (i >= self.parent().dimension.height() or stop):
+        while not (i >= self.dimension.height() or stop):
             # Si la dernière cellule est vivante
             if self.matrice[i][derniere_colonne].get_etat() is Etat.Vivant:
                 # On arrête la boucle
@@ -375,7 +391,7 @@ class Scene(QGraphicsScene):
             # On ajoute une ligne à l'indice 0 (déplace les éléments)
             self.matrice.insert(0, [])
             # Pour chaque colonne
-            for i in range(self.parent().dimension.width()):
+            for i in range(self.dimension.width()):
                 # On créer une cellule
                 temp = Cellule()
                 # On ajuste sa position (w x h)
@@ -388,9 +404,7 @@ class Scene(QGraphicsScene):
                 self.addItem(temp)
 
             # On ajuste la dimension de la matrice
-            self.parent().dimension.setHeight(
-                self.parent().dimension.height() + 1
-            )
+            self.dimension.setHeight(self.dimension.height() + 1)
         # Si la direction est Sud
         elif direction is Direction.Sud:
             # Déclaration de abscisse
@@ -400,7 +414,7 @@ class Scene(QGraphicsScene):
             # On ajoute une ligne à la fin de la matrice
             self.matrice.append([])
             # Pour chaque colonne
-            for i in range(self.parent().dimension.width()):
+            for i in range(self.dimension.width()):
                 # On créer une cellule
                 temp = Cellule()
                 # On ajuste sa position (w x h)
@@ -413,9 +427,7 @@ class Scene(QGraphicsScene):
                 self.addItem(temp)
 
             # On ajuste la dimension de la matrice
-            self.parent().dimension.setHeight(
-                self.parent().dimension.height() + 1
-            )
+            self.dimension.setHeight(self.dimension.height() + 1)
         # Si la direction est Est
         elif direction is Direction.Est:
             # Déclaration de ordonnée
@@ -423,7 +435,7 @@ class Scene(QGraphicsScene):
             # Déclaration de abscisse
             abscisse = self.matrice[0][-1].pos().x() + 50
             # Pour chaque ligne
-            for i in range(self.parent().dimension.height()):
+            for i in range(self.dimension.height()):
                 # On créer une cellule
                 temp = Cellule()
                 # On ajuste sa position (w x h)
@@ -436,9 +448,7 @@ class Scene(QGraphicsScene):
                 self.addItem(temp)
 
             # On ajuste la dimension de la matrice
-            self.parent().dimension.setWidth(
-                self.parent().dimension.width() + 1
-            )
+            self.dimension.setWidth(self.dimension.width() + 1)
         # Si la direction est Ouest
         elif direction is Direction.Ouest:
             # Déclaration de ordonnée
@@ -446,7 +456,7 @@ class Scene(QGraphicsScene):
             # Déclaration de abscisse
             abscisse = self.matrice[0][0].pos().x() - 50
             # Pour chaque ligne
-            for i in range(self.parent().dimension.height()):
+            for i in range(self.dimension.height()):
                 # On créer une cellule
                 temp = Cellule()
                 # On ajuste sa position (w x h)
@@ -459,9 +469,19 @@ class Scene(QGraphicsScene):
                 self.addItem(temp)
 
             # On ajuste la dimension de la matrice
-            self.parent().dimension.setWidth(
-                self.parent().dimension.width() + 1
-            )
+            self.dimension.setWidth(self.dimension.width() + 1)
+
+    def arret_automatique(self) -> bool:
+        """
+        Entrée:
+            self: Scene
+        Sortie:
+            bool
+        Rôle:
+            vérifie si deux tour de suite sont identique
+        """
+        # retourne True si le tableau n'a pas changé entre deux cycles
+        return self.matrice_precedent == self.matrice
     
     def tour(self) -> None:
         """
@@ -474,10 +494,7 @@ class Scene(QGraphicsScene):
         """
         # On créer un tableau qui ne contient que les états.
         tableau_etat = construit(
-            self.parent().dimension.height(),
-            self.parent().dimension.width(),
-            Etat.Mort
-        )
+            self.dimension.height(), self.dimension.width(), Etat.Mort)
         
         # On calcul l'état de chaque cellule
         # on itère dans les lignes
@@ -511,3 +528,20 @@ class Scene(QGraphicsScene):
                 for d in direction:
                     # Extension de la matrice vers la direction d
                     self.extension(d)
+        
+        if self.auto_stop and self.arret_automatique():
+            self.parent().stop_anim()
+    
+    def execute_tour(self) -> None:
+        """
+        Entrées:
+            self: Scene
+        Sortie:
+            None (modification en place)
+        Rôle:
+            Execute un tour
+        """
+        # Mise à jour de l'interval de temps
+        self.chrono.setInterval(self.periode)
+        # Execute un tour
+        self.tour()

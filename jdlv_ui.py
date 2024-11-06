@@ -39,7 +39,7 @@ from PySide6.QtWidgets import QMainWindow, QApplication, QGraphicsView, \
 # Importe les classes utilisées depuis PySide6.QtGui
 from PySide6.QtGui import QIcon, QAction, QKeySequence
 # Importe les classes utilisées depuis PySide6.QtCore
-from PySide6.QtCore import Qt, QSize, QTimer,  QDir
+from PySide6.QtCore import Qt, QTimer,  QDir
 # Importe reader depuis le module csv
 from csv import reader
 # Importe argv, version_info depuis le module sys
@@ -71,22 +71,13 @@ class JeuDeLaVieApp(QMainWindow):
 
         # Attributs
         
-        # Déclaration de dimension qui représente la dimension du plateau
-        # (w x h)
         # Déclaration de chemin_absolu pour accéder aux ressources (svg, ...)
         self.chemin_absolu = __file__[:-len(basename(__file__))]
-        self.dimension = QSize(20, 20)
         # Déclaration d'un booléan est_fichier_ouvert
         self.est_fichier_ouvert: bool = False
         self.fichier: str = ""
         # Déclaration d'un attribut nb_cycle
         self.nb_cycle: int = 0
-        # Déclaration d'un chronomètre
-        self.chrono = QTimer(self)
-        # Relie le signal à execute_tour
-        self.chrono.timeout.connect(self.execute_tour)
-        # Chrono moins précis mais moins gourmant en ressources
-        self.chrono.setTimerType(Qt.TimerType.CoarseTimer)
 
         # Fenêtre
 
@@ -235,6 +226,8 @@ class JeuDeLaVieApp(QMainWindow):
         self.periode_entree.setSuffix(" sec")
         # On définit la largeur minimal de periode_entree
         self.periode_entree.setMinimumWidth(120)
+        # Relie le signal à la méthode set_periode
+        self.periode_entree.valueChanged.connect(self.set_periode)
         # Ajoute periode_label dans la cellule (0;0) du layout
         self.periode_layout.addWidget(self.periode_label, 0, 0)
         # Ajoute periode_entree dans la cellule (0;1) du layout
@@ -259,9 +252,21 @@ class JeuDeLaVieApp(QMainWindow):
         self.auto_grandissement_entree.setCheckState(Qt.CheckState.Checked)
         # Relie le signal à la fonction set_auto_grandissement
         self.auto_grandissement_entree.checkStateChanged.connect(
-            self.set_auto_grandissement)
+            self.set_auto_stop)
         # On ajoute la case à cocher au layout
         self.menu_layout.addWidget(self.auto_grandissement_entree)
+
+        # Déclaration d'une case à cocher
+        self.auto_stop_entree = QCheckBox(self)
+        # Définition du texte de la case à cocher
+        self.auto_stop_entree.setText("Auto grandissement")
+        # On définit son état sur coché
+        self.auto_stop_entree.setCheckState(Qt.CheckState.Checked)
+        # Relie le signal à la fonction set_auto_grandissement
+        self.auto_stop_entree.checkStateChanged.connect(
+            self.set_auto_stop)
+        # On ajoute la case à cocher au layout
+        self.menu_layout.addWidget(self.auto_stop_entree)
 
         # Déclaration d'un layout horizontal
         self.zoom = QGridLayout()
@@ -297,6 +302,9 @@ class JeuDeLaVieApp(QMainWindow):
         Intéragir avec les cellule (mode edition et simulation)
         Augmenter le nombre de cellule (pour dessiner un truc plus gros)
         """
+
+        # Initialisation de toutes les variables reliées aux champs d'entrées
+        self.scene.periode = int(self.periode_entree.value() * 1000)
 
         # Affiche la fenêtre
         self.show()
@@ -439,7 +447,7 @@ class JeuDeLaVieApp(QMainWindow):
                     QMessageBox.StandardButton.Ok, 
                     QMessageBox.StandardButton.Ok)
     
-    def set_auto_grandissement(self, etat: Qt.CheckState) -> None:
+    def set_auto_stop(self, etat: Qt.CheckState) -> None:
         """
         Entrées:
             self: JeuDeLaVieApp
@@ -455,6 +463,35 @@ class JeuDeLaVieApp(QMainWindow):
         # bool(0) -> False, bool(1) -> True
         # Attribut une nouvelle valeur à auto_grandissement
         self.scene.auto_grandissement = bool(etat.value)
+    
+    def set_auto_stop(self, etat: Qt.CheckState) -> None:
+        """
+        Entrées:
+            self: JeuDeLaVieApp
+            etat: Qt.CheckState
+        Sortie:
+            None (modification en place)
+        Rôle:
+            Redéfinit la valeur de auto_stop selon etat
+        """
+        # | etat             | etat.value
+        # | Unchecked        | 0
+        # | Checked          | 2
+        # bool(0) -> False, bool(1) -> True
+        # Attribut une nouvelle valeur à auto_grandissement
+        self.scene.auto_grandissement = bool(etat.value)
+    
+    def set_periode(self, valeur: float) -> None:
+        """
+        Entrées:
+            self: JeuDeLaVieApp
+            valeur: double
+        Sortie:
+            None (modification en place)
+        Rôle:
+            
+        """
+        self.scene.periode = int(valeur * 1000)
     
     def lance_anim(self) -> None:
         """
@@ -474,23 +511,9 @@ class JeuDeLaVieApp(QMainWindow):
         self.periode_entree.clearFocus()
 
         # Démarre le chrono pour un temps indéterminé
-        self.chrono.start()
+        self.scene.chrono.start()
         # Executre le premier tour
-        self.execute_tour()
-    
-    def execute_tour(self) -> None:
-        """
-        Entrées:
-            self: JeuDeLaVieApp
-        Sortie:
-            None (modification en place)
-        Rôle:
-            Execute un tour
-        """
-        # Mise à jour de l'interval de temps
-        self.chrono.setInterval(int(self.periode_entree.value() * 1000))
-        # Execute un tour
-        self.scene.tour()
+        self.scene.execute_tour()
 
     def stop_anim(self):
         """
@@ -502,7 +525,7 @@ class JeuDeLaVieApp(QMainWindow):
             Pause l'animation
         """
         # Arrête le chrono
-        self.chrono.stop()
+        self.scene.chrono.stop()
         # active le bouton play
         self.play.setEnabled(True)
         # désactive le bouton pause

@@ -45,7 +45,8 @@ from csv import reader
 # Importe argv, version_info depuis le module sys
 from sys import argv, version_info
 # Importe toutes les fonctions du module lib
-from lib import *
+from lib.plateau import est_template_valide
+from lib.jdlv_additions import Scene
 # Importe basename depuis le module os.path
 from os.path import basename
 

@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QGraphicsRectItem
 from PySide6.QtGui import QPen, QBrush
 from PySide6.QtCore import Qt, QObject
 from lib.constantes import Etat
+from copy import deepcopy
 
 
 class Cellule(QGraphicsRectItem):
@@ -83,3 +84,18 @@ class Cellule(QGraphicsRectItem):
         else:
             # Retourne □
             return "□"
+    
+    def __deepcopy__(self, memo):
+        """
+        P.S.:
+            https://stackoverflow.com/questions/1500718/how-to-override-the-copy-deepcopy-operations-for-a-python-object
+        """
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result
+
+    def __eq__(self, valeur: object) -> bool:
+        return self.etat == valeur.etat

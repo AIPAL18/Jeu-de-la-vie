@@ -4,8 +4,8 @@ from lib.plateau import construit
 from typing import Any
 from lib.overload import Overload, signature
 from lib.constantes import Etat, Direction
-from lib.plateau import copie
 from .cellule import Cellule
+from copy import deepcopy
 
 
 class Scene(QGraphicsScene):
@@ -107,7 +107,7 @@ class Scene(QGraphicsScene):
                 self.addItem(temp)
         
         # Copie la matrice dans matrice_precedent
-        self.matrice_precedent = copie(self.matrice)
+        self.matrice_precedent = deepcopy(self.matrice)
 
     @set_plateau.overload  # On surcharge la méthode set_plateau
     @signature("list", "object")  # On précise sa signature
@@ -156,7 +156,7 @@ class Scene(QGraphicsScene):
                 self.addItem(temp)
         
         # Copie la matrice dans matrice_precedent
-        self.matrice_precedent = copie(self.matrice)
+        self.matrice_precedent = deepcopy(self.matrice)
 
     def get_plateau(self, vivant: Any, mort: Any) -> list[list[Any]]:
         """
@@ -505,9 +505,8 @@ class Scene(QGraphicsScene):
         """
         # Si l'auto stop est activé
         if self.auto_stop:
-            print(self.matrice_precedent)
             # Copie la matrice dans matrice_precedent
-            self.matrice_precedent = copie(self.matrice)
+            self.matrice_precedent = deepcopy(self.matrice)
 
         # On créer un tableau qui ne contient que les états.
         tableau_etat = construit(

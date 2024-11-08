@@ -65,3 +65,21 @@ class Cellule(QGraphicsRectItem):
         """
         # On retourne la valeur de l'attribut est_vivant
         return self.etat
+    
+    def __repr__(self) -> str:
+        """
+        Entrée:
+            self: Cellule
+        Sortie:
+            str
+        Rôle:
+            Méthode magique __repr__, représentation.
+        """
+        # Si la cellule est vivante
+        if self.etat is Etat.Vivant:
+            # Retourne ■
+            return "■"
+        # Sinon
+        else:
+            # Retourne □
+            return "□"

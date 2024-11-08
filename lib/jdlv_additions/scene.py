@@ -505,6 +505,7 @@ class Scene(QGraphicsScene):
         """
         # Si l'auto stop est activé
         if self.auto_stop:
+            print(self.matrice_precedent)
             # Copie la matrice dans matrice_precedent
             self.matrice_precedent = copie(self.matrice)
 

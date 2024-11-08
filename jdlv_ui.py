@@ -44,8 +44,9 @@ from PySide6.QtCore import Qt, QSize,  QDir
 from csv import reader
 # Importe argv, version_info depuis le module sys
 from sys import argv, version_info
-# Importe toutes les fonctions du module lib
+# Importe est_template_valide du module plateau de lib
 from lib.plateau import est_template_valide
+# Importe Scene du module plateau de lib
 from lib.jdlv_additions import Scene
 # Importe basename depuis le module os.path
 from os.path import basename

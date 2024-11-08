@@ -152,7 +152,7 @@ class JeuDeLaVieApp(QMainWindow):
         # Fonctionnement -> https://doc.qt.io/qt-6/graphicsview.html
         self.vue.setScene(self.scene)
         # On définit l'échelle (fonctionne par pourcentage d'agrandissement)
-        self.vue.scale(0.2, 0.2)
+        self.vue.scale(0.5, 0.5)
         # On ajoute la vue au layout principal
         self.affichage.addWidget(self.vue)
 

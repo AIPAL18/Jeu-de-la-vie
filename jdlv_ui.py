@@ -300,8 +300,6 @@ class JeuDeLaVieApp(QMainWindow):
         self.affichage.addLayout(self.menu_layout)
 
         """
-        Stop la boucle automatiquement en cas de non changement
-        Intéragir avec les cellule (mode edition et simulation)
         Augmenter le nombre de cellule (pour dessiner un truc plus gros)
         """
 

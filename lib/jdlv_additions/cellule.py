@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QGraphicsRectItem
+from PySide6.QtWidgets import QGraphicsRectItem, QGraphicsSceneMouseEvent
 from PySide6.QtGui import QPen, QBrush
 from PySide6.QtCore import Qt, QObject
 from lib.constantes import Etat
@@ -12,7 +12,8 @@ class Cellule(QGraphicsRectItem):
     Rôle:
         Représente une cellule
     """
-    def __init__(self, parent: QObject = None) -> None:
+    def __init__(self, parent: QObject = None, etat: Etat = Etat.Vivant)\
+        -> None:
         """
         Entrée:
             self: Cellule
@@ -24,16 +25,53 @@ class Cellule(QGraphicsRectItem):
         """
         # Initialise la classe mère
         QGraphicsRectItem.__init__(self, parent)
-
-        # Déclare l'attribut etat est l'initialise à Mort
-        self.etat: Etat = Etat.Mort
-        # Définit la couleur du contour
-        self.setPen(QPen(Qt.GlobalColor.white))
-        # Définit la couleur de remplissage
-        self.setBrush(QBrush(Qt.GlobalColor.white))
+        # on définit l'état 
+        self.etat = etat
+        # On peint la cellule en fonction de l'état
+        self.peint()
         # Définit le rectangle d'affichage (x, y, w, h)
         self.setRect(0, 0, 50, 50)
     
+    def peint(self) -> None:
+        """
+        Entrée:
+            self: Cellule
+        Sortie:
+            None (modification en place)
+        Rôle:
+            Définit la couleur de la couleur
+        """
+        # Si la cellule est vivante
+        if self.etat is Etat.Vivant:
+            # Définit la couleur du contour
+            self.setPen(QPen(Qt.GlobalColor.black))
+            # On remplit en noir
+            self.setBrush(QBrush(Qt.GlobalColor.black))
+        # si la cellule est morte
+        else:
+            # Définit la couleur du contour
+            self.setPen(QPen(Qt.GlobalColor.white))
+            # On remplit en blanc
+            self.setBrush(QBrush(Qt.GlobalColor.white))
+
+    def mousePressEvent(self, even: QGraphicsSceneMouseEvent) -> None:
+        """
+        Rééimplémentation de mousePressEvent hérité de QGraphicsRectItem
+        Entrées:
+            self: Cellule
+            even: QGraphicsSceneMouseEvent (évenement)
+        Sortie:
+            None (modification en place)
+        Rôle:
+            Détecte les évenements de pression de souris sur la cellule.
+        """
+        # Inverse l'état de la cellule
+        self.etat = Etat(not self.etat.value)
+        # On peint la cellule en fonction de l'état
+        self.peint()
+
+        return super().mousePressEvent(even)
+
     def set_etat(self, etat: Etat) -> None:
         """
         Entrées:
@@ -46,15 +84,9 @@ class Cellule(QGraphicsRectItem):
         """
         # On met à jour l'attribut est_vivant
         self.etat = etat
-        # Si la cellule est vivante
-        if self.etat is Etat.Vivant:
-            # On remplit en noir
-            self.setBrush(QBrush(Qt.GlobalColor.black))
-        # si la cellule est morte
-        else:
-            # On remplit en blanc
-            self.setBrush(QBrush(Qt.GlobalColor.white))
-    
+        # On peint la cellule en fonction de l'état
+        self.peint()
+
     def get_etat(self) -> Etat:
         """
         Entrée:

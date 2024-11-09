@@ -1,8 +1,15 @@
+# Importe les classes utilisées du module PySide6.QtWidgets
 from PySide6.QtWidgets import QGraphicsRectItem, QGraphicsSceneMouseEvent
+# Importe les classes utilisées du module PySide6.QtGui
 from PySide6.QtGui import QPen, QBrush
+# Importe les classes utilisées du module PySide6.QtCore
 from PySide6.QtCore import Qt, QObject
-from lib.constantes import Etat
+# Importe Etat depuis dependances.constantes
+from dependances.constantes import Etat
+# Importe deepcopy depuis copy
 from copy import deepcopy
+# Importe Any depuis typing
+from typing import Any
 
 
 class Cellule(QGraphicsRectItem):
@@ -31,6 +38,9 @@ class Cellule(QGraphicsRectItem):
         self.peint()
         # Définit le rectangle d'affichage (x, y, w, h)
         self.setRect(0, 0, 50, 50)
+        # Définit la couleur et taille du contour sur transparent et 0
+        # car le contour agrandit le rectangle
+        self.setPen(QPen(Qt.GlobalColor.transparent, 0))
     
     def peint(self) -> None:
         """
@@ -43,14 +53,10 @@ class Cellule(QGraphicsRectItem):
         """
         # Si la cellule est vivante
         if self.etat is Etat.Vivant:
-            # Définit la couleur du contour
-            self.setPen(QPen(Qt.GlobalColor.black))
             # On remplit en noir
             self.setBrush(QBrush(Qt.GlobalColor.black))
         # si la cellule est morte
         else:
-            # Définit la couleur du contour
-            self.setPen(QPen(Qt.GlobalColor.white))
             # On remplit en blanc
             self.setBrush(QBrush(Qt.GlobalColor.white))
 
@@ -65,11 +71,17 @@ class Cellule(QGraphicsRectItem):
         Rôle:
             Détecte les évenements de pression de souris sur la cellule.
         """
-        # Inverse l'état de la cellule
-        self.etat = Etat(not self.etat.value)
+        # Si le click est un click gauche
+        if even.button() is Qt.MouseButton.LeftButton:
+            # Inverse l'état de la cellule
+            self.etat = Etat.Vivant
+        elif even.button() is Qt.MouseButton.RightButton:
+            # Inverse l'état de la cellule
+            self.etat = Etat.Mort
         # On peint la cellule en fonction de l'état
         self.peint()
 
+        # On rend l'évenement à la classe mère
         return super().mousePressEvent(even)
 
     def set_etat(self, etat: Etat) -> None:
@@ -92,7 +104,7 @@ class Cellule(QGraphicsRectItem):
         Entrée:
             self: Cellule
         Sortie:
-            bool
+            Etat
         Rôle:
             Retourne l'état de la cellule True -> vivant et False -> mort
         """
@@ -106,28 +118,59 @@ class Cellule(QGraphicsRectItem):
         Sortie:
             str
         Rôle:
-            Méthode magique __repr__, représentation.
+            Méthode magique __repr__, représentation de la cellule en str.
         """
         # Si la cellule est vivante
         if self.etat is Etat.Vivant:
             # Retourne ■
             return "■"
-        # Sinon
+        # Si la cellule est morte
         else:
             # Retourne □
             return "□"
     
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo: dict) -> object:
         """
-        P.S.:
-            https://stackoverflow.com/questions/1500718/how-to-override-the-copy-deepcopy-operations-for-a-python-object
+        Entrées:
+            self: Cellule
+            memo: dict
+        Sortie:
+            object (copie de self)
+        Rôle:
+            Méthode magique du module copy pour effectuer des copies de 
+            l'object.
+        Apostille:
+            Ne connaissant pas le module copy, j'ai utilisé la réponse 
+            suivante : https://stackoverflow.com/a/15774013/15793884
         """
+        # classe de self (Cellule)
         cls = self.__class__
+        # Créer une nouvelle instance de Cellule
         result = cls.__new__(cls)
+        # ajoute au dictionnaire memo le couple identifant du présent object et 
+        # nouvel object
         memo[id(self)] = result
+        # Pour chaque nom d'attribut et sa valeur de self (le présent object)
         for k, v in self.__dict__.items():
+            # On affecte à l'attribut k de result une copie de la valeur de 
+            # l'attribut k
             setattr(result, k, deepcopy(v, memo))
+        
+        # Revoie l'object copié
         return result
 
-    def __eq__(self, valeur: object) -> bool:
-        return self.etat == valeur.etat
+    def __eq__(self, valeur: Any) -> bool:
+        """
+        Entrées:
+            self: Cellule
+            valeur: Any
+        Sortie:
+            bool
+        Rôle:
+            Méthode magique appelée par l'opérateur d'égalité ==. 
+        Explications:
+            Une explication complète du fonctionnement de __eq__ est disponible
+            via le lien suivant: https://stackoverflow.com/a/3588809/15793884
+        """
+        # Retoure True si etat est égal à valeur
+        return self.etat == valeur

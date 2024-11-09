@@ -1,10 +1,10 @@
+# Import Enum depuis enum
 from enum import Enum
 
 
 class Etat(Enum):
     """
     Hérite de:
-        object
         Enum
     Rôle:
         Abstaitiste les états de la cellule pour simplifier la lecture du code
@@ -18,7 +18,6 @@ class Etat(Enum):
 class Direction(Enum):
     """
     Hérite de:
-        object
         Enum
     Rôle:
         Abstaitiste les directions pour simplifier la lecture du code

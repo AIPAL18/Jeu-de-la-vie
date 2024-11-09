@@ -4,8 +4,8 @@ from time import sleep
 from os import system
 # Importe Any depuis typing
 from typing import Any
-# Importe copie depuis lib
-from lib import copie
+# Importe copie depuis dependances.plateau
+from dependances.plateau import copie
 # Importe argv, version_info depuis le module sys
 from sys import version_info
 
@@ -294,7 +294,10 @@ class JeuDeLaVie(object):
 
 # Si le présent fichier est executé avec python 3.10 ou plus
 if __name__ == "__main__" and version_info >= (3, 10):
-    # variable test
+    
+    # Exemple:
+
+    # Déclare jeu en tant qu'instance de JeuDeLaVie 
     jeu = JeuDeLaVie([
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
@@ -308,5 +311,5 @@ if __name__ == "__main__" and version_info >= (3, 10):
         [0,0,0,0,0,0,0,0,0,0]
         ])
 
-    # lance le jeu de la vie pour 50 cycle de 0.3 seconde
+    # lance le jeu de la vie pour 50 cycles de 0.3 seconde
     jeu.run(50, 0.3)

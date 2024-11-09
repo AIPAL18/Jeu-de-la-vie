@@ -1,10 +1,18 @@
-from PySide6.QtWidgets import QGraphicsScene
+# Importe les classes utilisées du module PySide6.QtWidgets
+from PySide6.QtWidgets import QGraphicsScene, QGraphicsSceneMouseEvent
+# Importe les classes utilisées du module PySide6.QtCore
 from PySide6.QtCore import Qt, QObject, QSize, QTimer
-from lib.plateau import construit
+# Importe construit depuis dependances.plateau
+from dependances.plateau import construit
+# Importe Any depuis typing
 from typing import Any
-from lib.overload import Overload, signature
-from lib.constantes import Etat, Direction
+# Importe Overload, signature depuis dependances.overload
+from dependances.overload import Overload, signature
+# Importe Etat, Direction depuis dependances.constantes
+from dependances.constantes import Etat, Direction
+# Importe Cellule depuis cellule
 from .cellule import Cellule
+# Importe deepcopy depuis copy
 from copy import deepcopy
 
 
@@ -158,6 +166,49 @@ class Scene(QGraphicsScene):
         # Copie la matrice dans matrice_precedent
         self.matrice_precedent = deepcopy(self.matrice)
 
+    def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
+        """
+        Rééimplémentation de mouseMoveEvent hérité de QGraphicsScene
+        Entrées:
+            self: Scene
+            even: QGraphicsSceneMouseEvent
+        Sortie:
+            None (modification en place)
+        Rôle:
+            Capture l'évenement QGraphicsSceneMouseEvent, le traite et le rend.
+        """
+        # Abscisse de la souris
+        x = event.scenePos().x()
+        # Ordonnée de la souris
+        y = event.scenePos().y()
+        # Ordonnée du haut de la scène
+        haut = self.sceneRect().top()
+        # Ordonnée du bas de la scène
+        bas = self.sceneRect().bottom()
+        # Abscisse de côté gauche de la scène
+        gauche = self.sceneRect().left()
+        # Abscisse de côté droit de la scène
+        droit = self.sceneRect().right()
+        # Si la souris est dans le rectangle de la scène
+        if gauche <= x < droit and haut <= y < bas:
+            # On calcul l'indice i de la cellule dans la matrice
+            i = int((y - haut) // 50)
+            # On calcul l'indice j de la cellule dans la matrice
+            j = int((x - gauche) // 50)
+            # Si le bouton gauche de la souris est pressé
+            if event.buttons() is Qt.MouseButton.LeftButton:
+                # On définit l'état de la cellule touchée par la souris sur 
+                # Vivant
+                self.matrice[i][j].set_etat(Etat.Vivant)
+            # Si le bouton droit de la souris est pressé
+            elif event.buttons() is Qt.MouseButton.RightButton:
+                # On définit l'état de la cellule touchée par la souris sur 
+                # Mort
+                self.matrice[i][j].set_etat(Etat.Mort)
+        
+        # Rend l'évenement à la classe mère
+        return super().mouseMoveEvent(event)
+
     def get_plateau(self, vivant: Any, mort: Any) -> list[list[Any]]:
         """
         Entrées:
@@ -197,7 +248,7 @@ class Scene(QGraphicsScene):
             i: int
             j: int
         Sortie:
-            Etat
+            bool
         Rôle:
             Retourne True si la cellule est vivante et donc est un voisin 
             potentiel, False sinon.

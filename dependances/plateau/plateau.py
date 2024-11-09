@@ -10,7 +10,7 @@ def copie(matrice: list[list[Any]]) -> list[list[Any]]:
         matrice: list[list[Any]]
     Rôle:
         Retourne la copie mémoire de matrice
-    P.S.:
+    Apostille:
         Pour les listes imbriquées on peut utiliser:
         >>> import copy
         >>> b = copy.deepcopy(a)

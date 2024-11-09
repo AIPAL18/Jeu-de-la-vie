@@ -44,10 +44,10 @@ from PySide6.QtCore import Qt, QSize,  QDir
 from csv import reader
 # Importe argv, version_info depuis le module sys
 from sys import argv, version_info
-# Importe est_template_valide du module plateau de lib
-from lib.plateau import est_template_valide
-# Importe Scene du module plateau de lib
-from lib.jdlv_additions import Scene
+# Importe est_template_valide du module plateau de dependances.plateau
+from dependances.plateau import est_template_valide
+# Importe Scene du module plateau de dependances.jdlv_ui
+from dependances.jdlv_ui import Scene
 # Importe basename depuis le module os.path
 from os.path import basename
 
@@ -299,10 +299,6 @@ class JeuDeLaVieApp(QMainWindow):
         # On ajoute menu_layout au layout principal
         self.affichage.addLayout(self.menu_layout)
 
-        """
-        Augmenter le nombre de cellule (pour dessiner un truc plus gros)
-        """
-
         # Initialisation de toutes les variables reliées aux champs d'entrées
         
         # Initialise auto_grandissement sur l'état de la case à cocher
@@ -315,6 +311,10 @@ class JeuDeLaVieApp(QMainWindow):
 
         # Affiche la fenêtre
         self.show()
+
+        """
+        Status bar (aide)
+        """
 
     def enregistrer(self) -> None:
         """

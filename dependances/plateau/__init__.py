@@ -7,10 +7,24 @@
 ###############################################################################
 
 r"""
-Surcharge selon le Principle de Substitution de Liskov
-======================================================
-Cette librairie dérivée du module pythonlangutil.overload, disponible sur le 
-dépots GitHub https://github.com/ehsan-keshavarzian/pythonlangutil/blob/master/pythonlangutil/overload.py
+Fonction de manipulation de tableau
+===================================
+
+copie
+-----
+Copie une matrice (moins efficace que deepcopy du module copy de python)
+
+construit
+---------
+Construit une matrice de taille désirée avec une valeur par défaut
+
+extention
+---------
+Etend une matrice dans une direction donnée, d'un nombre d'élément donné avec 
+une valeur par défaut
+est_template_valide
+-------------------
+Vérifie la validité d'un template pour faire office de tableau
 """
 
-from .overload import Overload, signature
+from .plateau import copie, construit, extention, est_template_valide

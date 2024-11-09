@@ -1,6 +1,9 @@
 # Dérivé de pythonlangutil.overload
 # https://github.com/ehsan-keshavarzian/pythonlangutil/blob/master/pythonlangutil/overload.py
 
+# Importe Any depuis typing
+from typing import Any
+
 
 def signature(*types) -> callable:
     """
@@ -11,7 +14,7 @@ def signature(*types) -> callable:
     Rôle:
         Retourne la fonction dont signature est un décorateur avec une 
         propriété signature qui est un tuple des types
-    P.S.:
+    Apostille:
         Mes excuses pour les explications et commentaires, mais le code n'étant 
         pas le mien, non commenté et parfois hors de ma porté, il a été 
         complexe à comprendre. La notion de décoration en python n'est déjà pas
@@ -55,7 +58,7 @@ def signature(*types) -> callable:
     return func
 
 
-def get_inherited_signature(obj, sig: tuple = ()) -> tuple[str]:
+def get_signature_complete(obj, sig: tuple = ()) -> tuple[str]:
     """
     Entrées:
         obj: Any
@@ -74,7 +77,7 @@ def get_inherited_signature(obj, sig: tuple = ()) -> tuple[str]:
         Le but de cette fonction est de savoir de quelleS classeS hérite obj.
         Plus obj est abstrait, plus sont arbre de signature sera grand.
         L'arbre ne possède qu'une dimension pour facilité son traitement.
-    P.S.:
+    Apostille:
         Cette fonction est la raison pour laquelle j'ai recodé ce module.
         Ce dernier ne permet pas de faire de surcharge 'intelligente'.
         Il est évident les parmatères suivants de type:
@@ -91,7 +94,7 @@ def get_inherited_signature(obj, sig: tuple = ()) -> tuple[str]:
         # on attribut le singleton du nom de la classe d'obj à sig
         sig = (obj.__name__,)
         # On retourne get_inherited_signature(obj, sig)
-        return get_inherited_signature(obj, sig)
+        return get_signature_complete(obj, sig)
     # Si obj est object
     elif obj.__name__ == object.__name__:
         # On retourne la signature complète plus object
@@ -111,14 +114,14 @@ def get_inherited_signature(obj, sig: tuple = ()) -> tuple[str]:
                 # Sinon
                 else:
                     # on ajoute l'arbre de signature du parent 
-                    sig += get_inherited_signature(par, (par.__name__,))
+                    sig += get_signature_complete(par, (par.__name__,))
             # On retourne l'arbre de signature de obj
             return sig
         # Si sig n'a qu'un parent directe
         else:
             # On retourne sig plus son type plus son arbre de signature
             return sig  + (obj.__name__,) + (
-                get_inherited_signature(parent_sig, sig),)
+                get_signature_complete(parent_sig, sig),)
 
 
 class Overload(object):
@@ -141,7 +144,7 @@ class Overload(object):
         0.4  # float
         >>> double(5)  # 5 est de type int
         10  # int
-    P.S.:
+    Apostille:
         Overload est dérivée, comme signature, de pythonlangutil.overload donc
         les variables sont en englais.
     """
@@ -167,18 +170,18 @@ class Overload(object):
         # On ajoute la signature de la méthode à signatures
         self.signatures.append(func.signature)
         
-    def __get__(self, owner, ownerType=None):
+    def __get__(self, owner: object | None, ownerType: Any = None) -> object:
         """
         Entrée:
             self: Overload
-            owner: ?
-            owerType: ?
+            owner: object | None
+            owerType: None | Any
         Sortie:
             Overload
         Rôle:
             Retourne l'objet Overload et définit l'attribut owner.
         Description:
-           https://python-reference.readthedocs.io/en/latest/docs/dunderdsc/get.html
+    https://python-reference.readthedocs.io/en/latest/docs/dunderdsc/get.html
         """
         # owner n'est pas définit, self.owner = self, sinon, self.owner = owner
         self.owner = owner or self
@@ -191,7 +194,7 @@ class Overload(object):
         Entrée:
             self: Overload
             args: Any  (arguments passés à la fonction surchargée)
-            kwargs: Any(couples (clé;argument) passés à la fonction surchargée)
+            kwargs: Any (couples (clé;arg) passés à la fonction surchargée)
         Sortie:
             Résultat de la fonction surchargé qui correspond à la signature des 
             arguments passés en paramètre.
@@ -223,11 +226,11 @@ class Overload(object):
             # Pour chaque argument sans clé
             for arg in args:
                 # On ajoute l'arbre d'héritage des arguments sans clé
-                inherited_signature.append(get_inherited_signature(arg))
+                inherited_signature.append(get_signature_complete(arg))
             # Pour chaque clé (_), argument (v)
             for _, v in kwargs:
                 # On ajoute l'arbre d'héritage des arguments qui ont une clé
-                signature.append(get_inherited_signature(v))
+                signature.append(get_signature_complete(v))
             
             # signature éligibles
             sig_eligibles = []
@@ -285,7 +288,7 @@ class Overload(object):
             Overload
         Rôle:
             Ajoute une nouvelle surcharge
-        Précision:
+        Explications:
             Faire:
             >>> @Overload
             >>> @signature(int)

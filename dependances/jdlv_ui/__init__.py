@@ -7,8 +7,10 @@
 ###############################################################################
 
 r"""
-JDLV Additions
-==============
+JDLV UI
+=======
+Dépendences de jeu_de_la_vie_ui
+
 Cellule
 -------
 Représente une cellule du jeu de la vie

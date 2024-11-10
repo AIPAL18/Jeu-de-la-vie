@@ -35,11 +35,11 @@ if not util.find_spec("PySide6"):
 # Importe les classes utilisées depuis PySide6.QtWidgets
 from PySide6.QtWidgets import QMainWindow, QApplication, QGraphicsView, \
     QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QDoubleSpinBox, QLabel, \
-    QGridLayout, QCheckBox, QFileDialog, QMessageBox
+    QGridLayout, QCheckBox, QFileDialog, QMessageBox, QFrame, QSizePolicy
 # Importe les classes utilisées depuis PySide6.QtGui
-from PySide6.QtGui import QIcon, QAction, QKeySequence
+from PySide6.QtGui import QIcon, QAction, QKeySequence, QStatusTipEvent
 # Importe les classes utilisées depuis PySide6.QtCore
-from PySide6.QtCore import Qt, QSize,  QDir
+from PySide6.QtCore import Qt, QSize,  QDir, QEvent
 # Importe reader depuis le module csv
 from csv import reader
 # Importe argv, version_info depuis le module sys
@@ -148,6 +148,11 @@ class JeuDeLaVieApp(QMainWindow):
         self.scene = Scene(self, QSize(10, 10))
         # On créer une vue
         self.vue = QGraphicsView(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.vue.setStatusTip(
+            "Scène du jeu de la vie. Vous pouvez zommer, vous y déplacer et " + 
+            "modifier l'état des cellules en cliquant dessus")
+        self.vue.enterEvent
         # On dit à la vue quelle scène afficher
         # Fonctionnement -> https://doc.qt.io/qt-6/graphicsview.html
         self.vue.setScene(self.scene)
@@ -156,25 +161,45 @@ class JeuDeLaVieApp(QMainWindow):
         # On ajoute la vue au layout principal
         self.affichage.addWidget(self.vue)
 
-        # Menu
+        # Bar d'outils
 
-        # Déclaration d'un layout vertical menu_layout, layout ≃ div en html
-        self.menu_layout = QVBoxLayout()
+        # Déclaration d'un layout vertical outils_layout, layout ≃ div en html
+        self.outils_layout = QVBoxLayout()
         # On définit les options d'alignement du layout
-        self.menu_layout.setAlignment(
+        self.outils_layout.setAlignment(
             Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+        # On ajoute outils_layout au layout principal
+        self.affichage.addLayout(self.outils_layout)
 
         # Déclaration d'un label
         self.affichage_cycle = QLabel(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.affichage_cycle.setStatusTip("Compte le nombre de cycle effectué")
         # Modifie le texe du label
         self.affichage_cycle.setText("Cycle n°" + str(self.nb_cycle))
+        # Définit l'alignement du texte
+        self.affichage_cycle.setAlignment(Qt.AlignmentFlag.AlignRight)
         # Ajoute le label dans le layout
-        self.menu_layout.addWidget(self.affichage_cycle)
+        self.outils_layout.addWidget(self.affichage_cycle)
+        # On ajoute un peu d'espace entre le haut de la fenêtre et les boutons
+        self.outils_layout.addSpacing(20)
         
+        # Déclaration d'un label
+        self.controles_titre = QLabel(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.controles_titre.setStatusTip("Contrôle du jeu de l'animation.")
+        # Définitons du texte du label
+        self.controles_titre.setText("Contrôles :")
+        # Définition du style du texte et de sa taille
+        self.controles_titre.setStyleSheet("font-style: bold; font-size: 11pt;")
+        # Ajoute le titre à outils_layout
+        self.outils_layout.addWidget(self.controles_titre)
         # Déclaration d'un layout horizontal play/pause
         self.controles_layout = QHBoxLayout()
         # Déclaration d'un bouton play
         self.play = QPushButton(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.play.setStatusTip("Joue l'animation.")
         # Définition de l'icone de play
         icone_play = QIcon(self.chemin_absolu + 
                            "assets\\icones\\play-button.svg")
@@ -190,6 +215,8 @@ class JeuDeLaVieApp(QMainWindow):
         self.controles_layout.addWidget(self.play)
         # Déclaration d'un bouton pause
         self.pause = QPushButton(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.pause.setStatusTip("Pause l'animation")
         # Définition de l'icone de pause
         icone_pause = QIcon(self.chemin_absolu + 
                             "assets\\icones\\pause-button.svg")
@@ -205,19 +232,35 @@ class JeuDeLaVieApp(QMainWindow):
         self.pause.adjustSize()
         # On ajoute pause à controles_layout
         self.controles_layout.addWidget(self.pause)
-        # On ajoute un peu d'espace entre le haut de la fenêtre et les boutons
-        self.menu_layout.addSpacing(20)
-        # On ajoute controles_layout à menu_layout
-        self.menu_layout.addLayout(self.controles_layout)
+        # On ajoute controles_layout à outils_layout
+        self.outils_layout.addLayout(self.controles_layout)
+        
+        # Déclaration du bouton tour par tour
+        self.tour_par_tour = QPushButton(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.tour_par_tour.setStatusTip("Exécute un tour de l'animation")
+        # On définit le texte à afficher
+        self.tour_par_tour.setText("Tour par tour")
+        # Relie le signal à la méthode tour de la scène
+        self.tour_par_tour.clicked.connect(self.scene.tour)
+        # On ajoute tour_par_tour au layout du menu
+        self.outils_layout.addWidget(self.tour_par_tour)
+        # Ajoute de l'espace après
 
         # Déclaration de periode_layout
         self.periode_layout = QGridLayout()
         # Déclaration de periode_label
         self.periode_label = QLabel(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.periode_label.setStatusTip(
+            "La période est la durée d'un cycle de l'animation.")
         # Définition du texte de periode_label
         self.periode_label.setText("Durée d'une période :")
         # Déclaration de periode_entree
         self.periode_entree = QDoubleSpinBox(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.periode_entree.setStatusTip(
+            "Une période trop courte peut causer des ralentissements.")
         # On définit la valeur minimal de periode_entree
         self.periode_entree.setMinimum(0.01)
         # Définition de la valeur de periode_entree
@@ -234,20 +277,26 @@ class JeuDeLaVieApp(QMainWindow):
         self.periode_layout.addWidget(self.periode_label, 0, 0)
         # Ajoute periode_entree dans la cellule (0;1) du layout
         self.periode_layout.addWidget(self.periode_entree, 0, 1)
-        # Ajoute periode_layout à menu_layout
-        self.menu_layout.addLayout(self.periode_layout)
-        
-        # Déclaration du bouton tour par tour
-        self.tour_par_tour = QPushButton(self)
-        # On définit le texte à afficher
-        self.tour_par_tour.setText("Tour par tour")
-        # Relie le signal à la méthode tour de la scène
-        self.tour_par_tour.clicked.connect(self.scene.tour)
-        # On ajoute tour_par_tour au layout du menu
-        self.menu_layout.addWidget(self.tour_par_tour)
+        # Ajoute periode_layout à outils_layout
+        self.outils_layout.addLayout(self.periode_layout)
+        # Ajoute de l'espace après
+        self.outils_layout.addSpacing(7)
+        # Déclaration d'une ligne de séparation
+        self.ligne_post_controles = QFrame(self)
+        # Définition de la forme
+        self.ligne_post_controles.setFrameShape(QFrame.Shape.HLine)
+        # Définiton des ombres
+        self.ligne_post_controles.setFrameShadow(QFrame.Shadow.Sunken)
+        # Ajoute la ligne à outils_layout
+        self.outils_layout.addWidget(self.ligne_post_controles)
+        # Ajoute de l'espace après
+        self.outils_layout.addSpacing(7)
 
         # Déclaration d'une case à cocher
         self.auto_grandissement_entree = QCheckBox(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.auto_grandissement_entree.setStatusTip("Quand est cochée, " + 
+            "agrandit le plateau pour s'adapter à l'animation")
         # Définition du texte de la case à cocher
         self.auto_grandissement_entree.setText("Auto grandissement")
         # On définit son état sur coché
@@ -256,10 +305,14 @@ class JeuDeLaVieApp(QMainWindow):
         self.auto_grandissement_entree.checkStateChanged.connect(
             self.set_auto_grandissement)
         # On ajoute la case à cocher au layout
-        self.menu_layout.addWidget(self.auto_grandissement_entree)
+        self.outils_layout.addWidget(self.auto_grandissement_entree)
 
         # Déclaration d'une case à cocher
         self.auto_stop_entree = QCheckBox(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.auto_stop_entree.setStatusTip(
+            "Quand est cochée, arrête automatiquement l'animation quand il " + 
+            "n'y a plus de changement.")
         # Définition du texte de la case à cocher
         self.auto_stop_entree.setText("Auto stop")
         # On définit son état sur coché
@@ -268,15 +321,37 @@ class JeuDeLaVieApp(QMainWindow):
         self.auto_stop_entree.checkStateChanged.connect(
             self.set_auto_stop)
         # On ajoute la case à cocher au layout
-        self.menu_layout.addWidget(self.auto_stop_entree)
+        self.outils_layout.addWidget(self.auto_stop_entree)
+        # Ajoute de l'espace après
+        self.outils_layout.addSpacing(7)
+        # Déclaration d'une ligne de séparation
+        self.ligne_post_autos = QFrame(self)
+        # Définition de la forme
+        self.ligne_post_autos.setFrameShape(QFrame.Shape.HLine)
+        # Définiton des ombres
+        self.ligne_post_autos.setFrameShadow(QFrame.Shadow.Sunken)
+        # Ajoute la ligne à outils_layout
+        self.outils_layout.addWidget(self.ligne_post_autos)
+        # Ajoute de l'espace après
+        self.outils_layout.addSpacing(7)
 
         # Déclaration d'un layout horizontal
         self.zoom = QGridLayout()
         # Déclaration d'un label zoom
-        self.zoom_label = QLabel("Zoom:")
+        self.zoom_label = QLabel(self)
+        # Définitions du text du label
+        self.zoom_label.setText("Zoom :")
+        # Définition du style du texte et de sa taille
+        self.zoom_label.setStyleSheet("font-style: bold; font-size: 11pt;")
+        # Définition d'un conseil pour l'utilisateur
+        self.zoom_label.setStatusTip("Interface de zoom")
+        # On ajoute zoom_label dans la cellule (0;0) sur un espace de 1 ligne
+        # et 2 colonnes
         self.zoom.addWidget(self.zoom_label, 0, 0, 1, 2)
         # Déclaration d'un bouton z_in (zoom in)
         self.z_in = QPushButton(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.z_in.setStatusTip("Zoom dans la scène")
         # Définition du texte du bouton
         self.z_in.setText("+")
         # Relie le signal à la méthode zoom_in
@@ -285,19 +360,59 @@ class JeuDeLaVieApp(QMainWindow):
         self.zoom.addWidget(self.z_in, 1, 0)
         # Déclaration d'un bouton z_out (zoom out)
         self.z_out = QPushButton(self)
+        # Définition d'un conseil pour l'utilisateur
+        self.z_out.setStatusTip("Dézoom dans la scène")
         # Définition du texte du bouton
         self.z_out.setText("-")
         # Relie le signal à la méthode zoom_out
         self.z_out.clicked.connect(self.zoom_out)
         # On ajoute z_out au layout zoom
         self.zoom.addWidget(self.z_out, 1, 1)
-        # On ajoute un peu d'espace entre tour_par_tour et zoom
-        self.menu_layout.addSpacing(20)
         # On ajoute zoom au layout du menu
-        self.menu_layout.addLayout(self.zoom)
+        self.outils_layout.addLayout(self.zoom)
+        # On ajoute de l'étirement qui à pour effet de prendre le plus de place
+        # possible, ainsi, les prochains éléments seront le plus bas possible
+        self.outils_layout.addStretch()
 
-        # On ajoute menu_layout au layout principal
-        self.affichage.addLayout(self.menu_layout)
+        # Déclaration d'un titre pour bar_info
+        self.bar_info_titre = QLabel(self)
+        # Définition du texte
+        self.bar_info_titre.setText("Vue Info :")
+        # Définition du style du texte et de sa taille
+        self.bar_info_titre.setStyleSheet("font-style: bold; font-size: 11pt;")
+        # Ajoute le titre à outils_layout
+        self.outils_layout.addWidget(self.bar_info_titre)        
+        # Déclaration de bar_info
+        self.bar_info = QLabel(self)
+        # Définit la taille minimum de bar_info en hauteur
+        self.bar_info.setMinimumHeight(175)
+        # On précise les marges du texte
+        self.bar_info.setMargin(10)
+        # Déclaration d'une Politique de taille et d'agrandissement
+        bar_info_policy = QSizePolicy()
+        # Spécifit que les demandes agrandissement sont ignorées
+        # demandes effectuées à cause des marges
+        bar_info_policy.setHorizontalPolicy(QSizePolicy.Policy.Ignored)
+        # Attribution de la politique de taille à bar_info
+        self.bar_info.setSizePolicy(bar_info_policy)
+        # Définiton de l'attribut wordwrap sur True, pour les retous à la ligne
+        self.bar_info.setWordWrap(True)
+        # Précision de l'alignement du texte en haut à gauche
+        self.bar_info.setAlignment(Qt.AlignmentFlag.AlignLeft | 
+                                   Qt.AlignmentFlag.AlignTop)
+        # Définition de la taille du texte
+        self.bar_info.setStyleSheet("font-size: 10.5pt;")
+        # Définition du format du texte comme étant Markdown
+        self.bar_info.setTextFormat(Qt.TextFormat.MarkdownText)
+        # Sélection du style du cadre (classe mère que QLabel)
+        self.bar_info.setFrameStyle(QFrame.Shape.StyledPanel)
+        # Définition du statusTip (Cf méthode event)
+        self.bar_info.setStatusTip(
+            "La *Vue Info* fournit une brève description de l'élément " +
+            "de l'interface utilisateur sur lequel la souris se trouve " + 
+            "actuellement.")
+        # Ajoute bar_info à outils_layout
+        self.outils_layout.addWidget(self.bar_info)
 
         # Initialisation de toutes les variables reliées aux champs d'entrées
         
@@ -311,10 +426,36 @@ class JeuDeLaVieApp(QMainWindow):
 
         # Affiche la fenêtre
         self.show()
-
+    
+    def event(self, even: QEvent) -> bool:
         """
-        Status bar (aide)
+        Réimplémentation de event hérité de QMainWindow
+        Entrées:
+            self: JeuDeLaVieApp
+            even: QEvent (et les classes qui en hérite)
+        Sortie:
+            bool
+        Rôle:
+            Capture les évenements de QMainWindow, les traites, puis les rends.
         """
+        # Si le type de l'évènement est StatusTipEvent
+        if even.type() is QEvent.Type.StatusTip:
+            # On précise le type de l'évènement pour être sûr de pouvoir 
+            # accéder aux méthodes (optionnel)
+            even: QStatusTipEvent = even
+            # Définit le texte de bar_info sur le conseil de l'évènement
+            self.bar_info.setText(even.tip())
+            """
+            Fonctionnement:
+            Chaque objet possédant l'attribut statusTip émet un signal 
+            QStatusTipEvent lorsque la souris le survole. Ce signal comporte un
+            tip, un conseil, concernant le dit objet. Il est par défaut 
+            réceptionné par statusBar de QMainWindow, mais il peut être 
+            intercepté et affiché autre part.
+            """
+        
+        # On rend l'évènement
+        return super().event(even)
 
     def enregistrer(self) -> None:
         """
@@ -346,6 +487,8 @@ class JeuDeLaVieApp(QMainWindow):
                     f.write("\n")
                 # Fermeture du fichier
                 f.close()
+            # On prévient l'utilisateur que le fichier a été enregistré
+            self.event(QStatusTipEvent("Le fichier a été enregistré !"))
         # S'il n'y a pas de fichier ouvert
         else:
             # Appelle la méthode enregistrer_sous

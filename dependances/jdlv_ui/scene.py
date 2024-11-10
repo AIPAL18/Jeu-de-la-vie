@@ -1,7 +1,10 @@
 # Importe les classes utilisées du module PySide6.QtWidgets
-from PySide6.QtWidgets import QGraphicsScene, QGraphicsSceneMouseEvent
+from PySide6.QtWidgets import QGraphicsScene, QWidget, \
+    QGraphicsSceneMouseEvent
+# Importe les classes utilisées du module PySide6.QtGui
+from PySide6.QtGui import QStatusTipEvent
 # Importe les classes utilisées du module PySide6.QtCore
-from PySide6.QtCore import Qt, QObject, QSize, QTimer
+from PySide6.QtCore import Qt, QSize, QTimer, QEvent
 # Importe construit depuis dependances.plateau
 from dependances.plateau import construit
 # Importe Any depuis typing
@@ -23,12 +26,12 @@ class Scene(QGraphicsScene):
     Rôle:
         Représente la scène du jeu de la vie (Scene)
     """
-    def __init__(self, parent: QObject = None, taille: QSize = QSize(0, 0))\
-        -> None:
+    def __init__(self, parent: QWidget | None = None, 
+                 taille: QSize = QSize(0, 0)) -> None:
         """
         Entrées:
             self: Scene
-            parent: QObject
+            parent QWidget (ligne d'héritage pour désallouer la mémoire)
                 valeur par défaut: None
             taille: QSize
                 valeur par défaut: QSize(0, 0)
@@ -49,6 +52,8 @@ class Scene(QGraphicsScene):
         self.auto_stop: bool = None
         # Déclaration d'interval
         self.periode: int = None
+        # Déclaration d'un attribut est_souris_dans_scene
+        self.est_souris_dans_scene = False
 
         # Déclaration d'un chronomètre
         self.chrono = QTimer(self)
@@ -168,7 +173,7 @@ class Scene(QGraphicsScene):
 
     def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         """
-        Rééimplémentation de mouseMoveEvent hérité de QGraphicsScene
+        Réimplémentation de mouseMoveEvent hérité de QGraphicsScene
         Entrées:
             self: Scene
             even: QGraphicsSceneMouseEvent
@@ -191,6 +196,14 @@ class Scene(QGraphicsScene):
         droit = self.sceneRect().right()
         # Si la souris est dans le rectangle de la scène
         if gauche <= x < droit and haut <= y < bas:
+            # Si la souris n'est pas encore entrée dans la scène
+            if not self.est_souris_dans_scene:
+                # Pour chaque vue
+                for vue in self.views():
+                    # On dit à la vue que la souris est partie
+                    vue.event(QEvent(QEvent.Type.Leave))
+            # On passe l'attribut est_souris_dans_scene à True
+            self.est_souris_dans_scene = True
             # On calcul l'indice i de la cellule dans la matrice
             i = int((y - haut) // 50)
             # On calcul l'indice j de la cellule dans la matrice
@@ -205,9 +218,50 @@ class Scene(QGraphicsScene):
                 # On définit l'état de la cellule touchée par la souris sur 
                 # Mort
                 self.matrice[i][j].set_etat(Etat.Mort)
+        # Si la souris n'est plus dans la scène et que l'attribut 
+        # est_souris_dans_scene est encore sur True
+        elif self.est_souris_dans_scene:
+            # On passe l'attribut est_souris_dans_scene sur False, puisqu'elle est 
+            # sortie
+            self.est_souris_dans_scene = False
+            # Pour chaque vue de la scène
+            for vue in self.views():
+                # On dit à la vue que la souris est sortie de la scène, donc 
+                # entrée dans la vue
+                vue.event(QEvent(QEvent.Type.Enter))
         
         # Rend l'évenement à la classe mère
         return super().mouseMoveEvent(event)
+    
+    def event(self, even: QEvent) -> bool:
+        """
+        Réimplémentation de event hérité de QMainWindow
+        Entrées:
+            self: JeuDeLaVieApp
+            even: QEvent (et les classes qui en hérite)
+        Sortie:
+            bool
+        Rôle:
+            Capture les évenements de QMainWindow, les traites, puis les rends.
+        """
+        # Si le type de l'évènement est StatusTipEvent
+        if even.type() is QEvent.Type.StatusTip:
+            # On précise le type de l'évènement pour être sûr de pouvoir 
+            # accéder aux méthodes (optionnel)
+            even: QStatusTipEvent = even
+            # Relais l'évènement à la classe mère
+            self.parent().event(even)
+            """
+            Fonctionnement:
+            Chaque objet possédant l'attribut statusTip émet un signal 
+            QStatusTipEvent lorsque la souris le survole. Ce signal comporte un
+            tip, un conseil, concernant le dit objet. Il est par défaut 
+            réceptionné par statusBar de QMainWindow, mais il peut être 
+            intercepté et affiché autre part.
+            """
+        
+        # On rend l'évènement à la classe mère
+        return super().event(even)
 
     def get_plateau(self, vivant: Any, mort: Any) -> list[list[Any]]:
         """

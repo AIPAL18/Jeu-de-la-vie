@@ -1,9 +1,10 @@
 # Importe les classes utilisées du module PySide6.QtWidgets
-from PySide6.QtWidgets import QGraphicsRectItem, QGraphicsSceneMouseEvent
+from PySide6.QtWidgets import QGraphicsSceneHoverEvent, QGraphicsItem, \
+    QGraphicsRectItem, QGraphicsSceneMouseEvent
 # Importe les classes utilisées du module PySide6.QtGui
-from PySide6.QtGui import QPen, QBrush
+from PySide6.QtGui import QPen, QBrush, QStatusTipEvent
 # Importe les classes utilisées du module PySide6.QtCore
-from PySide6.QtCore import Qt, QObject
+from PySide6.QtCore import Qt
 # Importe Etat depuis dependances.constantes
 from dependances.constantes import Etat
 # Importe deepcopy depuis copy
@@ -19,12 +20,14 @@ class Cellule(QGraphicsRectItem):
     Rôle:
         Représente une cellule
     """
-    def __init__(self, parent: QObject = None, etat: Etat = Etat.Vivant)\
-        -> None:
+    def __init__(self, parent: QGraphicsItem | None = None, 
+                 etat: Etat = Etat.Vivant) -> None:
         """
         Entrée:
             self: Cellule
-            parent QObjet (ligne d'héritage pour désallouer la mémoire)
+            parent QGraphicsItem | None
+                valeur par défaut: None
+            etat: Etat
         Sortie:
             None (ctor)
         Rôle:
@@ -32,6 +35,8 @@ class Cellule(QGraphicsRectItem):
         """
         # Initialise la classe mère
         QGraphicsRectItem.__init__(self, parent)
+        # L'objet accèpte de recevoir les évènements de survole de la souris
+        self.setAcceptHoverEvents(True)
         # on définit l'état 
         self.etat = etat
         # On peint la cellule en fonction de l'état
@@ -62,7 +67,7 @@ class Cellule(QGraphicsRectItem):
 
     def mousePressEvent(self, even: QGraphicsSceneMouseEvent) -> None:
         """
-        Rééimplémentation de mousePressEvent hérité de QGraphicsRectItem
+        Réimplémentation de mousePressEvent hérité de QGraphicsRectItem
         Entrées:
             self: Cellule
             even: QGraphicsSceneMouseEvent (évenement)
@@ -83,6 +88,36 @@ class Cellule(QGraphicsRectItem):
 
         # On rend l'évenement à la classe mère
         return super().mousePressEvent(even)
+    
+    def hoverEnterEvent(self, even: QGraphicsSceneHoverEvent) -> None:
+        """
+        Réimplémentation de hoverEnterEvent hérité de QGraphicsScene
+        Entrées:
+            self: Cellule
+            even: QEvent (et les classes qui en hérite)
+        Sortie:
+            bool
+        Rôle:
+            Capture les évenements de QGraphicsRectItem, les traites, puis les 
+            rends.
+        """
+        # Si la cellule est vivante
+        if self.etat is Etat.Vivant:
+            # Envoie un évènement QStatusTipEvent à la scène mère
+            self.scene().event(QStatusTipEvent(
+                "Cliquez droit pour changer l'état. Pour modifier l'état de " +
+                "plusieurs cellules, maintenez le clique droit en déplaçant " +
+                "la souris."))
+        # Si la cellule est morte
+        else:
+            # Envoie un évènement QStatusTipEvent à la scène mère
+            self.scene().event(QStatusTipEvent(
+                "Cliquez gauche pour changer l'état. Pour modifier l'état " +
+                "de plusieurs cellules, maintenez le clique gauche en " + 
+                "déplaçant la souris."))
+        
+        # Rend l'évènement
+        return super().hoverEnterEvent(even)
 
     def set_etat(self, etat: Etat) -> None:
         """

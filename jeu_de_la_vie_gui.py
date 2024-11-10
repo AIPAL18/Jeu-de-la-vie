@@ -52,7 +52,7 @@ from dependances.jdlv_ui import Scene
 from os.path import basename
 
 
-class JeuDeLaVieApp(QMainWindow):
+class JeuDeLaVieGUI(QMainWindow):
     """
     Hérite de:
         QMainWindow
@@ -62,11 +62,11 @@ class JeuDeLaVieApp(QMainWindow):
     def __init__(self) -> None:
         """
         Entrée:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
         Sortie:
             None (ctor)
         Rôle:
-            Construit un nouvel objet JeuDeLaVieApp
+            Construit un nouvel objet JeuDeLaVieGUI
         """
         # Initialisation de la classe mère
         QMainWindow.__init__(self)
@@ -431,7 +431,7 @@ class JeuDeLaVieApp(QMainWindow):
         """
         Réimplémentation de event hérité de QMainWindow
         Entrées:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
             even: QEvent (et les classes qui en hérite)
         Sortie:
             bool
@@ -460,7 +460,7 @@ class JeuDeLaVieApp(QMainWindow):
     def enregistrer(self) -> None:
         """
         Entrée:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
         Sortie:
             None (modification en place)
         Rôle:
@@ -497,7 +497,7 @@ class JeuDeLaVieApp(QMainWindow):
     def enregistrer_sous(self) -> None:
         """
         Entrée:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
         Sortie:
             None (modification en place)
         Rôle:
@@ -529,7 +529,7 @@ class JeuDeLaVieApp(QMainWindow):
     def importe(self) -> None:
         """
         Entrée:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
         Sortie:
             None (modification en place)
         Rôle:
@@ -600,7 +600,7 @@ class JeuDeLaVieApp(QMainWindow):
     def set_auto_grandissement(self, etat: Qt.CheckState) -> None:
         """
         Entrées:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
             etat: Qt.CheckState
         Sortie:
             None (modification en place)
@@ -617,7 +617,7 @@ class JeuDeLaVieApp(QMainWindow):
     def set_auto_stop(self, etat: Qt.CheckState) -> None:
         """
         Entrées:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
             etat: Qt.CheckState
         Sortie:
             None (modification en place)
@@ -634,7 +634,7 @@ class JeuDeLaVieApp(QMainWindow):
     def set_periode(self, valeur: float) -> None:
         """
         Entrées:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
             valeur: double
         Sortie:
             None (modification en place)
@@ -646,7 +646,7 @@ class JeuDeLaVieApp(QMainWindow):
     def lance_anim(self) -> None:
         """
         Entrées:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
         Sortie:
             None (modification en place)
         Rôle:
@@ -668,7 +668,7 @@ class JeuDeLaVieApp(QMainWindow):
     def stop_anim(self):
         """
         Entrées:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
         Sortie:
             None (modification en place)
         Rôle:
@@ -687,11 +687,13 @@ class JeuDeLaVieApp(QMainWindow):
     def zoom_in(self) -> None:
         """
         Entrées:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
         Sortie:
             None (modification en place)
         Rôle:
             Zoom dans la vue
+        Apostille:
+            Le nom est en anglais car le terme n'existe pas en français.
         """
         # Augmente les grandeurs de 10%
         self.vue.scale(1.1, 1.1)
@@ -699,11 +701,13 @@ class JeuDeLaVieApp(QMainWindow):
     def zoom_out(self) -> None:
         """
         Entrées:
-            self: JeuDeLaVieApp
+            self: JeuDeLaVieGUI
         Sortie:
             None (modification en place)
         Rôle:
             Dézoom dans la vue
+        Apostille:
+            Le nom est en anglais car le terme n'existe pas en français.
         """
         # Diminue les grandeurs de 10%
         self.vue.scale(0.9, 0.9)
@@ -713,8 +717,8 @@ class JeuDeLaVieApp(QMainWindow):
 if __name__ == "__main__" and version_info >= (3, 10):
     # On instantie QApplication en lui passe argv (héritage du c++)
     app = QApplication(argv)
-    # On instantie JeuDeLaVieApp
-    my_window = JeuDeLaVieApp()
+    # On instantie JeuDeLaVieGUI
+    my_window = JeuDeLaVieGUI()
 
     # On execute l'application
     app.exec()

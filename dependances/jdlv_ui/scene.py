@@ -237,7 +237,7 @@ class Scene(QGraphicsScene):
         """
         Réimplémentation de event hérité de QMainWindow
         Entrées:
-            self: JeuDeLaVieApp
+            self: Scene
             even: QEvent (et les classes qui en hérite)
         Sortie:
             bool

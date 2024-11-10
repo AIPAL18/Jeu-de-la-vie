@@ -3,14 +3,18 @@ from time import sleep
 # Importe system depuis os
 from os import system
 # Importe Any depuis typing
-from typing import Any
+from typing import Any, Literal
 # Importe copie depuis dependances.plateau
-from dependances.plateau import copie
+from dependances.plateau import copie, est_template_valide
 # Importe argv, version_info depuis le module sys
 from sys import version_info
+# Importe reader depuis csv
+from csv import reader
+# importe exists depuis os.path
+from os.path import exists
 
 
-class JeuDeLaVie(object):
+class JeuDeLaVieCLI(object):
     """
     Hérite de:
         object
@@ -18,11 +22,13 @@ class JeuDeLaVie(object):
         Représente le jeu de la vie.
     """
 
-    def __init__(self, plateau: list[list[1 | 0]]) -> None:
+    def __init__(self, plateau: list[list[Literal[1] | Literal[0]]] = [])\
+        -> None:
         """
         Entrées:
             self: JeuDeLaVie
-            tableau: list[list[1 | 0]]
+            tableau: list[list[Literal[1] | Literal[0]]]
+                valeur par défaut: []
         Sortie:
             None (modification en place)
         Rôle:
@@ -50,7 +56,7 @@ class JeuDeLaVie(object):
         # définie le nouveau symbole d'une cellule morte
         self.symbole_mort = str(symb_mort)
     
-    def set_symbole_mort(self, symb_vivant: Any) -> None:
+    def set_symbole_vivant(self, symb_vivant: Any) -> None:
         """
         Entrées:
             self: JeuDeLaVie
@@ -80,26 +86,6 @@ class JeuDeLaVie(object):
             print(ligne)
         # Affiche une ligne vide
         print()
-
-    def valeur_case(self, i, j):
-        """
-        Entrées:
-            self: JeuDeLaVie
-            i: int
-            j: int
-        Sortie:
-            int
-        Rôle:
-            Donner l'état d'une case (1 ou 0)
-        """
-        # si les indices décrivent une valeur du tableau
-        if 0 <= i < len(self.tableau) and 0 <= j < len(self.tableau[0]):
-            # On retourne la valeur de la case (i;j)
-            return self.tableau[i][j]
-        # si l'indice i ou j est trop grand ou négatif
-        else:
-            # on retourne 0
-            return 0
 
     def affiche_complexe(self):
         """
@@ -132,6 +118,26 @@ class JeuDeLaVie(object):
             print(" ".join(ligne_affiche))
         # On affiche une ligne vide
         print()
+
+    def valeur_case(self, i, j):
+        """
+        Entrées:
+            self: JeuDeLaVie
+            i: int
+            j: int
+        Sortie:
+            int
+        Rôle:
+            Donner l'état d'une case (1 ou 0)
+        """
+        # si les indices décrivent une valeur du tableau
+        if 0 <= i < len(self.tableau) and 0 <= j < len(self.tableau[0]):
+            # On retourne la valeur de la case (i;j)
+            return self.tableau[i][j]
+        # si l'indice i ou j est trop grand ou négatif
+        else:
+            # on retourne 0
+            return 0
 
     def total_voisins(self, i: int, j: int) -> int:
         """
@@ -270,26 +276,66 @@ class JeuDeLaVie(object):
         Rôle:
             Fait tourner le Jeu De La Vie
         """
-        # on définie n qui sera notre variant pour la terminaison de la boucle
-        n = 0
-        # se répète en fonction du nombre de tour
-        while n < nombre_tours:
-            # si 2 tours à la suite sont identique
-            if self.arret_automatique():
-                # on stop la boucle
-                n = nombre_tours - 1
-            # sinon la boucle réactualise eu prochain tour
+        # Si le tableau n'est pas vide
+        if self.tableau:
+            # on définie n qui sera notre variant pour la terminaison de la boucle
+            n = 0
+            # se répète en fonction du nombre de tour
+            while n < nombre_tours:
+                # si 2 tours à la suite sont identique
+                if self.arret_automatique():
+                    # on stop la boucle
+                    n = nombre_tours - 1
+                # sinon la boucle réactualise eu prochain tour
+                else:
+                    # affiche la matrice de JeuDeLaVie
+                    self.affiche_complexe()
+                    # actualise la matrice
+                    self.tour()
+                    # laisse un temps d'attente entre chaque tour
+                    sleep(delai)
+                # on incrémente n pour que la boucle ait une terminaison
+                n += 1
+                # Affiche le dernier tour de boucle
+            self.affiche_complexe()
+    
+    def importe_template(self, fichier: str) -> bool:
+        """
+        Entrées:
+            self: JeuDeLaVie
+            fichier: str
+        Sortie:
+            bool (validité)
+        Rôle:
+            Importe le template si celui-ci est valide
+        """
+        # Si le fichier existe
+        if exists(fichier):
+            # On ouvre le fichier en mode lecture
+            with open(file=fichier, mode='r', encoding='utf8') as f:
+                # On extrait les données
+                template = f.readlines()
+                # On ferme le fichier
+                f.close()
+            # Si le template est valide
+            valide, erreur = est_template_valide(template)
+            if valide:
+                # Attribut à tableau une matrice vide
+                self.tableau = []
+                # Pour chaque ligne
+                for i, ligne in enumerate(reader(template)):
+                    # On ajoute une nouvelle ligne à la matrice
+                    self.tableau.append([])
+                    # Pour chaque élément de la ligne
+                    for element in ligne:
+                        # On ajoute l'élément converti en int
+                        self.tableau[i].append(int(element))
+                # On retoure True
+                return True
             else:
-                # affiche la matrice de JeuDeLaVie
-                self.affiche_complexe()
-                # actualise la matrice
-                self.tour()
-                # laisse un temps d'attente entre chaque tour
-                sleep(delai)
-            # on incrémente n pour que la boucle ait une terminaison
-            n += 1
-            # Affiche le dernier tour de boucle
-        self.affiche_complexe()
+                print(erreur)
+        # On retourne False
+        return False                        
 
 
 # Si le présent fichier est executé avec python 3.10 ou plus
@@ -298,18 +344,10 @@ if __name__ == "__main__" and version_info >= (3, 10):
     # Exemple:
 
     # Déclare jeu en tant qu'instance de JeuDeLaVie 
-    jeu = JeuDeLaVie([
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,1,0,0,0,0],
-        [0,0,0,0,0,1,0,1,0,0],
-        [0,0,0,0,0,1,1,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0]
-        ])
+    jeu = JeuDeLaVieCLI()
 
-    # lance le jeu de la vie pour 50 cycles de 0.3 seconde
-    jeu.run(50, 0.3)
+    # importe le template choisit dans le jeu
+    jeu.importe_template(r"templates\\glider gun.csv")        
+
+    # lance le jeu de la vie pour 75 cycles de 0.2 seconde
+    jeu.run(75, 0.2)

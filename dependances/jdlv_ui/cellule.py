@@ -35,7 +35,7 @@ class Cellule(QGraphicsRectItem):
         """
         # Initialise la classe mère
         QGraphicsRectItem.__init__(self, parent)
-        # L'objet accèpte de recevoir les évènements de survole de la souris
+        # L'objet accepte de recevoir les événements de survole de la souris
         self.setAcceptHoverEvents(True)
         # on définit l'état 
         self.etat = etat
@@ -70,11 +70,11 @@ class Cellule(QGraphicsRectItem):
         Réimplémentation de mousePressEvent hérité de QGraphicsRectItem
         Entrées:
             self: Cellule
-            even: QGraphicsSceneMouseEvent (évenement)
+            even: QGraphicsSceneMouseEvent (événement)
         Sortie:
             None (modification en place)
         Rôle:
-            Détecte les évenements de pression de souris sur la cellule.
+            Détecte les événements de pression de souris sur la cellule.
         """
         # Si le click est un click gauche
         if even.button() is Qt.MouseButton.LeftButton:
@@ -86,7 +86,7 @@ class Cellule(QGraphicsRectItem):
         # On peint la cellule en fonction de l'état
         self.peint()
 
-        # On rend l'évenement à la classe mère
+        # On rend l'événement à la classe mère
         return super().mousePressEvent(even)
     
     def hoverEnterEvent(self, even: QGraphicsSceneHoverEvent) -> None:
@@ -98,7 +98,7 @@ class Cellule(QGraphicsRectItem):
         Sortie:
             bool
         Rôle:
-            Capture les évenements de QGraphicsRectItem, les traites, puis les 
+            Capture les événements de QGraphicsRectItem, les traites, puis les 
             rends.
         """
         # Si la cellule est vivante

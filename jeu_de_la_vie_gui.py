@@ -436,7 +436,7 @@ class JeuDeLaVieGUI(QMainWindow):
         Sortie:
             bool
         Rôle:
-            Capture les évenements de QMainWindow, les traites, puis les rends.
+            Capture les événements de QMainWindow, les traites, puis les rends.
         """
         # Si le type de l'évènement est StatusTipEvent
         if even.type() is QEvent.Type.StatusTip:
@@ -569,18 +569,18 @@ class JeuDeLaVieGUI(QMainWindow):
                 # On arrêtre l'animation (economie de ressources)
                 self.stop_anim()
                 # Déclaration d'une matrice vide
-                matrice = []
+                tableau = []
                 # Pour chaque ligne
                 for i, ligne in enumerate(reader(donnees)):
                     # On ajoute une nouvelle ligne à la matrice
-                    matrice.append([])
+                    tableau.append([])
                     # Pour chaque élément de la ligne
                     for element in ligne:
                         # On ajoute l'élément converti en int
-                        matrice[i].append(int(element))
+                        tableau[i].append(int(element))
                 # On définit le plateau selon la matrice, sachant que l'élément 
                 # vivant est 1
-                self.scene.set_plateau(matrice, 1)
+                self.scene.set_plateau(tableau, 1)
                 # Remet le nombre de cycle à 0
                 self.nb_cycle = 0
                 # Modifie le texe du label

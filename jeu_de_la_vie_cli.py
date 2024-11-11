@@ -2,6 +2,8 @@
 from time import sleep
 # Importe system depuis os
 from os import system
+# importe exists depuis os.path
+from os.path import exists
 # Importe Any depuis typing
 from typing import Any, Literal
 # Importe copie depuis dependances.plateau
@@ -10,8 +12,6 @@ from dependances.plateau import copie, est_template_valide
 from sys import version_info
 # Importe reader depuis csv
 from csv import reader
-# importe exists depuis os.path
-from os.path import exists
 
 
 class JeuDeLaVieCLI(object):
@@ -78,10 +78,8 @@ class JeuDeLaVieCLI(object):
         Rôle:
             Afficher de manière simple une matrice de 1 et de 0
         """
-        # crée la variable temporaire tableau
-        tableau = self.tableau
         # Pour chaque ligne du tableau
-        for ligne in tableau:
+        for ligne in self.tableau:
             # Affiche la ligne
             print(ligne)
         # Affiche une ligne vide

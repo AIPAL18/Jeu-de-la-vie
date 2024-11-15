@@ -9,7 +9,7 @@ def copie(matrice: list[list[Any]]) -> list[list[Any]]:
     Sortie:
         matrice: list[list[Any]]
     Rôle:
-        Retourne la copie mémoire de matrice
+        Retourne une copie mémoire de matrice
     Apostille:
         Pour les listes imbriquées on peut utiliser:
         >>> import copy
@@ -130,9 +130,12 @@ def extention(matrice: list[list[Any]], direction: str, nb_element: int,
 def est_template_valide(tableau: Any) -> tuple[bool, str]:
     """
     Entrée:
-        tableau: list[list[0 | 1]]  (pésumé)
+        tableau: list[str]  (attendu)
     Sortie:
-        tuple[bool, str]
+        tuple[
+            bool,   (validité)
+            str     (message d'erreur)
+        ]
     Rôle:
         Retourne True si le tableau respecte le format d'un template. En cas
         d'erreur, le deuxième élément sera le message qui explique l'erreur.
@@ -148,32 +151,39 @@ def est_template_valide(tableau: Any) -> tuple[bool, str]:
         i = 0
         # Pour chaque ligne du tableau tant que les lignes sont valides
         while i < len(tableau) and lignes_valide:
-            # On cherche l'expression régulière suivante dans la ligne
-            # ^ : on part du premier caractère
-            # $ : on s'arrête au dernier caractère
-            # 0-1 : l'élément est soit 0 soit 1
-            # , : il est suivit d'une virgule
-            # * : il est présent 0 ou plus fois
-            # \\n : la ligne finit par \n
-            correspondance = search("^[0-1,]*\\n$", tableau[i])
-            
-            # S'il y a une correspondance
-            if correspondance:
-                # Si la taille n'a pas encore été définit
-                if taille == -1:
-                    # On définit la taille d'une ligne
-                    taille = len(tableau[i])
-                # Si la ligne ne fait pas la même taille que la première
-                if len(tableau[i]) != taille:
+            if type(lignes_valide[i]) is str:
+                # On cherche l'expression régulière suivante dans la ligne
+                # ^ : on part du premier caractère
+                # $ : on s'arrête au dernier caractère
+                # 0-1 : l'élément est soit 0 soit 1
+                # , : il est suivit d'une virgule
+                # * : il est présent 0 ou plus fois
+                # \\n : la ligne finit par \n
+                correspondance = search("^[0-1,]*\\n$", tableau[i])
+                
+                # S'il y a une correspondance
+                if correspondance:
+                    # Si la taille n'a pas encore été définit
+                    if taille == -1:
+                        # On définit la taille d'une ligne
+                        taille = len(tableau[i])
+                    # Si la ligne ne fait pas la même taille que la première
+                    if len(tableau[i]) != taille:
+                        # On définit un message d'erreur
+                        message = "Les lignes doivent être de même taille"
+                        # On arrête la boucle
+                        lignes_valide = False
+                # S'il n'y a pas de correspondance
+                else:
                     # On définit un message d'erreur
-                    message = "Les lignes doivent être de même taille"
+                    message = "Les éléments doivent être 0 ou 1. Ils " +\
+                        "doivent être séparés par des virgules."
                     # On arrête la boucle
                     lignes_valide = False
-            # S'il n'y a pas de correspondance
             else:
                 # On définit un message d'erreur
-                message = "Les éléments doivent être 0 ou 1. Ils doivent " + \
-                    "être séparés par des virgules."
+                message = "Chaque ligne doit être une chaîne de caractère " +\
+                    "encodant la valeurs des cellules."
                 # On arrête la boucle
                 lignes_valide = False
             
@@ -185,3 +195,35 @@ def est_template_valide(tableau: Any) -> tuple[bool, str]:
     
     # On retourne False sinon
     return False, message
+
+def est_tableau_valide(plateau: Any) -> bool:
+    """
+    Entrée:
+        plateau: list[list[Any]]
+    Sortie:
+        bool (validité)
+    Rôle:
+        Vérifie la capacité du plateau à être un tableau.
+    """
+    # Déclaration de valide et initialisation sur False
+    valide = True
+
+    # Si plateau est une liste
+    if type(plateau) is list:
+        # Déclaration d'un itérateur
+        i = 0
+        # Pour chaque valeur de plateau tant que valide vaut True
+        while i < len(plateau) and valide:
+            # Si plateau à l'indice i n'est pas une liste
+            if type(plateau[i]) is not list:
+                # On passe valide à False
+                valide = False
+            # Incrémentation de l'itérateur
+            i += 1
+    # Si plateau n'est pas une liste
+    else:
+        # On passe valide à False
+        valide = False
+            
+    # Retourne la valeur de valide
+    return valide

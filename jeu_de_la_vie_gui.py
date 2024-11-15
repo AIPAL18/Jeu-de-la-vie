@@ -66,7 +66,7 @@ class JeuDeLaVieGUI(QMainWindow):
         Sortie:
             None (ctor)
         Rôle:
-            Construit un nouvel objet JeuDeLaVieGUI
+            Construit un nouvel objet JeuDeLaVieGUI.
         """
         # Initialisation de la classe mère
         QMainWindow.__init__(self)

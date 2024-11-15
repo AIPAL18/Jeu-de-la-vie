@@ -7,7 +7,7 @@ from os.path import exists
 # Importe Any depuis typing
 from typing import Any, Literal
 # Importe copie depuis dependances.plateau
-from dependances.plateau import copie, est_template_valide
+from dependances.plateau import copie, est_template_valide, est_plateau_valide
 # Importe argv, version_info depuis le module sys
 from sys import version_info
 # Importe reader depuis csv
@@ -26,13 +26,13 @@ class JeuDeLaVieCLI(object):
         -> None:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
             tableau: list[list[Literal[1] | Literal[0]]]
                 valeur par défaut: []
         Sortie:
             None (modification en place)
         Rôle:
-            Initialise la classe et créer les attributs
+            Construit un nouvel objet JeuDeLaVieCLI.
         """
         # Déclaration d'un tableau au cycle n-1, initialisé à None
         self.tableau_precedent = None
@@ -46,12 +46,12 @@ class JeuDeLaVieCLI(object):
     def set_symbole_mort(self, symb_mort: Any) -> None:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
             symb_mort: Any
         Sortie:
             None (modification en place)
         Rôle:
-            Redéfinit le symbole des cases mortes
+            Redéfinit le symbole des cases mortes (affichage_complexe).
         """
         # définie le nouveau symbole d'une cellule morte
         self.symbole_mort = str(symb_mort)
@@ -59,24 +59,61 @@ class JeuDeLaVieCLI(object):
     def set_symbole_vivant(self, symb_vivant: Any) -> None:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
             symb_vivant: Any
         Sortie:
             None (modification en place)
         Rôle:
-            Redéfinit le symbole des cases vivantes
+            Redéfinit le symbole des cases vivantes (affichage_complexe).
         """
         # définie le nouveau symbole d'une cellule morte
         self.symbole_vivant = str(symb_vivant)
     
-    def affiche_simple(self):
+    def set_tableau(self, plateau: Any, vivant: Any = 1) -> bool:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
+            plateau: list[list[Any]] (attendu)
+            vivant: Any
+                valeur par défaut: 1
         Sortie:
-            /
+            bool (validité)
         Rôle:
-            Afficher de manière simple une matrice de 1 et de 0
+            Redéfinit l'attribut tableau de même dimension que le matrice. Si 
+            l'élément vaut vivant, son état sera Vivant, sinon Mort.
+        """
+        # Si le plateau est apte à devenir tableau
+        if est_plateau_valide(plateau):
+            # On vide tableau
+            self.tableau = []
+            # Pour chaque indice de plateau
+            for i in range(len(plateau)):
+                # On ajoute une ligne à tableau
+                self.tableau.append([])
+                # Pour chaque indice de plateau à l'indice i
+                for j in range(len(plateau[i])):
+                    # Si l'élément (i;j) de plateau est vivant
+                    if plateau[i][j] == vivant:
+                        # On ajoute 1 à tableau (vivant)
+                        self.tableau[i].append(1)
+                    # Sinon
+                    else:
+                        # On ajoute 0 à tableau (mort)
+                        self.tableau[i].append(0)
+            # On retourne True car la procédure c'est bien déroulée
+            return True
+        
+        # On retourne False car le plateau ne peut être utilisé comme tableau
+        return False
+    
+    def affiche_simple(self) -> None:
+        """
+        Entrées:
+            self: JeuDeLaVieCLI
+        Sortie:
+            None (affichage)
+        Rôle:
+            Afficher de manière simple une matrice de 1 et de 0.
         """
         # Pour chaque ligne du tableau
         for ligne in self.tableau:
@@ -85,15 +122,15 @@ class JeuDeLaVieCLI(object):
         # Affiche une ligne vide
         print()
 
-    def affiche_complexe(self):
+    def affiche_complexe(self) -> None:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
         Sortie:
-            /
+            None (affichage)
         Rôle:
             Afficher de manière complexe un tableau de 1 et de 0
-            en les remplaçant par des substitue
+            en les remplaçant par des substitue.
         """
         # On efface le terminal
         system("cls")
@@ -117,16 +154,16 @@ class JeuDeLaVieCLI(object):
         # On affiche une ligne vide
         print()
 
-    def valeur_case(self, i, j):
+    def valeur_case(self, i: int, j: int) -> Literal[0] | Literal[1]:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
             i: int
             j: int
         Sortie:
-            int
+            Literal[0] | Literal[1]
         Rôle:
-            Donner l'état d'une case (1 ou 0)
+            Donner l'état d'une case (1 ou 0).
         """
         # si les indices décrivent une valeur du tableau
         if 0 <= i < len(self.tableau) and 0 <= j < len(self.tableau[0]):
@@ -140,7 +177,7 @@ class JeuDeLaVieCLI(object):
     def total_voisins(self, i: int, j: int) -> int:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
             i: int
             j: int
         Sortie:
@@ -194,14 +231,14 @@ class JeuDeLaVieCLI(object):
         # Retourne True si le nombre de voisins est égal à 3
         return nb_voisins == 3
 
-    def resultat(self, i: int, j: int) -> int:
+    def resultat(self, i: int, j: int) -> Literal[0] | Literal[1]:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
             i: int (ordonnée)
             j: int (abscisse)
         Sortie:
-            int (Etat de la cellule)
+            Literal[0] | Literal[1] (Etat de la cellule)
         Rôle:
             Retourne l'état de la cellule en fonction du nombre de voisins
         """
@@ -231,7 +268,7 @@ class JeuDeLaVieCLI(object):
     def tour(self) -> None:
         """
         Entrée:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
         Sortie:
             None (modification en place)
         Rôle:
@@ -254,25 +291,26 @@ class JeuDeLaVieCLI(object):
     def arret_automatique(self) -> bool:
         """
         Entrée:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
         Sortie:
             bool
         Rôle:
-            vérifie si deux tour de suite sont identique
+            Renvoie True si le plateau est identique deux tours de suite, False
+            sinon.
         """
         # retourne True si le tableau n'a pas changé entre deux cycles
         return self.tableau_precedent == self.tableau
 
-    def run(self, nombre_tours, delai):
+    def run(self, nombre_tours: int, delai: float) -> None:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
             nombre_tours: int
             delai: float
         Sortie:
-            /
+            None (modification en place)
         Rôle:
-            Fait tourner le Jeu De La Vie
+            Effectue nombre_tours cycles de delai seconde(s).
         """
         # Si le tableau n'est pas vide
         if self.tableau:
@@ -286,7 +324,7 @@ class JeuDeLaVieCLI(object):
                     n = nombre_tours - 1
                 # sinon la boucle réactualise eu prochain tour
                 else:
-                    # affiche la matrice de JeuDeLaVie
+                    # affiche la matrice de JeuDeLaVieCLI
                     self.affiche_complexe()
                     # actualise la matrice
                     self.tour()
@@ -300,12 +338,12 @@ class JeuDeLaVieCLI(object):
     def importe_template(self, fichier: str) -> bool:
         """
         Entrées:
-            self: JeuDeLaVie
+            self: JeuDeLaVieCLI
             fichier: str
         Sortie:
             bool (validité)
         Rôle:
-            Importe le template si celui-ci est valide
+            Importe le template si celui-ci est valide.
         """
         # Si le fichier existe
         if exists(fichier):
@@ -341,7 +379,7 @@ if __name__ == "__main__" and version_info >= (3, 10):
     
     # Exemple:
 
-    # Déclare jeu en tant qu'instance de JeuDeLaVie 
+    # Déclare jeu en tant qu'instance de JeuDeLaVieCLI 
     jeu = JeuDeLaVieCLI()
 
     # importe le template choisit dans le jeu

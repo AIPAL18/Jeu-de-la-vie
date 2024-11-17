@@ -174,7 +174,7 @@ class Cellule(QGraphicsRectItem):
         Rôle:
             Méthode magique du module copy pour effectuer des copies de 
             l'object.
-        Apostille:
+        Addendum:
             Ne connaissant pas le module copy, j'ai utilisé la réponse 
             suivante : https://stackoverflow.com/a/15774013/15793884
         """

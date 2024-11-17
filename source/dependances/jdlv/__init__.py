@@ -7,24 +7,27 @@
 ###############################################################################
 
 r"""
-Fonction de manipulation de tableau
-===================================
+JDLV UI
+=======
+Dépendences de jeu_de_la_vie_gui
 
-copie
+Scene
 -----
-Copie une matrice (moins efficace que deepcopy du module copy de python)
+Scène du jeu de la vie
+
+Cellule
+-------
+Représente une cellule du jeu de la vie
 
 construit
 ---------
 Construit une matrice de taille désirée avec une valeur par défaut
 
-extention
----------
-Etend une matrice dans une direction donnée, d'un nombre d'élément donné avec 
-une valeur par défaut
 est_template_valide
 -------------------
-Vérifie la validité d'un template pour faire office de tableau
+Vérifie la validité d'un template pour devenir le nouveau tableau
 """
 
-from .plateau import copie, construit, extention, est_template_valide
+from .cellule import Cellule
+from .scene import Scene
+from .tableau import construit, est_template_valide

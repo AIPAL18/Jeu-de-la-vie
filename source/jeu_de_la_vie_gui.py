@@ -35,7 +35,8 @@ if not util.find_spec("PySide6"):
 # Importe les classes utilisées depuis PySide6.QtWidgets
 from PySide6.QtWidgets import QMainWindow, QApplication, QGraphicsView, \
     QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QDoubleSpinBox, QLabel, \
-    QGridLayout, QCheckBox, QFileDialog, QMessageBox, QFrame, QSizePolicy
+    QGridLayout, QCheckBox, QFileDialog, QMessageBox, QFrame, QSizePolicy, \
+    QMenuBar, QMenu
 # Importe les classes utilisées depuis PySide6.QtGui
 from PySide6.QtGui import QIcon, QAction, QKeySequence, QStatusTipEvent
 # Importe les classes utilisées depuis PySide6.QtCore
@@ -44,10 +45,8 @@ from PySide6.QtCore import Qt, QSize,  QDir, QEvent
 from csv import reader
 # Importe argv, version_info depuis le module sys
 from sys import argv, version_info
-# Importe est_template_valide du module plateau de dependances.plateau
-from dependances.plateau import est_template_valide
-# Importe Scene du module plateau de dependances.jdlv_ui
-from dependances.jdlv_ui import Scene
+# Importe est_template_valide, Scene du module plateau de dependances.jdlv
+from dependances.jdlv import est_template_valide, Scene
 # Importe basename depuis le module os.path
 from os.path import basename
 
@@ -74,7 +73,7 @@ class JeuDeLaVieGUI(QMainWindow):
         # Attributs
         
         # Déclaration de chemin_absolu pour accéder aux ressources (svg, ...)
-        self.chemin_absolu = __file__[:-len(basename(__file__))]
+        self.chemin_absolu: str = __file__[:-len(basename(__file__))]
         # Déclaration d'un booléan est_fichier_ouvert
         self.est_fichier_ouvert: bool = False
         self.fichier: str = ""
@@ -92,22 +91,22 @@ class JeuDeLaVieGUI(QMainWindow):
         self.move(
             (self.screen().geometry().width() - self.width()) // 2,
             (self.screen().geometry().height() - self.height()) // 2 - 50)
-        # On créer central_widget
-        self.central_widget = QWidget(self)
-        # On définit central_widget comme le widget principal
+        # On créer widget_central
+        self.widget_central = QWidget(self)
+        # On définit widget_central comme le widget principal
         # (celui qui prend toute la place)
-        self.setCentralWidget(self.central_widget)
+        self.setCentralWidget(self.widget_central)
         # On créer le layout principal
         self.affichage = QHBoxLayout()
         # On associe le layout au widget car setCentralLayout n'existe pas
-        self.central_widget.setLayout(self.affichage)
+        self.widget_central.setLayout(self.affichage)
 
         # Menu bar
 
         # Déclaration d'un attribut menuBar
-        self.menu = self.menuBar()
+        self.menu: QMenuBar = self.menuBar()
         # Déclaration d'un attribut menu fichier
-        self.menu_fichier = self.menu.addMenu("&Fichier")
+        self.menu_fichier: QMenu = self.menu.addMenu("&Fichier")
         # Déclaration de importer_template
         self.importer_template = QAction(self)
         # Définition du texte de importer_template
@@ -115,12 +114,12 @@ class JeuDeLaVieGUI(QMainWindow):
         # Définition d'un raccourci clavier
         self.importer_template.setShortcut(QKeySequence.StandardKey.Open)
         # Relie le signal à la méthode importe
-        self.importer_template.triggered.connect(self.importe)
+        self.importer_template.triggered.connect(self.importe_template)
         # Ajoute l'action au menu
         self.menu_fichier.addAction(self.importer_template)
 
         # Déclaration de enregistrer_template
-        self.enregistrer_template = QAction(self)
+        self.enregistrer_template: QAction = QAction(self)
         # Définition du texte de enregistrer_template
         self.enregistrer_template.setText("Enregistrer le template")
         # Définition d'un raccourci clavier
@@ -191,28 +190,29 @@ class JeuDeLaVieGUI(QMainWindow):
         # Définitons du texte du label
         self.controles_titre.setText("Contrôles :")
         # Définition du style du texte et de sa taille
-        self.controles_titre.setStyleSheet("font-style: bold; font-size: 11pt;")
+        self.controles_titre.setStyleSheet(
+            "font-style: bold; font-size: 11pt;")
         # Ajoute le titre à outils_layout
         self.outils_layout.addWidget(self.controles_titre)
-        # Déclaration d'un layout horizontal play/pause
+        # Déclaration d'un layout horizontal jouer/pause
         self.controles_layout = QHBoxLayout()
-        # Déclaration d'un bouton play
-        self.play = QPushButton(self)
+        # Déclaration d'un bouton jouer
+        self.jouer = QPushButton(self)
         # Définition d'un conseil pour l'utilisateur
-        self.play.setStatusTip("Joue l'animation.")
-        # Définition de l'icone de play
-        icone_play = QIcon(self.chemin_absolu + 
+        self.jouer.setStatusTip("Joue l'animation.")
+        # Définition de l'icone de jouer
+        icone_jouer = QIcon(self.chemin_absolu + 
                            "assets\\icones\\play-button.svg")
         # Attribution de l'icone au bouton
-        self.play.setIcon(icone_play)
+        self.jouer.setIcon(icone_jouer)
         # Relie le signal à la méthode run
-        self.play.clicked.connect(self.lance_anim)
-        # Modification du style de play
-        self.play.setStyleSheet("padding-top: 7px; padding-bottom: 7px")
+        self.jouer.clicked.connect(self.lance_anim)
+        # Modification du style de jouer
+        self.jouer.setStyleSheet("padding-top: 7px; padding-bottom: 7px")
         # Modification automatique de la taille
-        self.play.adjustSize()
-        # On ajoute play à controles_layout
-        self.controles_layout.addWidget(self.play)
+        self.jouer.adjustSize()
+        # On ajoute jouer à controles_layout
+        self.controles_layout.addWidget(self.jouer)
         # Déclaration d'un bouton pause
         self.pause = QPushButton(self)
         # Définition d'un conseil pour l'utilisateur
@@ -348,26 +348,26 @@ class JeuDeLaVieGUI(QMainWindow):
         # On ajoute zoom_label dans la cellule (0;0) sur un espace de 1 ligne
         # et 2 colonnes
         self.zoom.addWidget(self.zoom_label, 0, 0, 1, 2)
-        # Déclaration d'un bouton z_in (zoom in)
-        self.z_in = QPushButton(self)
+        # Déclaration d'un bouton zoom_in_entree (zoom in)
+        self.zoom_in_entree = QPushButton(self)
         # Définition d'un conseil pour l'utilisateur
-        self.z_in.setStatusTip("Zoom dans la scène")
+        self.zoom_in_entree.setStatusTip("Zoom dans la scène")
         # Définition du texte du bouton
-        self.z_in.setText("+")
+        self.zoom_in_entree.setText("+")
         # Relie le signal à la méthode zoom_in
-        self.z_in.clicked.connect(self.zoom_in)
-        # On ajoute z_in au layout zoom
-        self.zoom.addWidget(self.z_in, 1, 0)
-        # Déclaration d'un bouton z_out (zoom out)
-        self.z_out = QPushButton(self)
+        self.zoom_in_entree.clicked.connect(self.zoom_in)
+        # On ajoute zoom_in_entree au layout zoom
+        self.zoom.addWidget(self.zoom_in_entree, 1, 0)
+        # Déclaration d'un bouton zoom_out_entree (zoom out)
+        self.zoom_out_entree = QPushButton(self)
         # Définition d'un conseil pour l'utilisateur
-        self.z_out.setStatusTip("Dézoom dans la scène")
+        self.zoom_out_entree.setStatusTip("Dézoom dans la scène")
         # Définition du texte du bouton
-        self.z_out.setText("-")
+        self.zoom_out_entree.setText("-")
         # Relie le signal à la méthode zoom_out
-        self.z_out.clicked.connect(self.zoom_out)
-        # On ajoute z_out au layout zoom
-        self.zoom.addWidget(self.z_out, 1, 1)
+        self.zoom_out_entree.clicked.connect(self.zoom_out)
+        # On ajoute zoom_out_entree au layout zoom
+        self.zoom.addWidget(self.zoom_out_entree, 1, 1)
         # On ajoute zoom au layout du menu
         self.outils_layout.addLayout(self.zoom)
         # On ajoute de l'étirement qui à pour effet de prendre le plus de place
@@ -464,7 +464,7 @@ class JeuDeLaVieGUI(QMainWindow):
         Sortie:
             None (modification en place)
         Rôle:
-            Enregistre self.scene dans le format csv
+            Enregistre le plateau au format csv.
         """
         # Si un fichier est "ouvert"
         if self.est_fichier_ouvert:
@@ -472,7 +472,7 @@ class JeuDeLaVieGUI(QMainWindow):
             # On ouvre le fichier (s'il n'existe plus, il est recréé)
             with open(self.fichier, 'w', encoding='utf-8') as f:
                 # Récupère le plateau avec 1 pour vivant et 0 pour mort
-                plateau: list[list[str]] = self.scene.get_plateau("1", "0")
+                plateau: list[list[str]] = self.scene.get_tableau("1", "0")
                 # Pour chaque ligne
                 for i in range(len(plateau)):
                     # Pour chaque élément
@@ -501,7 +501,7 @@ class JeuDeLaVieGUI(QMainWindow):
         Sortie:
             None (modification en place)
         Rôle:
-            Enregistre sous self.scene dans le format csv
+            Enregistre sous le plateau au format csv.
         """
         # Déclaration d'un nouveau QFileDialog
         enregistrer_fichier = QFileDialog(self, caption="Enregistrer sous")
@@ -526,7 +526,7 @@ class JeuDeLaVieGUI(QMainWindow):
             # On enregistre le template
             self.enregistrer()
     
-    def importe(self) -> None:
+    def importe_template(self) -> None:
         """
         Entrée:
             self: JeuDeLaVieGUI
@@ -580,7 +580,7 @@ class JeuDeLaVieGUI(QMainWindow):
                         tableau[i].append(int(element))
                 # On définit le plateau selon la matrice, sachant que l'élément 
                 # vivant est 1
-                self.scene.set_plateau(tableau, 1)
+                self.scene.set_tableau(tableau, 1)
                 # Remet le nombre de cycle à 0
                 self.nb_cycle = 0
                 # Modifie le texe du label
@@ -639,7 +639,7 @@ class JeuDeLaVieGUI(QMainWindow):
         Sortie:
             None (modification en place)
         Rôle:
-            
+            Redéfinit la période/durée d'un cycle de l'animation.
         """
         self.scene.periode = int(valeur * 1000)
     
@@ -652,20 +652,18 @@ class JeuDeLaVieGUI(QMainWindow):
         Rôle:
             Lance l'animation
         """
-        # désactive le bouton play
-        self.play.setEnabled(False)
+        # désactive le bouton jouer
+        self.jouer.setEnabled(False)
         # active le bouton pause
         self.pause.setEnabled(True)
-        # On enlève focus de periode_entree, puisqu'en se désactivant, le play
+        # On enlève focus de periode_entree, puisqu'en se désactivant, le jouer
         # lui donne le focus
         self.periode_entree.clearFocus()
 
-        # Démarre le chrono pour un temps indéterminé
-        self.scene.chrono.start()
-        # Executre le premier tour
-        self.scene.execute_tour()
+        # Démarre le jeu
+        self.scene.run()
 
-    def stop_anim(self):
+    def stop_anim(self) -> None:
         """
         Entrées:
             self: JeuDeLaVieGUI
@@ -676,8 +674,8 @@ class JeuDeLaVieGUI(QMainWindow):
         """
         # Arrête le chrono
         self.scene.chrono.stop()
-        # active le bouton play
-        self.play.setEnabled(True)
+        # active le bouton jouer
+        self.jouer.setEnabled(True)
         # désactive le bouton pause
         self.pause.setEnabled(False)
         # On enlève focus de periode_entree, puisqu'en se désactivant, le pause
@@ -692,7 +690,7 @@ class JeuDeLaVieGUI(QMainWindow):
             None (modification en place)
         Rôle:
             Zoom dans la vue
-        Apostille:
+        Addendum:
             Le nom est en anglais car le terme n'existe pas en français.
         """
         # Augmente les grandeurs de 10%
@@ -706,7 +704,7 @@ class JeuDeLaVieGUI(QMainWindow):
             None (modification en place)
         Rôle:
             Dézoom dans la vue
-        Apostille:
+        Addendum:
             Le nom est en anglais car le terme n'existe pas en français.
         """
         # Diminue les grandeurs de 10%

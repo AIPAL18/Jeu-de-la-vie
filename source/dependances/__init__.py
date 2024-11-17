@@ -11,23 +11,18 @@ Dépendences
 ===========
 
 constantes
------
+----------
 Constantes pour simplifier la lecture du code
 
-jdlv_ui
----------
-Jeu de la vie graphique
+jdlv
+----
+Fonctions et classes relatives au Jeu de la vie
 
 overload
----------
+--------
 Permet de surcharger des méthodes (LSP)
-
-plateau
--------------------
-Fonction de manipulation du plateau
 """
 
 from dependances.constantes import *
-from dependances.jdlv_ui import *
+from dependances.jdlv import *
 from dependances.overload import *
-from dependances.plateau import *

@@ -7,11 +7,13 @@ from os.path import exists
 # Importe Any depuis typing
 from typing import Any, Literal
 # Importe copie depuis dependances.plateau
-from dependances.plateau import copie, est_template_valide, est_plateau_valide
+from dependances.jdlv import est_template_valide
 # Importe argv, version_info depuis le module sys
 from sys import version_info
 # Importe reader depuis csv
 from csv import reader
+# Importe deepcopy depuis copy
+from copy import deepcopy
 
 
 class JeuDeLaVieCLI(object):
@@ -34,10 +36,10 @@ class JeuDeLaVieCLI(object):
         Rôle:
             Construit un nouvel objet JeuDeLaVieCLI.
         """
-        # Déclaration d'un tableau au cycle n-1, initialisé à None
-        self.tableau_precedent = None
+        # Déclaration d'un tableau au cycle n-1, initialisé vide
+        self.tableau_precedent: list[list[Literal[1] | Literal[0]]] = []
         # Déclaration de tableau et l'initialise à plateau
-        self.tableau = plateau
+        self.tableau: list[list[Literal[1] | Literal[0]]] = plateau
         # Déclaration de symbol_mort et l'initialise à □
         self.symbole_mort = "□"
         # Déclaration de symbole_vivant et l'initialise à ■
@@ -69,6 +71,39 @@ class JeuDeLaVieCLI(object):
         # définie le nouveau symbole d'une cellule morte
         self.symbole_vivant = str(symb_vivant)
     
+    @staticmethod
+    def est_tableau_valide(plateau: Any) -> bool:
+        """
+        Entrée:
+            plateau: list[list[Any]]
+        Sortie:
+            bool (validité)
+        Rôle:
+            Vérifie la capacité du plateau à être un tableau.
+        """
+        # Déclaration de valide et initialisation sur False
+        valide = True
+
+        # Si plateau est une liste
+        if type(plateau) is list:
+            # Déclaration d'un itérateur
+            i = 0
+            # Pour chaque valeur de plateau tant que valide vaut True
+            while i < len(plateau) and valide:
+                # Si plateau à l'indice i n'est pas une liste
+                if type(plateau[i]) is not list:
+                    # On passe valide à False
+                    valide = False
+                # Incrémentation de l'itérateur
+                i += 1
+        # Si plateau n'est pas une liste
+        else:
+            # On passe valide à False
+            valide = False
+                
+        # Retourne la valeur de valide
+        return valide
+    
     def set_tableau(self, plateau: Any, vivant: Any = 1) -> bool:
         """
         Entrées:
@@ -83,7 +118,7 @@ class JeuDeLaVieCLI(object):
             l'élément vaut vivant, son état sera Vivant, sinon Mort.
         """
         # Si le plateau est apte à devenir tableau
-        if est_plateau_valide(plateau):
+        if self.est_tableau_valide(plateau):
             # On vide tableau
             self.tableau = []
             # Pour chaque indice de plateau
@@ -106,31 +141,39 @@ class JeuDeLaVieCLI(object):
         # On retourne False car le plateau ne peut être utilisé comme tableau
         return False
     
-    def affiche_simple(self) -> None:
+    def __repr__(self) -> str:
         """
         Entrées:
             self: JeuDeLaVieCLI
         Sortie:
-            None (affichage)
+            str
         Rôle:
-            Afficher de manière simple une matrice de 1 et de 0.
+            Retourne une représentation en chaîne de caractères de manière 
+            simple (matrice de 1 et de 0).
         """
+        reponse = ""
         # Pour chaque ligne du tableau
         for ligne in self.tableau:
-            # Affiche la ligne
-            print(ligne)
-        # Affiche une ligne vide
-        print()
+            # Pour chaque cellule de la ligne
+            for cellule in ligne:
+                # On ajoute la valeur de cellule en chaîne de caractères plus 
+                # un espace
+                reponse += str(cellule) + " "
+            # On ajoute un retour à la ligne
+            reponse += "\n"
+            
+        # On retourne la chaîne de caractère
+        return reponse
 
-    def affiche_complexe(self) -> None:
+    def affiche(self) -> None:
         """
         Entrées:
             self: JeuDeLaVieCLI
         Sortie:
             None (affichage)
         Rôle:
-            Afficher de manière complexe un tableau de 1 et de 0
-            en les remplaçant par des substitue.
+            Afficher de manière complexe un tableau de cellules remplacées 
+            par des caractères.
         """
         # On efface le terminal
         system("cls")
@@ -275,9 +318,9 @@ class JeuDeLaVieCLI(object):
             Execute un tour du jeu.
         """
         # On copie le tableau pour pouvoir geler le vrai pour faire les modifs
-        self.tableau_precedent = copie(self.tableau)
+        self.tableau_precedent = deepcopy(self.tableau)
         # On déclare tableau comme une copie de l'attribut tableau (gèle)
-        tableau = copie(self.tableau)
+        tableau = deepcopy(self.tableau)
 
         # on itère dans les lignes
         for i in range(len(self.tableau)):
@@ -314,26 +357,26 @@ class JeuDeLaVieCLI(object):
         """
         # Si le tableau n'est pas vide
         if self.tableau:
-            # on définie n qui sera notre variant pour la terminaison de la boucle
-            n = 0
+            # On déclare un itérateur i
+            i = 0
             # se répète en fonction du nombre de tour
-            while n < nombre_tours:
+            while i < nombre_tours:
                 # si 2 tours à la suite sont identique
                 if self.arret_automatique():
                     # on stop la boucle
-                    n = nombre_tours - 1
+                    i = nombre_tours - 1
                 # sinon la boucle réactualise eu prochain tour
                 else:
                     # affiche la matrice de JeuDeLaVieCLI
-                    self.affiche_complexe()
+                    self.affiche()
                     # actualise la matrice
                     self.tour()
                     # laisse un temps d'attente entre chaque tour
                     sleep(delai)
                 # on incrémente n pour que la boucle ait une terminaison
-                n += 1
+                i += 1
                 # Affiche le dernier tour de boucle
-            self.affiche_complexe()
+            self.affiche()
     
     def importe_template(self, fichier: str) -> bool:
         """
@@ -383,7 +426,7 @@ if __name__ == "__main__" and version_info >= (3, 10):
     jeu = JeuDeLaVieCLI()
 
     # importe le template choisit dans le jeu
-    jeu.importe_template(r"templates\\glider gun.csv")        
+    jeu.importe_template(r"..\\templates\\glider gun.csv")        
 
     # lance le jeu de la vie pour 75 cycles de 0.2 seconde
     jeu.run(75, 0.2)

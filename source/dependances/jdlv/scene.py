@@ -5,8 +5,8 @@ from PySide6.QtWidgets import QGraphicsScene, QWidget, \
 from PySide6.QtGui import QStatusTipEvent
 # Importe les classes utilisées du module PySide6.QtCore
 from PySide6.QtCore import Qt, QSize, QTimer, QEvent
-# Importe construit depuis dependances.plateau
-from dependances.plateau import construit
+# Importe construit depuis tableau
+from .tableau import construit
 # Importe Any depuis typing
 from typing import Any
 # Importe Overload, signature depuis dependances.overload
@@ -57,8 +57,8 @@ class Scene(QGraphicsScene):
 
         # Déclaration d'un chronomètre
         self.chrono = QTimer(self)
-        # Relie le signal à execute_tour
-        self.chrono.timeout.connect(self.execute_tour)
+        # Relie le signal à run
+        self.chrono.timeout.connect(self.run)
         # Chrono moins précis mais moins gourmant en ressources
         self.chrono.setTimerType(Qt.TimerType.CoarseTimer)
 
@@ -67,7 +67,7 @@ class Scene(QGraphicsScene):
         # Déclaration d'un tableau vide
         self.tableau: list[list[Cellule]] = []
         # On construit le plateau de jeu d'après les attributs de la fenêtre
-        self.set_plateau(
+        self.set_tableau(
             self.dimension.height(), self.dimension.width(), Etat.Mort)
     
     def vide_scene(self) -> None:
@@ -88,7 +88,7 @@ class Scene(QGraphicsScene):
 
     @Overload  # On appelle overload pour créer une méthode surchargée
     @signature("int", "int", "Etat")  # On précise sa signature
-    def set_plateau(self, height: int, width: int, etat: Etat) -> None:
+    def set_tableau(self, height: int, width: int, etat: Etat) -> None:
         """
         Entrée:
             self: Scene
@@ -122,11 +122,11 @@ class Scene(QGraphicsScene):
         # Copie le tableau dans tableau_precedent
         self.tableau_precedent = deepcopy(self.tableau)
 
-    @set_plateau.overload  # On surcharge la méthode set_plateau
+    @set_tableau.overload  # On surcharge la méthode set_tableau
     @signature("list", "object")  # On précise sa signature
-    def set_plateau(self, tableau: list[list[Any]], vivant: Any) -> None:
+    def set_tableau(self, tableau: list[list[Any]], vivant: Any) -> None:
         """
-        Surcharge de set_plateau
+        Surcharge de set_tableau
         Entrées:
             self: Scene
             tableau: list[list[Any]]
@@ -263,7 +263,7 @@ class Scene(QGraphicsScene):
         # On rend l'évènement à la classe mère
         return super().event(even)
 
-    def get_plateau(self, vivant: Any, mort: Any) -> list[list[Any]]:
+    def get_tableau(self, vivant: Any, mort: Any) -> list[list[Any]]:
         """
         Entrées:
             self: Scene
@@ -609,6 +609,7 @@ class Scene(QGraphicsScene):
         Rôle:
             Execute un tour du jeu.
         """
+        # économie de ressources:
         # Si l'auto stop est activé
         if self.auto_stop:
             # Copie le tableau dans tableau_precedent
@@ -656,16 +657,24 @@ class Scene(QGraphicsScene):
             # On stop l'animation
             self.parent().stop_anim()
     
-    def execute_tour(self) -> None:
+    def run(self) -> None:
         """
         Entrées:
             self: Scene
         Sortie:
             None (modification en place)
         Rôle:
-            Execute un tour
+            Exécute un tour
         """
-        # Mise à jour de l'interval de temps
-        self.chrono.setInterval(self.periode)
-        # Execute un tour
-        self.tour()
+        # Si le chrono est activé
+        if self.chrono.isActive():
+            # Mise à jour de l'interval de temps
+            self.chrono.setInterval(self.periode)
+            # Execute un tour
+            self.tour()
+        # Si le chrono n'est pas encore activé
+        else:
+            # Démarre le chrono pour un temps indéterminé
+            self.chrono.start()
+            # Executre le premier tour
+            self.tour()

@@ -14,7 +14,7 @@ def signature(*types) -> callable:
     Rôle:
         Retourne la fonction dont signature est un décorateur avec une 
         propriété signature qui est un tuple des types
-    Apostille:
+    Addendum:
         Mes excuses pour les explications et commentaires, mais le code n'étant 
         pas le mien, non commenté et parfois hors de ma porté, il a été 
         complexe à comprendre. La notion de décoration en python n'est déjà pas
@@ -77,7 +77,7 @@ def get_signature_complete(obj, sig: tuple = ()) -> tuple[str]:
         Le but de cette fonction est de savoir de quelleS classeS hérite obj.
         Plus obj est abstrait, plus sont arbre de signature sera grand.
         L'arbre ne possède qu'une dimension pour facilité son traitement.
-    Apostille:
+    Addendum:
         Cette fonction est la raison pour laquelle j'ai recodé ce module.
         Ce dernier ne permet pas de faire de surcharge 'intelligente'.
         Il est évident les parmatères suivants de type:
@@ -144,7 +144,7 @@ class Overload(object):
         0.4  # float
         >>> double(5)  # 5 est de type int
         10  # int
-    Apostille:
+    Addendum:
         Overload est dérivée, comme signature, de pythonlangutil.overload donc
         les variables sont en englais.
     """

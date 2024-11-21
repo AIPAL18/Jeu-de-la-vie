@@ -1,0 +1,919 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.12.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jeu de la vie:  Fichier source de D:/Jeu de la vie/source/jeu_de_la_vie_gui.py</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Jeu de la vie<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Jeu de la vie de Conway</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.12.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('jeu__de__la__vie__gui_8py_source.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">jeu_de_la_vie_gui.py</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="jeu__de__la__vie__gui_8py.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacejeu__de__la__vie__gui.html">    1</a></span><span class="comment"># importe util depuis importlib</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> importlib <span class="keyword">import</span> util</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"># Si le module PySide6 n&#39;est pas installé</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> util.find_spec(<span class="stringliteral">&quot;PySide6&quot;</span>):</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    <span class="comment"># Questionne l&#39;utilisateur sur sa volonté d&#39;installer PySide6</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacejeu__de__la__vie__gui.html#ab57fc8f418b50bca7689155f1d864136">    7</a></span>    reponse = input(<span class="stringliteral">&quot;Le module PySide6 n&#39;est pas installé, souhaitez-vous &quot;</span> + </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>                    <span class="stringliteral">&quot;l&#39;installer automatiquement ? (o/n)&quot;</span>)[0]</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="comment"># Si la réponse est o (pour oui)</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keywordflow">if</span> reponse.lower() == <span class="stringliteral">&quot;o&quot;</span>:</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        <span class="comment"># import run et PIPE du module subprocess</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        <span class="keyword">from</span> subprocess <span class="keyword">import</span> run, PIPE</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        <span class="comment"># Affichage d&#39;un message pour que l&#39;utilisateur patiente</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        print(<span class="stringliteral">&quot;Intallation de PySide6, cela peut prendre quelques minutes. &quot;</span> + </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>            <span class="stringliteral">&quot;Merci de ne pas intérompre le processus.&quot;</span>)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="comment"># Installation de PySide6</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="namespacejeu__de__la__vie__gui.html#ae095a513111ecc6da18c33d08b800a34">   17</a></span>        proc = run(<span class="stringliteral">&quot;pip install PySide6&quot;</span>, stdout=PIPE)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="comment"># Affiche le flux de sortie du terminal </span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        print(proc.stdout.decode())</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="comment"># Si le code de sortie n&#39;est pas 0</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keywordflow">if</span> proc.returncode:</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            <span class="comment"># Affichage d&#39;un message d&#39;erreur</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            print(<span class="stringliteral">&quot;Une erreur est intervenue, merci de la corriger avant de &quot;</span> +</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                  <span class="stringliteral">&quot;relancer le programme&quot;</span>)</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            <span class="comment"># Termine le processus avec proc.returncode en code de sortie</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            exit(proc.returncode)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="comment"># Si le message d&#39;erreur est n (pour n) ou autre</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        <span class="comment"># Affiche un message à l&#39;utilisateur</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        print(<span class="stringliteral">&quot;Le programme ne peut démarrer tant que PySide6 n&#39;est pas &quot;</span> + </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>              <span class="stringliteral">&quot;installé&quot;</span>)</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="comment"># Termine le processus avec 1 en code de sortie</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        exit(1)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"># Importe les classes utilisées depuis PySide6.QtWidgets</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">from</span> PySide6.QtWidgets <span class="keyword">import</span> QMainWindow, QApplication, QGraphicsView, \</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QDoubleSpinBox, QLabel, \</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    QGridLayout, QCheckBox, QFileDialog, QMessageBox, QFrame, QSizePolicy, \</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    QMenuBar, QMenu</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"># Importe les classes utilisées depuis PySide6.QtGui</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">from</span> PySide6.QtGui <span class="keyword">import</span> QIcon, QAction, QKeySequence, QStatusTipEvent</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"># Importe les classes utilisées depuis PySide6.QtCore</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">from</span> PySide6.QtCore <span class="keyword">import</span> Qt, QSize,  QDir, QEvent</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment"># Importe reader depuis le module csv</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">from</span> csv <span class="keyword">import</span> reader</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"># Importe argv, version_info depuis le module sys</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">from</span> sys <span class="keyword">import</span> argv, version_info</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"># Importe est_template_valide, Scene du module plateau de dependances.jdlv</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">from</span> <a class="code hl_namespace" href="namespacedependances_1_1jdlv.html">dependances.jdlv</a> <span class="keyword">import</span> est_template_valide, Scene</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"># Importe basename depuis le module os.path</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">from</span> os.path <span class="keyword">import</span> basename</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="foldopen" id="foldopen00054" data-start="" data-end="">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html">   54</a></span><span class="keyword">class </span><a class="code hl_class" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html">JeuDeLaVieGUI</a>(QMainWindow):</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="stringliteral">    Hérite de:</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="stringliteral">        QMainWindow</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="stringliteral">    Rôle:</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="stringliteral">        Représente l&#39;application du jeu de la vie</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="foldopen" id="foldopen00061" data-start="" data-end="">
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a4aafe2a38a4f571039228960e05bdca2">   61</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a4aafe2a38a4f571039228960e05bdca2">__init__</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="stringliteral">        Entrée:</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="stringliteral">            None (ctor)</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="stringliteral">            Construit un nouvel objet JeuDeLaVieGUI.</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="comment"># Initialisation de la classe mère</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        QMainWindow.__init__(self)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="comment"># Attributs</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="comment"># Déclaration de chemin_absolu pour accéder aux ressources (svg, ...)</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2304e5b634a7313cbe0e964218999f14">   76</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2304e5b634a7313cbe0e964218999f14">chemin_absolu</a>: str = __file__[:-len(basename(__file__))]</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="comment"># Déclaration d&#39;un booléan est_fichier_ouvert</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbbfe1137253e9d3ac019e7039ea6979">   78</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbbfe1137253e9d3ac019e7039ea6979">est_fichier_ouvert</a>: bool = <span class="keyword">False</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a427a4313e38128b0fea040507d51ff48">   79</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a427a4313e38128b0fea040507d51ff48">fichier</a>: str = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="comment"># Déclaration d&#39;un attribut nb_cycle</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2e9c4e17e1ac328858b1f469ec842718">   81</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2e9c4e17e1ac328858b1f469ec842718">nb_cycle</a>: int = 0</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <span class="comment"># Fenêtre</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="comment"># Définit une taille minimum pour la fenêtre</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        self.setMinimumSize(710, 400)</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="comment"># Redimensionne la fenêtre </span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        self.resize(self.screen().geometry().width() - 400, </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                    self.screen().geometry().height() - 300)</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="comment"># Replace la fenêtre</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        self.move(</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            (self.screen().geometry().width() - self.width()) // 2,</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            (self.screen().geometry().height() - self.height()) // 2 - 50)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="comment"># On créer widget_central</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8952ad80d24c45cd184004b54377d1b8">   95</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8952ad80d24c45cd184004b54377d1b8">widget_central</a> = QWidget(self)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="comment"># On définit widget_central comme le widget principal</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="comment"># (celui qui prend toute la place)</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        self.setCentralWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8952ad80d24c45cd184004b54377d1b8">widget_central</a>)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="comment"># On créer le layout principal</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afe2711df0097880e07ae575d81aa4fa9">  100</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afe2711df0097880e07ae575d81aa4fa9">affichage</a> = QHBoxLayout()</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="comment"># On associe le layout au widget car setCentralLayout n&#39;existe pas</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8952ad80d24c45cd184004b54377d1b8">widget_central</a>.setLayout(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afe2711df0097880e07ae575d81aa4fa9">affichage</a>)</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="comment"># Menu bar</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="comment"># Déclaration d&#39;un attribut menuBar</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a1f22c4d4afd18f22f3b30483ee6a429c">  107</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a1f22c4d4afd18f22f3b30483ee6a429c">menu</a>: QMenuBar = self.menuBar()</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="comment"># Déclaration d&#39;un attribut menu fichier</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d2e67569b42c01eaebecbdc5014e48d">  109</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d2e67569b42c01eaebecbdc5014e48d">menu_fichier</a>: QMenu = self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a1f22c4d4afd18f22f3b30483ee6a429c">menu</a>.addMenu(<span class="stringliteral">&quot;&amp;Fichier&quot;</span>)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="comment"># Déclaration de importer_template</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad75cf5a05506b05c24c38ec1abd67809">  111</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad75cf5a05506b05c24c38ec1abd67809">importer_template</a> = QAction(self)</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="comment"># Définition du texte de importer_template</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad75cf5a05506b05c24c38ec1abd67809">importer_template</a>.setText(<span class="stringliteral">&quot;Importer un template (.csv)&quot;</span>)</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="comment"># Définition d&#39;un raccourci clavier</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad75cf5a05506b05c24c38ec1abd67809">importer_template</a>.setShortcut(QKeySequence.StandardKey.Open)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="comment"># Relie le signal à la méthode importe</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abb9a613abf3e3ea2e116868a35b41a2a">  117</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad75cf5a05506b05c24c38ec1abd67809">importer_template</a>.triggered.connect(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abb9a613abf3e3ea2e116868a35b41a2a">importe_template</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad795b693dca90a01cf313c74b03da294">importe_template</a>)</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="comment"># Ajoute l&#39;action au menu</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d2e67569b42c01eaebecbdc5014e48d">menu_fichier</a>.addAction(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad75cf5a05506b05c24c38ec1abd67809">importer_template</a>)</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="comment"># Déclaration de enregistrer_template</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a53a3adc2b36425080d375aece26a492b">  122</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a53a3adc2b36425080d375aece26a492b">enregistrer_template</a>: QAction = QAction(self)</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="comment"># Définition du texte de enregistrer_template</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a53a3adc2b36425080d375aece26a492b">enregistrer_template</a>.setText(<span class="stringliteral">&quot;Enregistrer le template&quot;</span>)</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="comment"># Définition d&#39;un raccourci clavier</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a53a3adc2b36425080d375aece26a492b">enregistrer_template</a>.setShortcut(QKeySequence.StandardKey.Save)</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="comment"># Relie le signal à la méthode enregistrer</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a61b08545ae48f1ed95e72ea658f2bcc2">  128</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a53a3adc2b36425080d375aece26a492b">enregistrer_template</a>.triggered.connect(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a61b08545ae48f1ed95e72ea658f2bcc2">enregistrer</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aa6d82ea0dba48ee7347280492d8018f2">enregistrer</a>)</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="comment"># Ajoute l&#39;action au menu</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d2e67569b42c01eaebecbdc5014e48d">menu_fichier</a>.addAction(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a53a3adc2b36425080d375aece26a492b">enregistrer_template</a>)</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="comment"># Déclaration de enregistrer_template_sous</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8c6726406f214ac47c70068f1a9acde2">  133</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8c6726406f214ac47c70068f1a9acde2">enregistrer_template_sous</a> = QAction(self)</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <span class="comment"># Définition du texte de enregistrer_template</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8c6726406f214ac47c70068f1a9acde2">enregistrer_template_sous</a>.setText(<span class="stringliteral">&quot;Enregistrer sous le template&quot;</span>)</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="comment"># Définition d&#39;un raccourci clavier</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8c6726406f214ac47c70068f1a9acde2">enregistrer_template_sous</a>.setShortcut(</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>            QKeySequence.StandardKey.SaveAs)</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <span class="comment"># Relie le signal à la méthode enregistrer</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a45cba9714be85e0a02c7df2830c0bb87">  140</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8c6726406f214ac47c70068f1a9acde2">enregistrer_template_sous</a>.triggered.connect(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a45cba9714be85e0a02c7df2830c0bb87">enregistrer_sous</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a9bbd41dcb746d7866cc5200d9fbc9569">enregistrer_sous</a>)</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        <span class="comment"># Ajoute l&#39;action au menu</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d2e67569b42c01eaebecbdc5014e48d">menu_fichier</a>.addAction(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8c6726406f214ac47c70068f1a9acde2">enregistrer_template_sous</a>)</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="comment"># Scène - vue</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        <span class="comment"># On créer une scène du jeu de la vie</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">  147</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a> = <a class="code hl_class" href="classdependances_1_1jdlv_1_1scene_1_1_scene.html">Scene</a>(self, QSize(10, 10))</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="comment"># On créer une vue</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a27e9816793bd5fa2aab38429c38eb303">  149</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a27e9816793bd5fa2aab38429c38eb303">vue</a> = QGraphicsView(self)</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a27e9816793bd5fa2aab38429c38eb303">vue</a>.setStatusTip(</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="stringliteral">&quot;Scène du jeu de la vie. Vous pouvez zommer, vous y déplacer et &quot;</span> + </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            <span class="stringliteral">&quot;modifier l&#39;état des cellules en cliquant dessus&quot;</span>)</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a27e9816793bd5fa2aab38429c38eb303">vue</a>.enterEvent</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        <span class="comment"># On dit à la vue quelle scène afficher</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        <span class="comment"># Fonctionnement -&gt; https://doc.qt.io/qt-6/graphicsview.html</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a27e9816793bd5fa2aab38429c38eb303">vue</a>.setScene(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>)</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        <span class="comment"># On définit l&#39;échelle (fonctionne par pourcentage d&#39;agrandissement)</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a27e9816793bd5fa2aab38429c38eb303">vue</a>.scale(0.5, 0.5)</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="comment"># On ajoute la vue au layout principal</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afe2711df0097880e07ae575d81aa4fa9">affichage</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a27e9816793bd5fa2aab38429c38eb303">vue</a>)</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        <span class="comment"># Bar d&#39;outils</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        <span class="comment"># Déclaration d&#39;un layout vertical outils_layout, layout ≃ div en html</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">  166</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a> = QVBoxLayout()</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        <span class="comment"># On définit les options d&#39;alignement du layout</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.setAlignment(</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        <span class="comment"># On ajoute outils_layout au layout principal</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afe2711df0097880e07ae575d81aa4fa9">affichage</a>.addLayout(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>)</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        <span class="comment"># Déclaration d&#39;un label</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a883cb6a74918885a43f6de65a01ca336">  174</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a883cb6a74918885a43f6de65a01ca336">affichage_cycle</a> = QLabel(self)</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a883cb6a74918885a43f6de65a01ca336">affichage_cycle</a>.setStatusTip(<span class="stringliteral">&quot;Compte le nombre de cycle effectué&quot;</span>)</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="comment"># Modifie le texe du label</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a883cb6a74918885a43f6de65a01ca336">affichage_cycle</a>.setText(<span class="stringliteral">&quot;Cycle n°&quot;</span> + str(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2e9c4e17e1ac328858b1f469ec842718">nb_cycle</a>))</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        <span class="comment"># Définit l&#39;alignement du texte</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a883cb6a74918885a43f6de65a01ca336">affichage_cycle</a>.setAlignment(Qt.AlignmentFlag.AlignRight)</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        <span class="comment"># Ajoute le label dans le layout</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a883cb6a74918885a43f6de65a01ca336">affichage_cycle</a>)</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="comment"># On ajoute un peu d&#39;espace entre le haut de la fenêtre et les boutons</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addSpacing(20)</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="comment"># Déclaration d&#39;un label</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbe9df0136142924290c829cb3b74f77">  187</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbe9df0136142924290c829cb3b74f77">controles_titre</a> = QLabel(self)</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbe9df0136142924290c829cb3b74f77">controles_titre</a>.setStatusTip(<span class="stringliteral">&quot;Contrôle du jeu de l&#39;animation.&quot;</span>)</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="comment"># Définitons du texte du label</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbe9df0136142924290c829cb3b74f77">controles_titre</a>.setText(<span class="stringliteral">&quot;Contrôles :&quot;</span>)</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="comment"># Définition du style du texte et de sa taille</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbe9df0136142924290c829cb3b74f77">controles_titre</a>.setStyleSheet(</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            <span class="stringliteral">&quot;font-style: bold; font-size: 11pt;&quot;</span>)</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        <span class="comment"># Ajoute le titre à outils_layout</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbe9df0136142924290c829cb3b74f77">controles_titre</a>)</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        <span class="comment"># Déclaration d&#39;un layout horizontal jouer/pause</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a28cfc4e1cbc4c6a653c59d032b7b14ab">  198</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a28cfc4e1cbc4c6a653c59d032b7b14ab">controles_layout</a> = QHBoxLayout()</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        <span class="comment"># Déclaration d&#39;un bouton jouer</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">  200</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">jouer</a> = QPushButton(self)</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">jouer</a>.setStatusTip(<span class="stringliteral">&quot;Joue l&#39;animation.&quot;</span>)</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        <span class="comment"># Définition de l&#39;icone de jouer</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        icone_jouer = QIcon(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2304e5b634a7313cbe0e964218999f14">chemin_absolu</a> + </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                           <span class="stringliteral">&quot;assets\\icones\\play-button.svg&quot;</span>)</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <span class="comment"># Attribution de l&#39;icone au bouton</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">jouer</a>.setIcon(icone_jouer)</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        <span class="comment"># Relie le signal à la méthode run</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aeb452145d50dd6a69ca89df8bebe33f8">  209</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">jouer</a>.clicked.connect(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aeb452145d50dd6a69ca89df8bebe33f8">lance_anim</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad1e0dd627816484e2ec791bafb61d475">lance_anim</a>)</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        <span class="comment"># Modification du style de jouer</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">jouer</a>.setStyleSheet(<span class="stringliteral">&quot;padding-top: 7px; padding-bottom: 7px&quot;</span>)</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        <span class="comment"># Modification automatique de la taille</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">jouer</a>.adjustSize()</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="comment"># On ajoute jouer à controles_layout</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a28cfc4e1cbc4c6a653c59d032b7b14ab">controles_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">jouer</a>)</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        <span class="comment"># Déclaration d&#39;un bouton pause</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">  217</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">pause</a> = QPushButton(self)</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">pause</a>.setStatusTip(<span class="stringliteral">&quot;Pause l&#39;animation&quot;</span>)</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="comment"># Définition de l&#39;icone de pause</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        icone_pause = QIcon(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2304e5b634a7313cbe0e964218999f14">chemin_absolu</a> + </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                            <span class="stringliteral">&quot;assets\\icones\\pause-button.svg&quot;</span>)</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        <span class="comment"># Attribution de l&#39;icone au bouton</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">pause</a>.setIcon(icone_pause)</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        <span class="comment"># Relie le signal à la méthode stop</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a9393d8daa759851050d7bdab6e2e6d86">  226</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">pause</a>.clicked.connect(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a9393d8daa759851050d7bdab6e2e6d86">stop_anim</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2fe1757144fec6345a25bc451ff043fa">stop_anim</a>)</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        <span class="comment"># Désactive le bouton pause</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">pause</a>.setEnabled(<span class="keyword">False</span>)</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        <span class="comment"># Modification du style de pause</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">pause</a>.setStyleSheet(<span class="stringliteral">&quot;padding-top: 7px; padding-bottom: 7px&quot;</span>)</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        <span class="comment"># Modification automatique de la taille</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">pause</a>.adjustSize()</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        <span class="comment"># On ajoute pause à controles_layout</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a28cfc4e1cbc4c6a653c59d032b7b14ab">controles_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">pause</a>)</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        <span class="comment"># On ajoute controles_layout à outils_layout</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addLayout(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a28cfc4e1cbc4c6a653c59d032b7b14ab">controles_layout</a>)</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        </div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <span class="comment"># Déclaration du bouton tour par tour</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a56fde6b9735e22439ea89ab2211d4dbe">  239</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a56fde6b9735e22439ea89ab2211d4dbe">tour_par_tour</a> = QPushButton(self)</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a56fde6b9735e22439ea89ab2211d4dbe">tour_par_tour</a>.setStatusTip(<span class="stringliteral">&quot;Exécute un tour de l&#39;animation&quot;</span>)</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        <span class="comment"># On définit le texte à afficher</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a56fde6b9735e22439ea89ab2211d4dbe">tour_par_tour</a>.setText(<span class="stringliteral">&quot;Tour par tour&quot;</span>)</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="comment"># Relie le signal à la méthode tour de la scène</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a56fde6b9735e22439ea89ab2211d4dbe">tour_par_tour</a>.clicked.connect(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.tour)</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        <span class="comment"># On ajoute tour_par_tour au layout du menu</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a56fde6b9735e22439ea89ab2211d4dbe">tour_par_tour</a>)</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <span class="comment"># Ajoute de l&#39;espace après</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        <span class="comment"># Déclaration de periode_layout</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a05662739486e6f8cbd17747855af30dd">  251</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a05662739486e6f8cbd17747855af30dd">periode_layout</a> = QGridLayout()</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        <span class="comment"># Déclaration de periode_label</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbfacd00b7bc5f8c14be2bcb17476080">  253</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbfacd00b7bc5f8c14be2bcb17476080">periode_label</a> = QLabel(self)</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbfacd00b7bc5f8c14be2bcb17476080">periode_label</a>.setStatusTip(</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>            <span class="stringliteral">&quot;La période est la durée d&#39;un cycle de l&#39;animation.&quot;</span>)</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        <span class="comment"># Définition du texte de periode_label</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbfacd00b7bc5f8c14be2bcb17476080">periode_label</a>.setText(<span class="stringliteral">&quot;Durée d&#39;une période :&quot;</span>)</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        <span class="comment"># Déclaration de periode_entree</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">  260</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a> = QDoubleSpinBox(self)</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>.setStatusTip(</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>            <span class="stringliteral">&quot;Une période trop courte peut causer des ralentissements.&quot;</span>)</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        <span class="comment"># On définit la valeur minimal de periode_entree</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>.setMinimum(0.01)</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        <span class="comment"># Définition de la valeur de periode_entree</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>.setValue(0.5)</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <span class="comment"># Définition du pas de periode_entree</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>.setSingleStep(0.1)</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <span class="comment"># On définit le suffix de periode_entree</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>.setSuffix(<span class="stringliteral">&quot; sec&quot;</span>)</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        <span class="comment"># On définit la largeur minimal de periode_entree</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>.setMinimumWidth(120)</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        <span class="comment"># Relie le signal à la méthode set_periode</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6b295c3a2d39dc8277865c2c0a702c87">  275</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>.valueChanged.connect(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6b295c3a2d39dc8277865c2c0a702c87">set_periode</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8c885698db2283e1cec2f04ea8a78c90">set_periode</a>)</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        <span class="comment"># Ajoute periode_label dans la cellule (0;0) du layout</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a05662739486e6f8cbd17747855af30dd">periode_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbfacd00b7bc5f8c14be2bcb17476080">periode_label</a>, 0, 0)</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        <span class="comment"># Ajoute periode_entree dans la cellule (0;1) du layout</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a05662739486e6f8cbd17747855af30dd">periode_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>, 0, 1)</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        <span class="comment"># Ajoute periode_layout à outils_layout</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addLayout(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a05662739486e6f8cbd17747855af30dd">periode_layout</a>)</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        <span class="comment"># Ajoute de l&#39;espace après</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addSpacing(7)</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <span class="comment"># Déclaration d&#39;une ligne de séparation</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a878c60898eb7f5b4548a984f1dab880e">  285</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a878c60898eb7f5b4548a984f1dab880e">ligne_post_controles</a> = QFrame(self)</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="comment"># Définition de la forme</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a878c60898eb7f5b4548a984f1dab880e">ligne_post_controles</a>.setFrameShape(QFrame.Shape.HLine)</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>        <span class="comment"># Définiton des ombres</span></div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a878c60898eb7f5b4548a984f1dab880e">ligne_post_controles</a>.setFrameShadow(QFrame.Shadow.Sunken)</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        <span class="comment"># Ajoute la ligne à outils_layout</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a878c60898eb7f5b4548a984f1dab880e">ligne_post_controles</a>)</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>        <span class="comment"># Ajoute de l&#39;espace après</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addSpacing(7)</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>        <span class="comment"># Déclaration d&#39;une case à cocher</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ade806ec343280e8efcc03f394d39c71e">  296</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ade806ec343280e8efcc03f394d39c71e">auto_grandissement_entree</a> = QCheckBox(self)</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ade806ec343280e8efcc03f394d39c71e">auto_grandissement_entree</a>.setStatusTip(<span class="stringliteral">&quot;Quand est cochée, &quot;</span> + </div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            <span class="stringliteral">&quot;agrandit le plateau pour s&#39;adapter à l&#39;animation&quot;</span>)</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        <span class="comment"># Définition du texte de la case à cocher</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ade806ec343280e8efcc03f394d39c71e">auto_grandissement_entree</a>.setText(<span class="stringliteral">&quot;Auto grandissement&quot;</span>)</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        <span class="comment"># On définit son état sur coché</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ade806ec343280e8efcc03f394d39c71e">auto_grandissement_entree</a>.setCheckState(Qt.CheckState.Checked)</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>        <span class="comment"># Relie le signal à la fonction set_auto_grandissement</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ade806ec343280e8efcc03f394d39c71e">auto_grandissement_entree</a>.checkStateChanged.connect(</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aaead6decd7c47166a92f27e584381518">  306</a></span>            self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aaead6decd7c47166a92f27e584381518">set_auto_grandissement</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a7adb1c7e9d87e0058b97d65d24225193">set_auto_grandissement</a>)</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>        <span class="comment"># On ajoute la case à cocher au layout</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ade806ec343280e8efcc03f394d39c71e">auto_grandissement_entree</a>)</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        <span class="comment"># Déclaration d&#39;une case à cocher</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8923339299e4467184ee4a75a75ca688">  311</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8923339299e4467184ee4a75a75ca688">auto_stop_entree</a> = QCheckBox(self)</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8923339299e4467184ee4a75a75ca688">auto_stop_entree</a>.setStatusTip(</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>            <span class="stringliteral">&quot;Quand est cochée, arrête automatiquement l&#39;animation quand il &quot;</span> + </div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>            <span class="stringliteral">&quot;n&#39;y a plus de changement.&quot;</span>)</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>        <span class="comment"># Définition du texte de la case à cocher</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8923339299e4467184ee4a75a75ca688">auto_stop_entree</a>.setText(<span class="stringliteral">&quot;Auto stop&quot;</span>)</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>        <span class="comment"># On définit son état sur coché</span></div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8923339299e4467184ee4a75a75ca688">auto_stop_entree</a>.setCheckState(Qt.CheckState.Checked)</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>        <span class="comment"># Relie le signal à la fonction set_auto_stop</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8923339299e4467184ee4a75a75ca688">auto_stop_entree</a>.checkStateChanged.connect(</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a74504114f4ca94e5acbe09a09a054c33">  322</a></span>            self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a74504114f4ca94e5acbe09a09a054c33">set_auto_stop</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2a446ab2e232b349f835441f4799f1f4">set_auto_stop</a>)</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>        <span class="comment"># On ajoute la case à cocher au layout</span></div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8923339299e4467184ee4a75a75ca688">auto_stop_entree</a>)</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>        <span class="comment"># Ajoute de l&#39;espace après</span></div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addSpacing(7)</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>        <span class="comment"># Déclaration d&#39;une ligne de séparation</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab02333fdb742ed26f2992f647ffee8c5">  328</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab02333fdb742ed26f2992f647ffee8c5">ligne_post_autos</a> = QFrame(self)</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>        <span class="comment"># Définition de la forme</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab02333fdb742ed26f2992f647ffee8c5">ligne_post_autos</a>.setFrameShape(QFrame.Shape.HLine)</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>        <span class="comment"># Définiton des ombres</span></div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab02333fdb742ed26f2992f647ffee8c5">ligne_post_autos</a>.setFrameShadow(QFrame.Shadow.Sunken)</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        <span class="comment"># Ajoute la ligne à outils_layout</span></div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab02333fdb742ed26f2992f647ffee8c5">ligne_post_autos</a>)</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>        <span class="comment"># Ajoute de l&#39;espace après</span></div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addSpacing(7)</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>        <span class="comment"># Déclaration d&#39;un layout horizontal</span></div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab734f3a27b536a243dc1582633ab827c">  339</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab734f3a27b536a243dc1582633ab827c">zoom</a> = QGridLayout()</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        <span class="comment"># Déclaration d&#39;un label zoom</span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d365bc0f6575a60b3556cebabbb8344">  341</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d365bc0f6575a60b3556cebabbb8344">zoom_label</a> = QLabel(self)</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        <span class="comment"># Définitions du text du label</span></div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d365bc0f6575a60b3556cebabbb8344">zoom_label</a>.setText(<span class="stringliteral">&quot;Zoom :&quot;</span>)</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        <span class="comment"># Définition du style du texte et de sa taille</span></div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d365bc0f6575a60b3556cebabbb8344">zoom_label</a>.setStyleSheet(<span class="stringliteral">&quot;font-style: bold; font-size: 11pt;&quot;</span>)</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d365bc0f6575a60b3556cebabbb8344">zoom_label</a>.setStatusTip(<span class="stringliteral">&quot;Interface de zoom&quot;</span>)</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>        <span class="comment"># On ajoute zoom_label dans la cellule (0;0) sur un espace de 1 ligne</span></div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>        <span class="comment"># et 2 colonnes</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab734f3a27b536a243dc1582633ab827c">zoom</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d365bc0f6575a60b3556cebabbb8344">zoom_label</a>, 0, 0, 1, 2)</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>        <span class="comment"># Déclaration d&#39;un bouton zoom_in_entree (zoom in)</span></div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a837dfef5544aea31c3460e0c4397c04a">  352</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a837dfef5544aea31c3460e0c4397c04a">zoom_in_entree</a> = QPushButton(self)</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a837dfef5544aea31c3460e0c4397c04a">zoom_in_entree</a>.setStatusTip(<span class="stringliteral">&quot;Zoom dans la scène&quot;</span>)</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>        <span class="comment"># Définition du texte du bouton</span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a837dfef5544aea31c3460e0c4397c04a">zoom_in_entree</a>.setText(<span class="stringliteral">&quot;+&quot;</span>)</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>        <span class="comment"># Relie le signal à la méthode zoom_in</span></div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a245bc1411740021ee26a0742d07d72e1">  358</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a837dfef5544aea31c3460e0c4397c04a">zoom_in_entree</a>.clicked.connect(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a245bc1411740021ee26a0742d07d72e1">zoom_in</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a3aaa2ffd2e4ce35ccf435fe56da10ed3">zoom_in</a>)</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>        <span class="comment"># On ajoute zoom_in_entree au layout zoom</span></div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab734f3a27b536a243dc1582633ab827c">zoom</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a837dfef5544aea31c3460e0c4397c04a">zoom_in_entree</a>, 1, 0)</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>        <span class="comment"># Déclaration d&#39;un bouton zoom_out_entree (zoom out)</span></div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5557b22e0fe0f6ecfad6666fc9ad8b3a">  362</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5557b22e0fe0f6ecfad6666fc9ad8b3a">zoom_out_entree</a> = QPushButton(self)</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        <span class="comment"># Définition d&#39;un conseil pour l&#39;utilisateur</span></div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5557b22e0fe0f6ecfad6666fc9ad8b3a">zoom_out_entree</a>.setStatusTip(<span class="stringliteral">&quot;Dézoom dans la scène&quot;</span>)</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>        <span class="comment"># Définition du texte du bouton</span></div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5557b22e0fe0f6ecfad6666fc9ad8b3a">zoom_out_entree</a>.setText(<span class="stringliteral">&quot;-&quot;</span>)</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>        <span class="comment"># Relie le signal à la méthode zoom_out</span></div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a3ef75abc09f3e06342caed939d28d6e3">  368</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5557b22e0fe0f6ecfad6666fc9ad8b3a">zoom_out_entree</a>.clicked.connect(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a3ef75abc09f3e06342caed939d28d6e3">zoom_out</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5b367e47fa9caca973678a1314acf019">zoom_out</a>)</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>        <span class="comment"># On ajoute zoom_out_entree au layout zoom</span></div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab734f3a27b536a243dc1582633ab827c">zoom</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5557b22e0fe0f6ecfad6666fc9ad8b3a">zoom_out_entree</a>, 1, 1)</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>        <span class="comment"># On ajoute zoom au layout du menu</span></div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addLayout(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab734f3a27b536a243dc1582633ab827c">zoom</a>)</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>        <span class="comment"># On ajoute de l&#39;étirement qui à pour effet de prendre le plus de place</span></div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>        <span class="comment"># possible, ainsi, les prochains éléments seront le plus bas possible</span></div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addStretch()</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span> </div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        <span class="comment"># Déclaration d&#39;un titre pour bar_info</span></div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac029fc5764b9c05b507690a712ed0a62">  378</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac029fc5764b9c05b507690a712ed0a62">bar_info_titre</a> = QLabel(self)</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>        <span class="comment"># Définition du texte</span></div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac029fc5764b9c05b507690a712ed0a62">bar_info_titre</a>.setText(<span class="stringliteral">&quot;Vue Info :&quot;</span>)</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>        <span class="comment"># Définition du style du texte et de sa taille</span></div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac029fc5764b9c05b507690a712ed0a62">bar_info_titre</a>.setStyleSheet(<span class="stringliteral">&quot;font-style: bold; font-size: 11pt;&quot;</span>)</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>        <span class="comment"># Ajoute le titre à outils_layout</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac029fc5764b9c05b507690a712ed0a62">bar_info_titre</a>)        </div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>        <span class="comment"># Déclaration de bar_info</span></div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">  386</a></span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a> = QLabel(self)</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>        <span class="comment"># Définit la taille minimum de bar_info en hauteur</span></div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>.setMinimumHeight(175)</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>        <span class="comment"># On précise les marges du texte</span></div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>.setMargin(10)</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>        <span class="comment"># Déclaration d&#39;une Politique de taille et d&#39;agrandissement</span></div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>        bar_info_policy = QSizePolicy()</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>        <span class="comment"># Spécifit que les demandes agrandissement sont ignorées</span></div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>        <span class="comment"># demandes effectuées à cause des marges</span></div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>        bar_info_policy.setHorizontalPolicy(QSizePolicy.Policy.Ignored)</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>        <span class="comment"># Attribution de la politique de taille à bar_info</span></div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>.setSizePolicy(bar_info_policy)</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>        <span class="comment"># Définiton de l&#39;attribut wordwrap sur True, pour les retous à la ligne</span></div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>.setWordWrap(<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>        <span class="comment"># Précision de l&#39;alignement du texte en haut à gauche</span></div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>.setAlignment(Qt.AlignmentFlag.AlignLeft | </div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>                                   Qt.AlignmentFlag.AlignTop)</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>        <span class="comment"># Définition de la taille du texte</span></div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>.setStyleSheet(<span class="stringliteral">&quot;font-size: 10.5pt;&quot;</span>)</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>        <span class="comment"># Définition du format du texte comme étant Markdown</span></div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>.setTextFormat(Qt.TextFormat.MarkdownText)</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>        <span class="comment"># Sélection du style du cadre (classe mère que QLabel)</span></div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>.setFrameStyle(QFrame.Shape.StyledPanel)</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>        <span class="comment"># Définition du statusTip (Cf méthode event)</span></div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>.setStatusTip(</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>            <span class="stringliteral">&quot;La *Vue Info* fournit une brève description de l&#39;élément &quot;</span> +</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>            <span class="stringliteral">&quot;de l&#39;interface utilisateur sur lequel la souris se trouve &quot;</span> + </div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>            <span class="stringliteral">&quot;actuellement.&quot;</span>)</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>        <span class="comment"># Ajoute bar_info à outils_layout</span></div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">outils_layout</a>.addWidget(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>)</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span> </div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>        <span class="comment"># Initialisation de toutes les variables reliées aux champs d&#39;entrées</span></div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>        </div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>        <span class="comment"># Initialise auto_grandissement sur l&#39;état de la case à cocher</span></div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.auto_grandissement = bool(</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>            self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ade806ec343280e8efcc03f394d39c71e">auto_grandissement_entree</a>.checkState().value)</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>        <span class="comment"># Initialise auto_stop sur l&#39;état de la case à cocher</span></div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.auto_stop = bool(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8923339299e4467184ee4a75a75ca688">auto_stop_entree</a>.checkState().value)</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>        <span class="comment"># Initialise periode sur la valeur de periode_entree</span></div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.periode = int(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>.value() * 1000)</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span> </div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>        <span class="comment"># Affiche la fenêtre</span></div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>        self.show()</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>    </div>
+</div>
+<div class="foldopen" id="foldopen00430" data-start="" data-end="">
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a12616a3df9b3bee096d6bdfa78af1347">  430</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a12616a3df9b3bee096d6bdfa78af1347">event</a>(self, even: QEvent) -&gt; bool:</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="stringliteral">        Réimplémentation de event hérité de QMainWindow</span></div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span><span class="stringliteral">        Entrées:</span></div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span><span class="stringliteral">            even: QEvent (et les classes qui en hérite)</span></div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="stringliteral">            bool</span></div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="stringliteral">            Capture les événements de QMainWindow, les traites, puis les rends.</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>        <span class="comment"># Si le type de l&#39;évènement est StatusTipEvent</span></div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>        <span class="keywordflow">if</span> even.type() <span class="keywordflow">is</span> QEvent.Type.StatusTip:</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>            <span class="comment"># On précise le type de l&#39;évènement pour être sûr de pouvoir </span></div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>            <span class="comment"># accéder aux méthodes (optionnel)</span></div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>            even: QStatusTipEvent = even</div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>            <span class="comment"># Définit le texte de bar_info sur le conseil de l&#39;évènement</span></div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>            self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">bar_info</a>.setText(even.tip())</div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>            <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span><span class="stringliteral">            Fonctionnement:</span></div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span><span class="stringliteral">            Chaque objet possédant l&#39;attribut statusTip émet un signal </span></div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span><span class="stringliteral">            QStatusTipEvent lorsque la souris le survole. Ce signal comporte un</span></div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span><span class="stringliteral">            tip, un conseil, concernant le dit objet. Il est par défaut </span></div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="stringliteral">            réceptionné par statusBar de QMainWindow, mais il peut être </span></div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="stringliteral">            intercepté et affiché autre part.</span></div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="stringliteral">            &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>        </div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>        <span class="comment"># On rend l&#39;évènement</span></div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>        <span class="keywordflow">return</span> super().<a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a12616a3df9b3bee096d6bdfa78af1347">event</a>(even)</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span> </div>
+</div>
+<div class="foldopen" id="foldopen00460" data-start="" data-end="">
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aa6d82ea0dba48ee7347280492d8018f2">  460</a></span>    <span class="keyword">def </span><a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a61b08545ae48f1ed95e72ea658f2bcc2">enregistrer</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span><span class="stringliteral">        Entrée:</span></div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span><span class="stringliteral">            None (modification en place)</span></div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span><span class="stringliteral">            Enregistre le plateau au format csv.</span></div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>        <span class="comment"># Si un fichier est &quot;ouvert&quot;</span></div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>        <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbbfe1137253e9d3ac019e7039ea6979">est_fichier_ouvert</a>:</div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>            </div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>            <span class="comment"># On ouvre le fichier (s&#39;il n&#39;existe plus, il est recréé)</span></div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>            <span class="keyword">with</span> open(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a427a4313e38128b0fea040507d51ff48">fichier</a>, <span class="stringliteral">&#39;w&#39;</span>, encoding=<span class="stringliteral">&#39;utf-8&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>                <span class="comment"># Récupère le plateau avec 1 pour vivant et 0 pour mort</span></div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span>                plateau: list[list[str]] = self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.get_tableau(<span class="stringliteral">&quot;1&quot;</span>, <span class="stringliteral">&quot;0&quot;</span>)</div>
+<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>                <span class="comment"># Pour chaque ligne</span></div>
+<div class="line"><a id="l00477" name="l00477"></a><span class="lineno">  477</span>                <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(plateau)):</div>
+<div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span>                    <span class="comment"># Pour chaque élément</span></div>
+<div class="line"><a id="l00479" name="l00479"></a><span class="lineno">  479</span>                    <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(len(plateau[i])):</div>
+<div class="line"><a id="l00480" name="l00480"></a><span class="lineno">  480</span>                        <span class="comment"># On écrit l&#39;élément</span></div>
+<div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span>                        f.write(plateau[i][j])</div>
+<div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span>                        <span class="comment"># Si l&#39;élément n&#39;est pas le dernier</span></div>
+<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span>                        <span class="keywordflow">if</span> j &lt; len(plateau[i]) - 1:</div>
+<div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span>                            <span class="comment"># on écrit une virgule</span></div>
+<div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span>                            f.write(<span class="stringliteral">&quot;,&quot;</span>)</div>
+<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span>                    <span class="comment"># Ecriture d&#39;un retour chariot</span></div>
+<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span>                    f.write(<span class="stringliteral">&quot;\n&quot;</span>)</div>
+<div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span>                <span class="comment"># Fermeture du fichier</span></div>
+<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>                f.close()</div>
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>            <span class="comment"># On prévient l&#39;utilisateur que le fichier a été enregistré</span></div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>            self.<a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a12616a3df9b3bee096d6bdfa78af1347">event</a>(QStatusTipEvent(<span class="stringliteral">&quot;Le fichier a été enregistré !&quot;</span>))</div>
+<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>        <span class="comment"># S&#39;il n&#39;y a pas de fichier ouvert</span></div>
+<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>            <span class="comment"># Appelle la méthode enregistrer_sous</span></div>
+<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span>            self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a45cba9714be85e0a02c7df2830c0bb87">enregistrer_sous</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a9bbd41dcb746d7866cc5200d9fbc9569">enregistrer_sous</a>()</div>
+<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span> </div>
+</div>
+<div class="foldopen" id="foldopen00497" data-start="" data-end="">
+<div class="line"><a id="l00497" name="l00497"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a9bbd41dcb746d7866cc5200d9fbc9569">  497</a></span>    <span class="keyword">def </span><a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a45cba9714be85e0a02c7df2830c0bb87">enregistrer_sous</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span><span class="stringliteral">        Entrée:</span></div>
+<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span><span class="stringliteral">            None (modification en place)</span></div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span><span class="stringliteral">            Enregistre sous le plateau au format csv.</span></div>
+<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>        <span class="comment"># Déclaration d&#39;un nouveau QFileDialog</span></div>
+<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>        enregistrer_fichier = QFileDialog(self, caption=<span class="stringliteral">&quot;Enregistrer sous&quot;</span>)</div>
+<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>        <span class="comment"># Définition du type de fichier attendu</span></div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>        enregistrer_fichier.setNameFilter(<span class="stringliteral">&quot;Templates (*.csv)&quot;</span>)</div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>        <span class="comment"># Définition du filtre</span></div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>        enregistrer_fichier.setFilter(</div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>            QDir.Filter.Readable | QDir.Filter.Files | QDir.Filter.NoSymLinks)</div>
+<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>        <span class="comment"># Définition du mode du fichier sur fichier existant</span></div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>        enregistrer_fichier.setFileMode(QFileDialog.FileMode.ExistingFile)</div>
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>        <span class="comment"># Définition du suffix par défaut</span></div>
+<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>        enregistrer_fichier.setDefaultSuffix(<span class="stringliteral">&quot;.csv&quot;</span>)</div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>        <span class="comment"># Définition du mode</span></div>
+<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>        enregistrer_fichier.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)</div>
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>        </div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>        <span class="comment"># Si l&#39;utilisateur sélectionne un fichier</span></div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>        <span class="keywordflow">if</span> enregistrer_fichier.exec():</div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>            <span class="comment"># On met à jour l&#39;attribut est_fichier_ouvert</span></div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>            self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbbfe1137253e9d3ac019e7039ea6979">est_fichier_ouvert</a> = <span class="keyword">True</span></div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>            <span class="comment"># Mise à jour du nom du fichier</span></div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>            self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a427a4313e38128b0fea040507d51ff48">fichier</a> = enregistrer_fichier.selectedFiles()[0]</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>            <span class="comment"># On enregistre le template</span></div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>            self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a61b08545ae48f1ed95e72ea658f2bcc2">enregistrer</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aa6d82ea0dba48ee7347280492d8018f2">enregistrer</a>()</div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>    </div>
+</div>
+<div class="foldopen" id="foldopen00529" data-start="" data-end="">
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad795b693dca90a01cf313c74b03da294">  529</a></span>    <span class="keyword">def </span><a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abb9a613abf3e3ea2e116868a35b41a2a">importe_template</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span><span class="stringliteral">        Entrée:</span></div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span><span class="stringliteral">            None (modification en place)</span></div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span><span class="stringliteral">            Importe un template d&#39;un fichier csv.</span></div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>        <span class="comment"># Déclaration d&#39;un nouveau QFileDialog</span></div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>        obtenir_fichier = QFileDialog(self, caption=<span class="stringliteral">&quot;Importer un template&quot;</span>)</div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>        <span class="comment"># Définition du type de fichier attendu</span></div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>        obtenir_fichier.setNameFilter(<span class="stringliteral">&quot;Templates (*.csv)&quot;</span>)</div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>        <span class="comment"># Définition du filtre</span></div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>        obtenir_fichier.setFilter(</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>            QDir.Filter.Readable | QDir.Filter.Files | QDir.Filter.NoSymLinks)</div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>        <span class="comment"># Définition du mode du fichier sur fichier existant</span></div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>        obtenir_fichier.setFileMode(QFileDialog.FileMode.ExistingFile)</div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>        <span class="comment"># Définition du suffix par défaut</span></div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>        obtenir_fichier.setDefaultSuffix(<span class="stringliteral">&quot;.csv&quot;</span>)</div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>        <span class="comment"># Définition du mode</span></div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>        obtenir_fichier.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)</div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>        </div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>        <span class="comment"># Si l&#39;utilisateur sélectionne un fichier</span></div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>        <span class="keywordflow">if</span> obtenir_fichier.exec():</div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>            <span class="comment"># Récupère le chemin du fichier</span></div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>            fichier = obtenir_fichier.selectedFiles()[0]</div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span> </div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>            <span class="comment"># On ouvre le fichier en mode lecture</span></div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>            <span class="keyword">with</span> open(file=fichier, mode=<span class="stringliteral">&#39;r&#39;</span>, encoding=<span class="stringliteral">&#39;utf8&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>                <span class="comment"># On extrait les données</span></div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>                donnees = f.readlines()</div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>                <span class="comment"># On ferme le fichier</span></div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>                f.close()</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>            </div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>            <span class="comment"># On teste la validité des données</span></div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>            tableau_valide, message_erreur = est_template_valide(donnees)</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span> </div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>            <span class="comment"># si le tableau est valide</span></div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>            <span class="keywordflow">if</span> tableau_valide:</div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>                <span class="comment"># On arrêtre l&#39;animation (economie de ressources)</span></div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>                self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a9393d8daa759851050d7bdab6e2e6d86">stop_anim</a><a class="code hl_function" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2fe1757144fec6345a25bc451ff043fa">stop_anim</a>()</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>                <span class="comment"># Déclaration d&#39;une matrice vide</span></div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>                tableau = []</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>                <span class="comment"># Pour chaque ligne</span></div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>                <span class="keywordflow">for</span> i, ligne <span class="keywordflow">in</span> enumerate(reader(donnees)):</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>                    <span class="comment"># On ajoute une nouvelle ligne à la matrice</span></div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>                    tableau.append([])</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>                    <span class="comment"># Pour chaque élément de la ligne</span></div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>                    <span class="keywordflow">for</span> element <span class="keywordflow">in</span> ligne:</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>                        <span class="comment"># On ajoute l&#39;élément converti en int</span></div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>                        tableau[i].append(int(element))</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>                <span class="comment"># On définit le plateau selon la matrice, sachant que l&#39;élément </span></div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>                <span class="comment"># vivant est 1</span></div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>                self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.set_tableau(tableau, 1)</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>                <span class="comment"># Remet le nombre de cycle à 0</span></div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>                self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2e9c4e17e1ac328858b1f469ec842718">nb_cycle</a> = 0</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>                <span class="comment"># Modifie le texe du label</span></div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>                self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a883cb6a74918885a43f6de65a01ca336">affichage_cycle</a>.setText(<span class="stringliteral">&quot;Cycle n°&quot;</span> + str(self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2e9c4e17e1ac328858b1f469ec842718">nb_cycle</a>))</div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>                <span class="comment"># On met à jour l&#39;attribut est_fichier_ouvert</span></div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>                self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbbfe1137253e9d3ac019e7039ea6979">est_fichier_ouvert</a> = <span class="keyword">True</span></div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>                <span class="comment"># Mise à jour du nom du fichier</span></div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>                self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a427a4313e38128b0fea040507d51ff48">fichier</a> = fichier</div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>            <span class="comment"># Si le tableau n&#39;est pas valide</span></div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>                <span class="comment"># Affichage du message d&#39;erreur</span></div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>                QMessageBox.warning(</div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>                    self, <span class="stringliteral">&quot;Erreur&quot;</span>, message_erreur, </div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>                    QMessageBox.StandardButton.Ok, </div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>                    QMessageBox.StandardButton.Ok)</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>    </div>
+</div>
+<div class="foldopen" id="foldopen00600" data-start="" data-end="">
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a7adb1c7e9d87e0058b97d65d24225193">  600</a></span>    <span class="keyword">def </span><a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aaead6decd7c47166a92f27e584381518">set_auto_grandissement</a>(self, etat: Qt.CheckState) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span><span class="stringliteral">        Entrées:</span></div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span><span class="stringliteral">            etat: Qt.CheckState</span></div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span><span class="stringliteral">            None (modification en place)</span></div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span><span class="stringliteral">            Redéfinit la valeur de auto_grandissement selon etat</span></div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>        <span class="comment"># | etat             | etat.value</span></div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>        <span class="comment"># | Unchecked        | 0</span></div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>        <span class="comment"># | Checked          | 2</span></div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>        <span class="comment"># bool(0) -&gt; False, bool(2) -&gt; True</span></div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>        <span class="comment"># Attribut une nouvelle valeur à auto_grandissement</span></div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.auto_grandissement = bool(etat.value)</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>    </div>
+</div>
+<div class="foldopen" id="foldopen00617" data-start="" data-end="">
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2a446ab2e232b349f835441f4799f1f4">  617</a></span>    <span class="keyword">def </span><a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a74504114f4ca94e5acbe09a09a054c33">set_auto_stop</a>(self, etat: Qt.CheckState) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span><span class="stringliteral">        Entrées:</span></div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span><span class="stringliteral">            etat: Qt.CheckState</span></div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="stringliteral">            None (modification en place)</span></div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span><span class="stringliteral">            Redéfinit la valeur de auto_stop selon etat</span></div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>        <span class="comment"># | etat             | etat.value</span></div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>        <span class="comment"># | Unchecked        | 0</span></div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>        <span class="comment"># | Checked          | 2</span></div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>        <span class="comment"># bool(0) -&gt; False, bool(1) -&gt; True</span></div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>        <span class="comment"># Attribut une nouvelle valeur à auto_stop</span></div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.auto_stop = bool(etat.value)</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>    </div>
+</div>
+<div class="foldopen" id="foldopen00634" data-start="" data-end="">
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8c885698db2283e1cec2f04ea8a78c90">  634</a></span>    <span class="keyword">def </span><a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6b295c3a2d39dc8277865c2c0a702c87">set_periode</a>(self, valeur: float) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span><span class="stringliteral">        Entrées:</span></div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span><span class="stringliteral">            valeur: double</span></div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span><span class="stringliteral">            None (modification en place)</span></div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span><span class="stringliteral">            Redéfinit la période/durée d&#39;un cycle de l&#39;animation.</span></div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.periode = int(valeur * 1000)</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>    </div>
+</div>
+<div class="foldopen" id="foldopen00646" data-start="" data-end="">
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad1e0dd627816484e2ec791bafb61d475">  646</a></span>    <span class="keyword">def </span><a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aeb452145d50dd6a69ca89df8bebe33f8">lance_anim</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span><span class="stringliteral">        Entrées:</span></div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span><span class="stringliteral">            None (modification en place)</span></div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span><span class="stringliteral">            Lance l&#39;animation</span></div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>        <span class="comment"># désactive le bouton jouer</span></div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">jouer</a>.setEnabled(<span class="keyword">False</span>)</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>        <span class="comment"># active le bouton pause</span></div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">pause</a>.setEnabled(<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>        <span class="comment"># On enlève focus de periode_entree, puisqu&#39;en se désactivant, le jouer</span></div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>        <span class="comment"># lui donne le focus</span></div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>.clearFocus()</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span> </div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        <span class="comment"># Démarre le jeu</span></div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.run()</div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span> </div>
+</div>
+<div class="foldopen" id="foldopen00666" data-start="" data-end="">
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2fe1757144fec6345a25bc451ff043fa">  666</a></span>    <span class="keyword">def </span><a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a9393d8daa759851050d7bdab6e2e6d86">stop_anim</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span><span class="stringliteral">        Entrées:</span></div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span><span class="stringliteral">            None (modification en place)</span></div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span><span class="stringliteral">            Pause l&#39;animation</span></div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>        <span class="comment"># Arrête le chrono</span></div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">scene</a>.chrono.stop()</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>        <span class="comment"># active le bouton jouer</span></div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">jouer</a>.setEnabled(<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>        <span class="comment"># désactive le bouton pause</span></div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">pause</a>.setEnabled(<span class="keyword">False</span>)</div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>        <span class="comment"># On enlève focus de periode_entree, puisqu&#39;en se désactivant, le pause</span></div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>        <span class="comment"># lui donne le focus</span></div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">periode_entree</a>.clearFocus()</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>    </div>
+</div>
+<div class="foldopen" id="foldopen00685" data-start="" data-end="">
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a3aaa2ffd2e4ce35ccf435fe56da10ed3">  685</a></span>    <span class="keyword">def </span><a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a245bc1411740021ee26a0742d07d72e1">zoom_in</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span><span class="stringliteral">        Entrées:</span></div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span><span class="stringliteral">            None (modification en place)</span></div>
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span><span class="stringliteral">            Zoom dans la vue</span></div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span><span class="stringliteral">        Addendum:</span></div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span><span class="stringliteral">            Le nom est en anglais car le terme n&#39;existe pas en français.</span></div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>        <span class="comment"># Augmente les grandeurs de 10%</span></div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a27e9816793bd5fa2aab38429c38eb303">vue</a>.scale(1.1, 1.1)</div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span> </div>
+</div>
+<div class="foldopen" id="foldopen00699" data-start="" data-end="">
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno"><a class="line" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5b367e47fa9caca973678a1314acf019">  699</a></span>    <span class="keyword">def </span><a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a3ef75abc09f3e06342caed939d28d6e3">zoom_out</a>(self) -&gt; None:</div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span><span class="stringliteral">        Entrées:</span></div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span><span class="stringliteral">            self: JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span><span class="stringliteral">        Sortie:</span></div>
+<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span><span class="stringliteral">            None (modification en place)</span></div>
+<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span><span class="stringliteral">        Rôle:</span></div>
+<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span><span class="stringliteral">            Dézoom dans la vue</span></div>
+<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span><span class="stringliteral">        Addendum:</span></div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span><span class="stringliteral">            Le nom est en anglais car le terme n&#39;existe pas en français.</span></div>
+<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>        <span class="comment"># Diminue les grandeurs de 10%</span></div>
+<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>        self.<a class="code hl_variable" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a27e9816793bd5fa2aab38429c38eb303">vue</a>.scale(0.9, 0.9)</div>
+<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span> </div>
+<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span> </div>
+<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span><span class="comment"># Si le présent fichier est executé avec python 3.10 ou plus</span></div>
+</div>
+</div>
+<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span> <span class="keywordflow">and</span> version_info &gt;= (3, 10):</div>
+<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>    <span class="comment"># On instantie QApplication en lui passe argv (héritage du c++)</span></div>
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno"><a class="line" href="namespacejeu__de__la__vie__gui.html#a5343cb00c6dd86fc916192fa98dc52b3">  717</a></span>    app = QApplication(argv)</div>
+<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>    <span class="comment"># On instantie JeuDeLaVieGUI</span></div>
+<div class="line"><a id="l00719" name="l00719"></a><span class="lineno"><a class="line" href="namespacejeu__de__la__vie__gui.html#aeb509f9cdf12cff12732f97176ec75f0">  719</a></span>    my_window = <a class="code hl_class" href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html">JeuDeLaVieGUI</a>()</div>
+<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span> </div>
+<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>    <span class="comment"># On execute l&#39;application</span></div>
+<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>    app.exec()</div>
+<div class="ttc" id="aclassdependances_1_1jdlv_1_1scene_1_1_scene_html"><div class="ttname"><a href="classdependances_1_1jdlv_1_1scene_1_1_scene.html">dependances.jdlv.scene.Scene</a></div><div class="ttdef"><b>Definition</b> <a href="scene_8py_source.html#l00022">scene.py:22</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html">jeu_de_la_vie_gui.JeuDeLaVieGUI</a></div><div class="ttdef"><b>Definition</b> <a href="#l00054">jeu_de_la_vie_gui.py:54</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a05662739486e6f8cbd17747855af30dd"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a05662739486e6f8cbd17747855af30dd">jeu_de_la_vie_gui.JeuDeLaVieGUI.periode_layout</a></div><div class="ttdeci">periode_layout</div><div class="ttdef"><b>Definition</b> <a href="#l00251">jeu_de_la_vie_gui.py:251</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a12616a3df9b3bee096d6bdfa78af1347"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a12616a3df9b3bee096d6bdfa78af1347">jeu_de_la_vie_gui.JeuDeLaVieGUI.event</a></div><div class="ttdeci">bool event(self, QEvent even)</div><div class="ttdef"><b>Definition</b> <a href="#l00430">jeu_de_la_vie_gui.py:430</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a1f22c4d4afd18f22f3b30483ee6a429c"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a1f22c4d4afd18f22f3b30483ee6a429c">jeu_de_la_vie_gui.JeuDeLaVieGUI.menu</a></div><div class="ttdeci">QMenuBar menu</div><div class="ttdef"><b>Definition</b> <a href="#l00107">jeu_de_la_vie_gui.py:107</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a2304e5b634a7313cbe0e964218999f14"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2304e5b634a7313cbe0e964218999f14">jeu_de_la_vie_gui.JeuDeLaVieGUI.chemin_absolu</a></div><div class="ttdeci">str chemin_absolu</div><div class="ttdef"><b>Definition</b> <a href="#l00076">jeu_de_la_vie_gui.py:76</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a2361a1daef8d8057e269cdaf5a4a4cb1"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2361a1daef8d8057e269cdaf5a4a4cb1">jeu_de_la_vie_gui.JeuDeLaVieGUI.outils_layout</a></div><div class="ttdeci">outils_layout</div><div class="ttdef"><b>Definition</b> <a href="#l00166">jeu_de_la_vie_gui.py:166</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a237cb793387810dda7b65169779f13a9"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a237cb793387810dda7b65169779f13a9">jeu_de_la_vie_gui.JeuDeLaVieGUI.periode_entree</a></div><div class="ttdeci">periode_entree</div><div class="ttdef"><b>Definition</b> <a href="#l00260">jeu_de_la_vie_gui.py:260</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a245bc1411740021ee26a0742d07d72e1"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a245bc1411740021ee26a0742d07d72e1">jeu_de_la_vie_gui.JeuDeLaVieGUI.zoom_in</a></div><div class="ttdeci">zoom_in</div><div class="ttdef"><b>Definition</b> <a href="#l00358">jeu_de_la_vie_gui.py:358</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a27e9816793bd5fa2aab38429c38eb303"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a27e9816793bd5fa2aab38429c38eb303">jeu_de_la_vie_gui.JeuDeLaVieGUI.vue</a></div><div class="ttdeci">vue</div><div class="ttdef"><b>Definition</b> <a href="#l00149">jeu_de_la_vie_gui.py:149</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a28cfc4e1cbc4c6a653c59d032b7b14ab"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a28cfc4e1cbc4c6a653c59d032b7b14ab">jeu_de_la_vie_gui.JeuDeLaVieGUI.controles_layout</a></div><div class="ttdeci">controles_layout</div><div class="ttdef"><b>Definition</b> <a href="#l00198">jeu_de_la_vie_gui.py:198</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a2a446ab2e232b349f835441f4799f1f4"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2a446ab2e232b349f835441f4799f1f4">jeu_de_la_vie_gui.JeuDeLaVieGUI.set_auto_stop</a></div><div class="ttdeci">None set_auto_stop(self, Qt.CheckState etat)</div><div class="ttdef"><b>Definition</b> <a href="#l00617">jeu_de_la_vie_gui.py:617</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a2e9c4e17e1ac328858b1f469ec842718"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2e9c4e17e1ac328858b1f469ec842718">jeu_de_la_vie_gui.JeuDeLaVieGUI.nb_cycle</a></div><div class="ttdeci">int nb_cycle</div><div class="ttdef"><b>Definition</b> <a href="#l00081">jeu_de_la_vie_gui.py:81</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a2fe1757144fec6345a25bc451ff043fa"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a2fe1757144fec6345a25bc451ff043fa">jeu_de_la_vie_gui.JeuDeLaVieGUI.stop_anim</a></div><div class="ttdeci">None stop_anim(self)</div><div class="ttdef"><b>Definition</b> <a href="#l00666">jeu_de_la_vie_gui.py:666</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a3aaa2ffd2e4ce35ccf435fe56da10ed3"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a3aaa2ffd2e4ce35ccf435fe56da10ed3">jeu_de_la_vie_gui.JeuDeLaVieGUI.zoom_in</a></div><div class="ttdeci">None zoom_in(self)</div><div class="ttdef"><b>Definition</b> <a href="#l00685">jeu_de_la_vie_gui.py:685</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a3ef75abc09f3e06342caed939d28d6e3"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a3ef75abc09f3e06342caed939d28d6e3">jeu_de_la_vie_gui.JeuDeLaVieGUI.zoom_out</a></div><div class="ttdeci">zoom_out</div><div class="ttdef"><b>Definition</b> <a href="#l00368">jeu_de_la_vie_gui.py:368</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a427a4313e38128b0fea040507d51ff48"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a427a4313e38128b0fea040507d51ff48">jeu_de_la_vie_gui.JeuDeLaVieGUI.fichier</a></div><div class="ttdeci">str fichier</div><div class="ttdef"><b>Definition</b> <a href="#l00079">jeu_de_la_vie_gui.py:79</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a45cba9714be85e0a02c7df2830c0bb87"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a45cba9714be85e0a02c7df2830c0bb87">jeu_de_la_vie_gui.JeuDeLaVieGUI.enregistrer_sous</a></div><div class="ttdeci">enregistrer_sous</div><div class="ttdef"><b>Definition</b> <a href="#l00140">jeu_de_la_vie_gui.py:140</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a4aafe2a38a4f571039228960e05bdca2"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a4aafe2a38a4f571039228960e05bdca2">jeu_de_la_vie_gui.JeuDeLaVieGUI.__init__</a></div><div class="ttdeci">None __init__(self)</div><div class="ttdef"><b>Definition</b> <a href="#l00061">jeu_de_la_vie_gui.py:61</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a53a3adc2b36425080d375aece26a492b"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a53a3adc2b36425080d375aece26a492b">jeu_de_la_vie_gui.JeuDeLaVieGUI.enregistrer_template</a></div><div class="ttdeci">QAction enregistrer_template</div><div class="ttdef"><b>Definition</b> <a href="#l00122">jeu_de_la_vie_gui.py:122</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a5557b22e0fe0f6ecfad6666fc9ad8b3a"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5557b22e0fe0f6ecfad6666fc9ad8b3a">jeu_de_la_vie_gui.JeuDeLaVieGUI.zoom_out_entree</a></div><div class="ttdeci">zoom_out_entree</div><div class="ttdef"><b>Definition</b> <a href="#l00362">jeu_de_la_vie_gui.py:362</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a56fde6b9735e22439ea89ab2211d4dbe"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a56fde6b9735e22439ea89ab2211d4dbe">jeu_de_la_vie_gui.JeuDeLaVieGUI.tour_par_tour</a></div><div class="ttdeci">tour_par_tour</div><div class="ttdef"><b>Definition</b> <a href="#l00239">jeu_de_la_vie_gui.py:239</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a5b367e47fa9caca973678a1314acf019"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5b367e47fa9caca973678a1314acf019">jeu_de_la_vie_gui.JeuDeLaVieGUI.zoom_out</a></div><div class="ttdeci">None zoom_out(self)</div><div class="ttdef"><b>Definition</b> <a href="#l00699">jeu_de_la_vie_gui.py:699</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a5d2e67569b42c01eaebecbdc5014e48d"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d2e67569b42c01eaebecbdc5014e48d">jeu_de_la_vie_gui.JeuDeLaVieGUI.menu_fichier</a></div><div class="ttdeci">QMenu menu_fichier</div><div class="ttdef"><b>Definition</b> <a href="#l00109">jeu_de_la_vie_gui.py:109</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a5d365bc0f6575a60b3556cebabbb8344"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a5d365bc0f6575a60b3556cebabbb8344">jeu_de_la_vie_gui.JeuDeLaVieGUI.zoom_label</a></div><div class="ttdeci">zoom_label</div><div class="ttdef"><b>Definition</b> <a href="#l00341">jeu_de_la_vie_gui.py:341</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a61b08545ae48f1ed95e72ea658f2bcc2"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a61b08545ae48f1ed95e72ea658f2bcc2">jeu_de_la_vie_gui.JeuDeLaVieGUI.enregistrer</a></div><div class="ttdeci">enregistrer</div><div class="ttdef"><b>Definition</b> <a href="#l00128">jeu_de_la_vie_gui.py:128</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a6b295c3a2d39dc8277865c2c0a702c87"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6b295c3a2d39dc8277865c2c0a702c87">jeu_de_la_vie_gui.JeuDeLaVieGUI.set_periode</a></div><div class="ttdeci">set_periode</div><div class="ttdef"><b>Definition</b> <a href="#l00275">jeu_de_la_vie_gui.py:275</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a6e2dfb964717ea269419d52d8e0fdd6f"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a6e2dfb964717ea269419d52d8e0fdd6f">jeu_de_la_vie_gui.JeuDeLaVieGUI.pause</a></div><div class="ttdeci">pause</div><div class="ttdef"><b>Definition</b> <a href="#l00217">jeu_de_la_vie_gui.py:217</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a74504114f4ca94e5acbe09a09a054c33"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a74504114f4ca94e5acbe09a09a054c33">jeu_de_la_vie_gui.JeuDeLaVieGUI.set_auto_stop</a></div><div class="ttdeci">set_auto_stop</div><div class="ttdef"><b>Definition</b> <a href="#l00322">jeu_de_la_vie_gui.py:322</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a7adb1c7e9d87e0058b97d65d24225193"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a7adb1c7e9d87e0058b97d65d24225193">jeu_de_la_vie_gui.JeuDeLaVieGUI.set_auto_grandissement</a></div><div class="ttdeci">None set_auto_grandissement(self, Qt.CheckState etat)</div><div class="ttdef"><b>Definition</b> <a href="#l00600">jeu_de_la_vie_gui.py:600</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a837dfef5544aea31c3460e0c4397c04a"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a837dfef5544aea31c3460e0c4397c04a">jeu_de_la_vie_gui.JeuDeLaVieGUI.zoom_in_entree</a></div><div class="ttdeci">zoom_in_entree</div><div class="ttdef"><b>Definition</b> <a href="#l00352">jeu_de_la_vie_gui.py:352</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a878c60898eb7f5b4548a984f1dab880e"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a878c60898eb7f5b4548a984f1dab880e">jeu_de_la_vie_gui.JeuDeLaVieGUI.ligne_post_controles</a></div><div class="ttdeci">ligne_post_controles</div><div class="ttdef"><b>Definition</b> <a href="#l00285">jeu_de_la_vie_gui.py:285</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a883cb6a74918885a43f6de65a01ca336"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a883cb6a74918885a43f6de65a01ca336">jeu_de_la_vie_gui.JeuDeLaVieGUI.affichage_cycle</a></div><div class="ttdeci">affichage_cycle</div><div class="ttdef"><b>Definition</b> <a href="#l00174">jeu_de_la_vie_gui.py:174</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a8923339299e4467184ee4a75a75ca688"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8923339299e4467184ee4a75a75ca688">jeu_de_la_vie_gui.JeuDeLaVieGUI.auto_stop_entree</a></div><div class="ttdeci">auto_stop_entree</div><div class="ttdef"><b>Definition</b> <a href="#l00311">jeu_de_la_vie_gui.py:311</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a8952ad80d24c45cd184004b54377d1b8"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8952ad80d24c45cd184004b54377d1b8">jeu_de_la_vie_gui.JeuDeLaVieGUI.widget_central</a></div><div class="ttdeci">widget_central</div><div class="ttdef"><b>Definition</b> <a href="#l00095">jeu_de_la_vie_gui.py:95</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a8c6726406f214ac47c70068f1a9acde2"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8c6726406f214ac47c70068f1a9acde2">jeu_de_la_vie_gui.JeuDeLaVieGUI.enregistrer_template_sous</a></div><div class="ttdeci">enregistrer_template_sous</div><div class="ttdef"><b>Definition</b> <a href="#l00133">jeu_de_la_vie_gui.py:133</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a8c885698db2283e1cec2f04ea8a78c90"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a8c885698db2283e1cec2f04ea8a78c90">jeu_de_la_vie_gui.JeuDeLaVieGUI.set_periode</a></div><div class="ttdeci">None set_periode(self, float valeur)</div><div class="ttdef"><b>Definition</b> <a href="#l00634">jeu_de_la_vie_gui.py:634</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a9393d8daa759851050d7bdab6e2e6d86"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a9393d8daa759851050d7bdab6e2e6d86">jeu_de_la_vie_gui.JeuDeLaVieGUI.stop_anim</a></div><div class="ttdeci">stop_anim</div><div class="ttdef"><b>Definition</b> <a href="#l00226">jeu_de_la_vie_gui.py:226</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_a9bbd41dcb746d7866cc5200d9fbc9569"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#a9bbd41dcb746d7866cc5200d9fbc9569">jeu_de_la_vie_gui.JeuDeLaVieGUI.enregistrer_sous</a></div><div class="ttdeci">None enregistrer_sous(self)</div><div class="ttdef"><b>Definition</b> <a href="#l00497">jeu_de_la_vie_gui.py:497</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_aa6d82ea0dba48ee7347280492d8018f2"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aa6d82ea0dba48ee7347280492d8018f2">jeu_de_la_vie_gui.JeuDeLaVieGUI.enregistrer</a></div><div class="ttdeci">None enregistrer(self)</div><div class="ttdef"><b>Definition</b> <a href="#l00460">jeu_de_la_vie_gui.py:460</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_aaead6decd7c47166a92f27e584381518"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aaead6decd7c47166a92f27e584381518">jeu_de_la_vie_gui.JeuDeLaVieGUI.set_auto_grandissement</a></div><div class="ttdeci">set_auto_grandissement</div><div class="ttdef"><b>Definition</b> <a href="#l00306">jeu_de_la_vie_gui.py:306</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_ab02333fdb742ed26f2992f647ffee8c5"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab02333fdb742ed26f2992f647ffee8c5">jeu_de_la_vie_gui.JeuDeLaVieGUI.ligne_post_autos</a></div><div class="ttdeci">ligne_post_autos</div><div class="ttdef"><b>Definition</b> <a href="#l00328">jeu_de_la_vie_gui.py:328</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_ab734f3a27b536a243dc1582633ab827c"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ab734f3a27b536a243dc1582633ab827c">jeu_de_la_vie_gui.JeuDeLaVieGUI.zoom</a></div><div class="ttdeci">zoom</div><div class="ttdef"><b>Definition</b> <a href="#l00339">jeu_de_la_vie_gui.py:339</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_abb9a613abf3e3ea2e116868a35b41a2a"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abb9a613abf3e3ea2e116868a35b41a2a">jeu_de_la_vie_gui.JeuDeLaVieGUI.importe_template</a></div><div class="ttdeci">importe_template</div><div class="ttdef"><b>Definition</b> <a href="#l00117">jeu_de_la_vie_gui.py:117</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_abbbfe1137253e9d3ac019e7039ea6979"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbbfe1137253e9d3ac019e7039ea6979">jeu_de_la_vie_gui.JeuDeLaVieGUI.est_fichier_ouvert</a></div><div class="ttdeci">bool est_fichier_ouvert</div><div class="ttdef"><b>Definition</b> <a href="#l00078">jeu_de_la_vie_gui.py:78</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_abbe9df0136142924290c829cb3b74f77"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbe9df0136142924290c829cb3b74f77">jeu_de_la_vie_gui.JeuDeLaVieGUI.controles_titre</a></div><div class="ttdeci">controles_titre</div><div class="ttdef"><b>Definition</b> <a href="#l00187">jeu_de_la_vie_gui.py:187</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_abbfacd00b7bc5f8c14be2bcb17476080"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#abbfacd00b7bc5f8c14be2bcb17476080">jeu_de_la_vie_gui.JeuDeLaVieGUI.periode_label</a></div><div class="ttdeci">periode_label</div><div class="ttdef"><b>Definition</b> <a href="#l00253">jeu_de_la_vie_gui.py:253</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_ac029fc5764b9c05b507690a712ed0a62"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac029fc5764b9c05b507690a712ed0a62">jeu_de_la_vie_gui.JeuDeLaVieGUI.bar_info_titre</a></div><div class="ttdeci">bar_info_titre</div><div class="ttdef"><b>Definition</b> <a href="#l00378">jeu_de_la_vie_gui.py:378</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_ac4e1429cf92733cbc9664593ca93b821"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ac4e1429cf92733cbc9664593ca93b821">jeu_de_la_vie_gui.JeuDeLaVieGUI.scene</a></div><div class="ttdeci">scene</div><div class="ttdef"><b>Definition</b> <a href="#l00147">jeu_de_la_vie_gui.py:147</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_ad1e0dd627816484e2ec791bafb61d475"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad1e0dd627816484e2ec791bafb61d475">jeu_de_la_vie_gui.JeuDeLaVieGUI.lance_anim</a></div><div class="ttdeci">None lance_anim(self)</div><div class="ttdef"><b>Definition</b> <a href="#l00646">jeu_de_la_vie_gui.py:646</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_ad75cf5a05506b05c24c38ec1abd67809"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad75cf5a05506b05c24c38ec1abd67809">jeu_de_la_vie_gui.JeuDeLaVieGUI.importer_template</a></div><div class="ttdeci">importer_template</div><div class="ttdef"><b>Definition</b> <a href="#l00111">jeu_de_la_vie_gui.py:111</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_ad795b693dca90a01cf313c74b03da294"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ad795b693dca90a01cf313c74b03da294">jeu_de_la_vie_gui.JeuDeLaVieGUI.importe_template</a></div><div class="ttdeci">None importe_template(self)</div><div class="ttdef"><b>Definition</b> <a href="#l00529">jeu_de_la_vie_gui.py:529</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_adccf99096ab14c54d3da4be84a45b659"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#adccf99096ab14c54d3da4be84a45b659">jeu_de_la_vie_gui.JeuDeLaVieGUI.bar_info</a></div><div class="ttdeci">bar_info</div><div class="ttdef"><b>Definition</b> <a href="#l00386">jeu_de_la_vie_gui.py:386</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_ade806ec343280e8efcc03f394d39c71e"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#ade806ec343280e8efcc03f394d39c71e">jeu_de_la_vie_gui.JeuDeLaVieGUI.auto_grandissement_entree</a></div><div class="ttdeci">auto_grandissement_entree</div><div class="ttdef"><b>Definition</b> <a href="#l00296">jeu_de_la_vie_gui.py:296</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_aeb452145d50dd6a69ca89df8bebe33f8"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#aeb452145d50dd6a69ca89df8bebe33f8">jeu_de_la_vie_gui.JeuDeLaVieGUI.lance_anim</a></div><div class="ttdeci">lance_anim</div><div class="ttdef"><b>Definition</b> <a href="#l00209">jeu_de_la_vie_gui.py:209</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_afe2711df0097880e07ae575d81aa4fa9"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afe2711df0097880e07ae575d81aa4fa9">jeu_de_la_vie_gui.JeuDeLaVieGUI.affichage</a></div><div class="ttdeci">affichage</div><div class="ttdef"><b>Definition</b> <a href="#l00100">jeu_de_la_vie_gui.py:100</a></div></div>
+<div class="ttc" id="aclassjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i_html_afea24ecacc028b8b822506f2ee6ad2e6"><div class="ttname"><a href="classjeu__de__la__vie__gui_1_1_jeu_de_la_vie_g_u_i.html#afea24ecacc028b8b822506f2ee6ad2e6">jeu_de_la_vie_gui.JeuDeLaVieGUI.jouer</a></div><div class="ttdeci">jouer</div><div class="ttdef"><b>Definition</b> <a href="#l00200">jeu_de_la_vie_gui.py:200</a></div></div>
+<div class="ttc" id="anamespacedependances_1_1jdlv_html"><div class="ttname"><a href="namespacedependances_1_1jdlv.html">dependances.jdlv</a></div><div class="ttdef"><b>Definition</b> <a href="jdlv_2____init_____8py_source.html#l00001">__init__.py:1</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="jeu__de__la__vie__gui_8py.html">jeu_de_la_vie_gui.py</a></li>
+    <li class="footer">Généré par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+  </ul>
+</div>
+</body>
+</html>

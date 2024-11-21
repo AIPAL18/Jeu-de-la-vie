@@ -296,12 +296,12 @@ class Scene(QGraphicsScene):
         # On retourne le plateau
         return plateau
 
-    def valeur_case(self, i, j) -> bool:
+    def valeur_case(self, ord: int, absc: int) -> bool:
         """
         Entrées:
             self: Scene
-            i: int
-            j: int
+            ord: int
+            absc: int
         Sortie:
             bool
         Rôle:
@@ -309,42 +309,42 @@ class Scene(QGraphicsScene):
             potentiel, False sinon.
         """
         # si les indices décrivent une valeur du tableau
-        if 0 <= i < len(self.tableau) and 0 <= j < len(self.tableau[0]):
+        if 0 <= ord < len(self.tableau) and 0 <= absc < len(self.tableau[0]):
             # si True si vivant, False sinon
-            return self.tableau[i][j].get_etat() is Etat.Vivant
+            return self.tableau[ord][absc].get_etat() is Etat.Vivant
         # si l'indice i ou j est trop grand ou négatif, ou si la cellule est 
         # morte on retourne 0
         else:
             # Retourne False car l'élément inexistant est considéré mort
             return False
 
-    def total_voisins(self, i: int, j: int) -> int:
+    def total_voisins(self, ord: int, absc: int) -> int:
         """
         Entrées:
             self: Scene
-            i: int
-            j: int
+            ord: int
+            absc: int
         Sortie:
             int
         Rôle:
-            Retourne le total de voisins de la cellule (i;j)
+            Retourne le total de voisins de la cellule (ord;absc)
         """
         # Récupère le voisin du bas (int(False) -> 0 et int(True) -> 1)
-        b = int(self.valeur_case(i + 1, j))
+        b = int(self.valeur_case(ord + 1, absc))
         # Récupère le voisin du bas droit
-        bd = int(self.valeur_case(i + 1, j + 1))
+        bd = int(self.valeur_case(ord + 1, absc + 1))
         # Récupère le voisin du bas gauche
-        bg = int(self.valeur_case(i + 1, j - 1))
+        bg = int(self.valeur_case(ord + 1, absc - 1))
         # Récupère le voisin du haut
-        h = int(self.valeur_case(i - 1, j))
+        h = int(self.valeur_case(ord - 1, absc))
         # Récupère le voisin du haut droit
-        hd = int(self.valeur_case(i - 1, j + 1))
+        hd = int(self.valeur_case(ord - 1, absc + 1))
         # Récupère le voisin du haut gauche
-        hg = int(self.valeur_case(i - 1, j - 1))
+        hg = int(self.valeur_case(ord - 1, absc - 1))
         # Récupère le voisin de droite
-        d = int(self.valeur_case(i, j + 1))
+        d = int(self.valeur_case(ord, absc + 1))
         # Récupère le voisin de gauche
-        g = int(self.valeur_case(i, j - 1))
+        g = int(self.valeur_case(ord, absc - 1))
 
         # retourne la somme des voisins
         return b + bd + bg + h + hd + hg + d + g
@@ -416,7 +416,7 @@ class Scene(QGraphicsScene):
         Sortie:
             tuple[bool, Direction]
         Rôle:
-            retourne la liste des directions vers lesquelles il faut agrandir 
+            Retourne la liste des directions vers lesquelles il faut agrandir 
             le tableau
         """
         # Déclaration d'une liste qui représente les directions vers lesquelles 
@@ -490,7 +490,7 @@ class Scene(QGraphicsScene):
         # Retourne la liste
         return liste_directions
 
-    def extension(self, direction: str) -> None:
+    def extension(self, direction: Direction) -> None:
         """
         Entrées:
             self: Scene
@@ -596,7 +596,7 @@ class Scene(QGraphicsScene):
         Sortie:
             bool
         Rôle:
-            vérifie si deux tour de suite sont identique
+            Vérifie si deux tour de suite sont identique
         """
         # retourne True si le tableau n'a pas changé entre deux cycles
         return self.tableau_precedent == self.tableau
@@ -665,7 +665,7 @@ class Scene(QGraphicsScene):
         Sortie:
             None (modification en place)
         Rôle:
-            Exécute un tour
+            Lance l'animation et le chrono (séquenceur).
         """
         # Si le chrono est activé
         if self.chrono.isActive():

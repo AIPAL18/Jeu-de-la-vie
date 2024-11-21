@@ -54,7 +54,7 @@ class Cellule(QGraphicsRectItem):
         Sortie:
             None (modification en place)
         Rôle:
-            Définit la couleur de la couleur
+            Définit la couleur de la cellule
         """
         # Si la cellule est vivante
         if self.etat is Etat.Vivant:
@@ -123,11 +123,11 @@ class Cellule(QGraphicsRectItem):
         """
         Entrées:
             self: Cellule
-            vivant: Etat
+            etat: Etat
         Sortie:
             None (modification en place)
         Rôle:
-            Redéfinit l'état de la cellule True -> vivant, False -> mort
+            Redéfinit l'état de la cellule.
         """
         # On met à jour l'attribut est_vivant
         self.etat = etat
@@ -141,7 +141,7 @@ class Cellule(QGraphicsRectItem):
         Sortie:
             Etat
         Rôle:
-            Retourne l'état de la cellule True -> vivant et False -> mort
+            Retourne l'état de la cellule.
         """
         # On retourne la valeur de l'attribut est_vivant
         return self.etat

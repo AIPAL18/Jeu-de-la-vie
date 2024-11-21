@@ -132,7 +132,7 @@ class JeuDeLaVieGUI(QMainWindow):
         # Déclaration de enregistrer_template_sous
         self.enregistrer_template_sous = QAction(self)
         # Définition du texte de enregistrer_template
-        self.enregistrer_template_sous.setText("Enregistrer le template")
+        self.enregistrer_template_sous.setText("Enregistrer sous le template")
         # Définition d'un raccourci clavier
         self.enregistrer_template_sous.setShortcut(
             QKeySequence.StandardKey.SaveAs)

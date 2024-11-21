@@ -235,14 +235,15 @@ class Scene(QGraphicsScene):
     
     def event(self, even: QEvent) -> bool:
         """
-        Réimplémentation de event hérité de QMainWindow
+        Réimplémentation de event hérité de QGraphicsScene
         Entrées:
             self: Scene
             even: QEvent (et les classes qui en hérite)
         Sortie:
             bool
         Rôle:
-            Capture les événements de QMainWindow, les traites, puis les rends.
+            Capture les événements de QGraphicsScene, les traites, puis les 
+            rends.
         """
         # Si le type de l'évènement est StatusTipEvent
         if even.type() is QEvent.Type.StatusTip:
